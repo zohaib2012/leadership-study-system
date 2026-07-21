@@ -1,7 +1,7 @@
 {
   "buildCommand": "cd client && npm run build",
   "outputDirectory": "client/dist",
-  "installCommand": "npm --prefix client install && npm --prefix server install",
+  "installCommand": "npm install && npm --prefix client install",
   "framework": null,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
