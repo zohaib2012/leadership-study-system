@@ -23,7 +23,7 @@ export default function StudentDashboard() {
     const fetchDashboard = async () => {
       try {
         const res = await api.get('/dashboard/student')
-        setData(res.data)
+        setData(res.data?.data || res.data)
       } catch (err) {
         console.error('Failed to fetch dashboard', err)
       } finally {
