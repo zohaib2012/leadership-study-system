@@ -6,12 +6,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
 interface DashboardData {
-  attendance: { present: number; total: number; percentage: number }
-  fees: { paid: number; total: number; pending: number; dueDate: string }
-  homework: { pending: number; submitted: number; total: number }
-  todayClasses: { subject: string; time: string; room: string; teacher: string }[]
-  recentGrades: { subject: string; grade: string; date: string }[]
-  upcomingExams: { subject: string; date: string; syllabus: string }[]
+  attendancePercentage?: number
+  pendingFees?: number
+  pendingHomework?: number
+  todayTimetable?: {
+    subject?: { name?: string } | string
+    teacher?: { user?: { name?: string } } | string
+    room?: string
+    startTime?: string
+    endTime?: string
+  }[]
 }
 
 export default function StudentDashboard() {
@@ -52,31 +56,41 @@ export default function StudentDashboard() {
     )
   }
 
+  const recentGrades: { subject: string; grade: string; date: string }[] = (data as any).recentGrades || []
+  const upcomingExams: { subject: string; date: string; syllabus: string }[] = (data as any).upcomingExams || []
+
+  const todayClasses = (data.todayTimetable || []).map((cls) => ({
+    subject: typeof cls.subject === 'object' ? cls.subject?.name || 'Unknown' : cls.subject || 'Unknown',
+    time: cls.startTime ? `${cls.startTime}${cls.endTime ? ` - ${cls.endTime}` : ''}` : 'N/A',
+    room: cls.room || 'N/A',
+    teacher: typeof cls.teacher === 'object' ? cls.teacher?.user?.name || 'N/A' : cls.teacher || 'N/A',
+  }))
+
   const statCards = [
     {
       label: 'Attendance',
-      value: `${data.attendance.percentage}%`,
-      sub: `${data.attendance.present}/${data.attendance.total} days`,
+      value: `${data.attendancePercentage ?? 0}%`,
+      sub: 'overall attendance',
       gradient: 'from-emerald-500 to-emerald-600',
       icon: CheckCircle2,
     },
     {
       label: 'Pending Fees',
-      value: `₹${data.fees.pending.toLocaleString()}`,
-      sub: `Due ${data.fees.dueDate}`,
+      value: `₹${(data.pendingFees ?? 0).toLocaleString()}`,
+      sub: 'due amount',
       gradient: 'from-red-500 to-red-600',
       icon: DollarSign,
     },
     {
       label: 'Pending Homework',
-      value: String(data.homework.pending),
-      sub: `${data.homework.submitted} submitted`,
+      value: String(data.pendingHomework ?? 0),
+      sub: 'not submitted',
       gradient: 'from-orange-500 to-orange-600',
       icon: ClipboardList,
     },
     {
       label: "Today's Classes",
-      value: String(data.todayClasses.length),
+      value: String(todayClasses.length),
       sub: 'scheduled',
       gradient: 'from-violet-500 to-violet-600',
       icon: CalendarDays,
@@ -126,11 +140,11 @@ export default function StudentDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {data.todayClasses.length === 0 ? (
+            {todayClasses.length === 0 ? (
               <p className="text-muted-foreground text-sm py-4 text-center">No classes scheduled today.</p>
             ) : (
               <div className="space-y-3">
-                {data.todayClasses.map((cls, i) => (
+                {todayClasses.map((cls, i) => (
                   <div
                     key={i}
                     className="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-primary/5 to-transparent border border-primary/10"
@@ -161,11 +175,11 @@ export default function StudentDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {data.recentGrades.length === 0 ? (
+            {recentGrades.length === 0 ? (
               <p className="text-muted-foreground text-sm py-4 text-center">No grades available yet.</p>
             ) : (
               <div className="space-y-3">
-                {data.recentGrades.map((g, i) => (
+                {recentGrades.map((g, i) => (
                   <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
                     <div>
                       <p className="font-medium text-sm">{g.subject}</p>
@@ -188,11 +202,11 @@ export default function StudentDashboard() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {data.upcomingExams.length === 0 ? (
+          {upcomingExams.length === 0 ? (
             <p className="text-muted-foreground text-sm py-4 text-center">No upcoming exams.</p>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {data.upcomingExams.map((exam, i) => (
+              {upcomingExams.map((exam, i) => (
                 <div key={i} className="p-4 rounded-xl bg-gradient-to-br from-primary/5 to-purple-500/5 border border-primary/10 space-y-2">
                   <p className="font-semibold">{exam.subject}</p>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
