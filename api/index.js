@@ -1,3 +1,5 @@
+try { require('dotenv').config({ path: require('path').join(__dirname, '..', 'server', '.env') }); } catch (_) {}
+
 const express = require('express');
 const cors = require('cors');
 
