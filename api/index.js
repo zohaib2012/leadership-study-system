@@ -4,11 +4,17 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 
 let cached = global._mongooseCache;
-if (!cached) cached = global._mongooseCache = { conn: null };
+if (!cached) cached = global._mongooseCache = { conn: null, promise: null };
 
 async function connectDB() {
   if (cached.conn) return cached.conn;
-  cached.conn = await mongoose.connect(process.env.MONGODB_URI, { dbName: 'leadership-Study-S' });
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(process.env.MONGODB_URI, {
+      dbName: 'leadership-Study-S',
+      serverSelectionTimeoutMS: 5000,
+    }).then((m) => m);
+  }
+  cached.conn = await cached.promise;
   return cached.conn;
 }
 
@@ -20,8 +26,13 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(async (req, res, next) => {
-  try { await connectDB(); next(); }
-  catch (err) { next(err); }
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error('MongoDB connection error:', err.message);
+    res.status(500).json({ success: false, message: 'Database connection failed' });
+  }
 });
 
 app.use('/api/auth', require('../server/src/routes/auth.routes'));
@@ -47,7 +58,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.error(err);
+  console.error('Unhandled error:', err);
   if (err.name === 'MulterError') return res.status(400).json({ success: false, message: err.message });
   res.status(err.status || 500).json({ success: false, message: err.message || 'Internal Server Error' });
 });
