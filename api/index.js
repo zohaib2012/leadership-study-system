@@ -1,73 +1,86 @@
 const express = require('express');
 const cors = require('cors');
 
-let cached = global._mongooseCache;
-if (!cached) cached = global._mongooseCache = { conn: null, promise: null };
-
 const app = express();
-
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// Lazy MongoDB connection — only connects when first request hits
+let cached = global._mongooseCache || (global._mongooseCache = { conn: null, promise: null });
+
+async function getDB() {
+  const mongoose = require('mongoose');
+  // Check if existing connection is usable
+  if (cached.conn && mongoose.connection.readyState === 1) return cached.conn;
+  // Reset stale connection
+  cached.conn = null;
+  cached.promise = null;
+  // Connect fresh
+  if (!cached.promise) {
+    const uri = process.env.MONGODB_URI;
+    if (!uri) throw new Error('MONGODB_URI environment variable is not set');
+    cached.promise = mongoose.connect(uri, {
+      dbName: 'leadership-Study-S',
+      serverSelectionTimeoutMS: 10000,
+      connectTimeoutMS: 10000,
+      socketTimeoutMS: 30000,
+      maxPoolSize: 1,
+      minPoolSize: 0,
+    });
+  }
+  cached.conn = await cached.promise;
+  return cached.conn;
+}
+
 app.use('/api', async (req, res, next) => {
   try {
-    if (!cached.conn) {
-      if (!cached.promise) {
-        const mongoose = require('mongoose');
-        cached.promise = mongoose.connect(process.env.MONGODB_URI, {
-          dbName: 'leadership-Study-S',
-          serverSelectionTimeoutMS: 5000,
-        }).then((m) => m);
-      }
-      cached.conn = await cached.promise;
-    }
+    await getDB();
     next();
   } catch (err) {
-    console.error('MongoDB error:', err.message);
-    return res.status(500).json({ success: false, message: 'Database connection failed. Check MONGODB_URI env var.' });
+    console.error('MongoDB:', err.message);
+    res.status(500).json({ success: false, message: 'DB: ' + err.message });
   }
 });
 
-const apiRoutes = [
-  { path: '/api/auth', file: '../server/src/routes/auth.routes' },
-  { path: '/api/public', file: '../server/src/routes/public.routes' },
-  { path: '/api/students', file: '../server/src/routes/student.routes' },
-  { path: '/api/teachers', file: '../server/src/routes/teacher.routes' },
-  { path: '/api/classes', file: '../server/src/routes/class.routes' },
-  { path: '/api/subjects', file: '../server/src/routes/subject.routes' },
-  { path: '/api/attendance', file: '../server/src/routes/attendance.routes' },
-  { path: '/api/fees', file: '../server/src/routes/fee.routes' },
-  { path: '/api/timetable', file: '../server/src/routes/timetable.routes' },
-  { path: '/api/homework', file: '../server/src/routes/homework.routes' },
-  { path: '/api/communication', file: '../server/src/routes/communication.routes' },
-  { path: '/api/leaves', file: '../server/src/routes/leave.routes' },
-  { path: '/api/reports', file: '../server/src/routes/report.routes' },
-  { path: '/api/settings', file: '../server/src/routes/settings.routes' },
-  { path: '/api/dashboard', file: '../server/src/routes/dashboard.routes' },
-  { path: '/api/super-admin', file: '../server/src/routes/super-admin.routes' },
-  { path: '/api/upload', file: '../server/src/routes/upload.routes' },
+const routes = [
+  ['/api/auth', '../server/src/routes/auth.routes'],
+  ['/api/public', '../server/src/routes/public.routes'],
+  ['/api/students', '../server/src/routes/student.routes'],
+  ['/api/teachers', '../server/src/routes/teacher.routes'],
+  ['/api/classes', '../server/src/routes/class.routes'],
+  ['/api/subjects', '../server/src/routes/subject.routes'],
+  ['/api/attendance', '../server/src/routes/attendance.routes'],
+  ['/api/fees', '../server/src/routes/fee.routes'],
+  ['/api/timetable', '../server/src/routes/timetable.routes'],
+  ['/api/homework', '../server/src/routes/homework.routes'],
+  ['/api/communication', '../server/src/routes/communication.routes'],
+  ['/api/leaves', '../server/src/routes/leave.routes'],
+  ['/api/reports', '../server/src/routes/report.routes'],
+  ['/api/settings', '../server/src/routes/settings.routes'],
+  ['/api/dashboard', '../server/src/routes/dashboard.routes'],
+  ['/api/super-admin', '../server/src/routes/super-admin.routes'],
+  ['/api/upload', '../server/src/routes/upload.routes'],
 ];
 
-apiRoutes.forEach(({ path, file }) => {
-  try {
-    app.use(path, require(file));
-  } catch (err) {
-    console.error(`Failed to load route ${path}:`, err.message);
-    app.all(path + '/*', (req, res) => {
-      res.status(500).json({ success: false, message: `Route ${path} failed to load: ${err.message}` });
-    });
+routes.forEach(([path, file]) => {
+  try { app.use(path, require(file)); }
+  catch (err) {
+    console.error(`Route ${path}:`, err.message);
+    app.use(path, (req, res) => res.status(500).json({ success: false, message: err.message }));
   }
 });
 
 app.get('/api/health', (req, res) => {
-  res.json({ success: true, message: 'LSS API is running', timestamp: new Date().toISOString() });
+  const mongoose = require('mongoose');
+  res.json({
+    success: true,
+    dbState: ['disconnected', 'connected', 'connecting', 'disconnecting'][mongoose.connection.readyState] || 'unknown',
+  });
 });
 
 app.use((err, req, res, next) => {
-  console.error('Error:', err);
-  res.status(500).json({ success: false, message: err.message || 'Internal Server Error' });
+  console.error(err);
+  res.status(500).json({ success: false, message: err.message || 'Error' });
 });
 
 module.exports = app;
