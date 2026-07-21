@@ -12,24 +12,23 @@ let cached = global._mongooseCache || (global._mongooseCache = { conn: null, pro
 
 async function getDB() {
   const mongoose = require('mongoose');
-  // Check if existing connection is usable
+  // Use cached connection if healthy
   if (cached.conn && mongoose.connection.readyState === 1) return cached.conn;
-  // Reset stale connection
+  // Stale — force full cleanup
   cached.conn = null;
   cached.promise = null;
+  try { await mongoose.disconnect(); } catch (_) {}
   // Connect fresh
-  if (!cached.promise) {
-    const uri = process.env.MONGODB_URI;
-    if (!uri) throw new Error('MONGODB_URI environment variable is not set');
-    cached.promise = mongoose.connect(uri, {
-      dbName: 'leadership-Study-S',
-      serverSelectionTimeoutMS: 10000,
-      connectTimeoutMS: 10000,
-      socketTimeoutMS: 30000,
-      maxPoolSize: 1,
-      minPoolSize: 0,
-    });
-  }
+  const uri = process.env.MONGODB_URI;
+  if (!uri) throw new Error('MONGODB_URI environment variable is not set');
+  cached.promise = mongoose.connect(uri, {
+    serverSelectionTimeoutMS: 15000,
+    connectTimeoutMS: 15000,
+    socketTimeoutMS: 60000,
+    maxPoolSize: 5,
+    minPoolSize: 0,
+    bufferCommands: false,
+  });
   cached.conn = await cached.promise;
   return cached.conn;
 }
