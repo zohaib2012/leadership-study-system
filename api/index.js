@@ -50,6 +50,7 @@ app.use('/api', async (req, res, next) => {
 });
 
 const routes = [
+  ['/', (req, res) => res.json({ success: true, message: 'LSS API is running', endpoints: '/api/*' })],
   ['/api/auth', '../server/src/routes/auth.routes'],
   ['/api/public', '../server/src/routes/public.routes'],
   ['/api/students', '../server/src/routes/student.routes'],
