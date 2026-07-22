@@ -19,7 +19,7 @@ const adminMenu = [
   { label: 'Teachers', href: '/admin/teachers', icon: UserCheck },
   { label: 'Classes', href: '/admin/classes', icon: School },
   { label: 'Subjects', href: '/admin/subjects', icon: BookOpen },
-  { label: 'Timetable', href: '/admin/timetable', icon: Calendar },
+  // { label: 'Timetable', href: '/admin/timetable', icon: Calendar },
   { label: 'Attendance', href: '/admin/attendance', icon: ClipboardCheck },
   { label: 'Fees', href: '/admin/fees/structure', icon: IndianRupee },
   { label: 'Homework', href: '/admin/homework', icon: FileText },
