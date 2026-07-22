@@ -1,6 +1,6 @@
 {
   "buildCommand": "echo Backend API - no build step",
-  "outputDirectory": null,
+  "outputDirectory": ".",
   "installCommand": "cd api && npm install && cd ../server && npm install",
   "framework": null,
   "rewrites": [
