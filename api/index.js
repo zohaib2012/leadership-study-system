@@ -43,12 +43,16 @@ app.use(async (req, res, next) => {
   }
 });
 
-// Root route — MUST be before server app to avoid catch-all
+// Root routes — MUST be before server app to avoid catch-all
+const serverApp = require('../server/src/app');
 app.get('/', (req, res) => {
-  res.json({ success: true, message: 'LSS API is running', status: 'ok' });
+  res.json({ success: true, message: 'LSS API is running', status: 'ok', endpoints: '/api/*' });
+});
+app.get('/api', (req, res) => {
+  res.redirect('/');
 });
 
 // Mount the server's Express app (all routes, models, controllers)
-app.use(require('../server/src/app'));
+app.use(serverApp);
 
 module.exports = app;
