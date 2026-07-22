@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
 } from '@/components/ui/dialog'
-import { Plus, Search, ChevronLeft, ChevronRight, Trash2, Edit, Eye } from 'lucide-react'
+import { Plus, Search, ChevronLeft, ChevronRight, Trash2, Edit, Eye, School, GraduationCap } from 'lucide-react'
 
 interface StudentItem {
   _id: string
@@ -20,6 +20,8 @@ interface StudentItem {
   fatherPhone: string
   class: { _id: string; name: string }
   status: string
+  type: string
+  academySeries: string
 }
 
 interface ClassOption {
@@ -40,6 +42,7 @@ export default function StudentList() {
   const [search, setSearch] = useState('')
   const [classFilter, setClassFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [typeFilter, setTypeFilter] = useState('all')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
@@ -53,6 +56,7 @@ export default function StudentList() {
       const params: any = { page, limit: 10, search }
       if (classFilter !== 'all') params.class = classFilter
       if (statusFilter !== 'all') params.status = statusFilter
+      if (typeFilter !== 'all') params.type = typeFilter
       const { data } = await api.get('/students', { params })
       if (data.success) {
         setStudents(data.data.students || data.data || [])
@@ -63,7 +67,7 @@ export default function StudentList() {
     } finally {
       setIsLoading(false)
     }
-  }, [page, search, classFilter, statusFilter])
+  }, [page, search, classFilter, statusFilter, typeFilter])
 
   const fetchClasses = async () => {
     try {
@@ -142,6 +146,16 @@ export default function StudentList() {
             <SelectItem value="TRANSFERRED">Transferred</SelectItem>
           </SelectContent>
         </Select>
+        <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setPage(1) }}>
+          <SelectTrigger className="w-[140px]">
+            <SelectValue placeholder="All Types" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Types</SelectItem>
+            <SelectItem value="SCHOOL">School</SelectItem>
+            <SelectItem value="ACADEMY">Academy</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <DataTable
@@ -158,6 +172,17 @@ export default function StudentList() {
             render: (row: StudentItem) => row.class?.name || '-',
           },
           { key: 'fatherName', header: 'Father' },
+          {
+            key: 'type',
+            header: 'Type',
+            render: (row: StudentItem) => (
+              <Badge variant={row.type === 'SCHOOL' ? 'secondary' : 'outline'} className="gap-1 whitespace-nowrap">
+                {row.type === 'SCHOOL' ? <School className="h-3 w-3" /> : <GraduationCap className="h-3 w-3" />}
+                {row.type === 'SCHOOL' ? 'School' : 'Academy'}
+                {row.academySeries && <span className="text-xs ml-0.5">({row.academySeries.replace('_', '/')})</span>}
+              </Badge>
+            ),
+          },
           { key: 'fatherPhone', header: 'Phone' },
           {
             key: 'status',
