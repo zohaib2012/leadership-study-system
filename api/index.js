@@ -1,11 +1,14 @@
 try { require('dotenv').config({ path: require('path').join(__dirname, '..', 'server', '.env') }); } catch (_) {}
 
-// Load the server's Express app FIRST — this loads mongoose, all models, routes,
-// controllers, etc. with the SAME mongoose instance from server/node_modules.
-const app = require('../server/src/app');
+const path = require('path');
 
-// Now require('mongoose') returns the SAME cached instance that models use
-const mongoose = require('mongoose');
+// MUST use server's mongoose instance (server/models/*.js resolve mongoose to server/node_modules/mongoose).
+// If api/index.js uses a different mongoose instance, models are registered on one instance but
+// connection is on another → "buffering timed out" errors.
+const mongoose = require(path.resolve(__dirname, '..', 'server', 'node_modules', 'mongoose'));
+
+const express = require('express');
+const app = express();
 
 let cached = global._mongooseCache || (global._mongooseCache = { conn: null, promise: null });
 
@@ -28,7 +31,7 @@ async function getDB() {
   return cached.conn;
 }
 
-// MongoDB connection middleware — runs before all /api routes
+// MongoDB middleware — MUST be registered BEFORE routes
 app.use(async (req, res, next) => {
   if (!req.path.startsWith('/api')) return next();
   try {
@@ -36,13 +39,16 @@ app.use(async (req, res, next) => {
     next();
   } catch (err) {
     console.error('MongoDB:', err.message);
-    res.status(500).json({ success: false, message: 'DB: ' + err.message });
+    return res.status(500).json({ success: false, message: 'DB: ' + err.message });
   }
 });
 
-// Root route
+// Root route — MUST be before server app to avoid catch-all
 app.get('/', (req, res) => {
-  res.json({ success: true, message: 'LSS API is running', endpoints: '/api/*' });
+  res.json({ success: true, message: 'LSS API is running', status: 'ok' });
 });
+
+// Mount the server's Express app (all routes, models, controllers)
+app.use(require('../server/src/app'));
 
 module.exports = app;
