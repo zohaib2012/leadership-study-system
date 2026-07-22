@@ -49,8 +49,10 @@ app.use('/api', async (req, res, next) => {
   }
 });
 
+// Must be registered BEFORE the routes loop so / doesn't fall through to catch
+app.get('/', (req, res) => res.json({ success: true, message: 'LSS API is running', endpoints: '/api/*' }));
+
 const routes = [
-  ['/', (req, res) => res.json({ success: true, message: 'LSS API is running', endpoints: '/api/*' })],
   ['/api/auth', '../server/src/routes/auth.routes'],
   ['/api/public', '../server/src/routes/public.routes'],
   ['/api/students', '../server/src/routes/student.routes'],
