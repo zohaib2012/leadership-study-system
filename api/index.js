@@ -1,5 +1,13 @@
 try { require('dotenv').config({ path: require('path').join(__dirname, '..', 'server', '.env') }); } catch (_) {}
 
+const path = require('path');
+
+// MUST use the SAME mongoose instance that server models use.
+// server/src/models/*.js resolve 'mongoose' to server/node_modules/mongoose.
+// If api/index.js uses api/node_modules/mongoose, models are registered on a
+// different instance with no connection → "buffering timed out" errors.
+const mongoose = require(path.join(__dirname, '..', 'server', 'node_modules', 'mongoose'));
+
 const express = require('express');
 const cors = require('cors');
 
@@ -11,8 +19,6 @@ app.use(express.urlencoded({ extended: true }));
 let cached = global._mongooseCache || (global._mongooseCache = { conn: null, promise: null });
 
 async function getDB() {
-  const mongoose = require('mongoose');
-  // Use cached connection if healthy
   if (cached.conn && mongoose.connection.readyState === 1) return cached.conn;
   // Stale — force full cleanup
   cached.conn = null;
@@ -72,7 +78,6 @@ routes.forEach(([path, file]) => {
 });
 
 app.get('/api/health', (req, res) => {
-  const mongoose = require('mongoose');
   res.json({
     success: true,
     dbState: ['disconnected', 'connected', 'connecting', 'disconnecting'][mongoose.connection.readyState] || 'unknown',
