@@ -50,7 +50,7 @@ export default function FeeStructure() {
   const fetchFees = useCallback(async () => {
     setIsLoading(true)
     try {
-      const { data } = await api.get('/fees/structure')
+      const { data } = await api.get('/fees/structures')
       if (data.success) setFees(data.data || [])
     } catch (err) {
       console.error('Failed to fetch fees:', err)
@@ -70,9 +70,9 @@ export default function FeeStructure() {
     try {
       const payload = { ...form, amount: Number(form.amount) }
       if (editItem) {
-        await api.put(`/fees/structure/${editItem._id}`, payload)
+        await api.put(`/fees/structures/${editItem._id}`, payload)
       } else {
-        await api.post('/fees/structure', payload)
+        await api.post('/fees/structures', payload)
       }
       setShowDialog(false)
       resetForm()
@@ -98,7 +98,7 @@ export default function FeeStructure() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure?')) return
     try {
-      await api.delete(`/fees/structure/${id}`)
+      await api.delete(`/fees/structures/${id}`)
       fetchFees()
     } catch (err) {
       console.error('Failed to delete fee:', err)

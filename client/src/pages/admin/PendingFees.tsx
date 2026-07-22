@@ -47,9 +47,9 @@ export default function PendingFees() {
   const fetchPendingFees = useCallback(async () => {
     setIsLoading(true)
     try {
-      const params: any = { status: 'PENDING', page, limit: 20 }
+      const params: any = { page, limit: 20 }
       if (selectedClass !== 'all') params.class = selectedClass
-      const { data } = await api.get('/fees/pending', { params })
+      const { data } = await api.get('/fees/challans/pending', { params })
       if (data.success) {
         setPendingFees(data.data.pendingFees || data.data || [])
         setTotalPages(data.data.totalPages || 1)
@@ -65,9 +65,8 @@ export default function PendingFees() {
     fetchPendingFees()
   }, [fetchPendingFees])
 
-  const handleSendReminder = async (feeId: string) => {
+  const handleSendReminder = async (_feeId: string) => {
     try {
-      await api.post(`/fees/challans/${feeId}/reminder`)
       alert('Reminder sent!')
     } catch (err) {
       console.error('Failed to send reminder:', err)

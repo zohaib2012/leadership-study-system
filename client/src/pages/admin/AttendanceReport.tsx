@@ -54,8 +54,8 @@ export default function AttendanceReport() {
     setIsLoading(true)
     try {
       const params: any = { month: selectedMonth, page, limit: 20 }
-      if (selectedClass !== 'all') params.class = selectedClass
-      const { data } = await api.get('/attendance/reports', { params })
+      if (selectedClass !== 'all') params.classId = selectedClass
+      const { data } = await api.get('/attendance/monthly', { params })
       if (data.success) {
         setRecords(data.data.records || data.data || [])
         setTotalPages(data.data.totalPages || 1)
@@ -72,7 +72,7 @@ export default function AttendanceReport() {
   }, [fetchReport])
 
   const handleExport = () => {
-    window.open(`/api/attendance/reports/export?class=${selectedClass}&month=${selectedMonth}`, '_blank')
+    window.open(`/api/attendance/monthly/export?classId=${selectedClass}&month=${selectedMonth}`, '_blank')
   }
 
   return (

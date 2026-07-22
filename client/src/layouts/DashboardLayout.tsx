@@ -9,9 +9,28 @@ import {
   LayoutDashboard, Users, UserCheck, GraduationCap, BookOpen, Calendar, ClipboardCheck,
   IndianRupee, MessageSquare, Megaphone, FileText, Settings, LogOut, Menu, X,
   Clock, Bell, Shield, School, BarChart3, ChevronLeft, Home, ChevronDown, Search,
+  Building2, Activity,
 } from 'lucide-react'
 
 interface Props { role?: 'admin' | 'teacher' | 'student' | 'parent' | 'super-admin' }
+
+const superAdminMenu = [
+  { label: 'Dashboard', href: '/super-admin/dashboard', icon: LayoutDashboard },
+  { label: 'Tenants', href: '/super-admin/tenants', icon: Building2 },
+  { label: 'Students', href: '/super-admin/students', icon: Users },
+  { label: 'Teachers', href: '/super-admin/teachers', icon: UserCheck },
+  { label: 'Classes', href: '/super-admin/classes', icon: School },
+  { label: 'Subjects', href: '/super-admin/subjects', icon: BookOpen },
+  { label: 'Timetable', href: '/super-admin/timetable', icon: Calendar },
+  { label: 'Attendance', href: '/super-admin/attendance', icon: ClipboardCheck },
+  { label: 'Fees', href: '/super-admin/fees', icon: IndianRupee },
+  { label: 'Homework', href: '/super-admin/homework', icon: FileText },
+  { label: 'Communication', href: '/super-admin/communication/sms', icon: MessageSquare },
+  { label: 'Announcements', href: '/super-admin/communication/announcements', icon: Megaphone },
+  { label: 'Reports', href: '/super-admin/reports', icon: BarChart3 },
+  { label: 'Settings', href: '/super-admin/settings', icon: Settings },
+  { label: 'Logs', href: '/super-admin/logs', icon: Activity },
+]
 
 const adminMenu = [
   { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
@@ -65,7 +84,7 @@ export default function DashboardLayout({ role = 'admin' }: Props) {
   const location = useLocation()
   const navigate = useNavigate()
 
-  const menuMap: Record<string, typeof adminMenu> = { admin: adminMenu, teacher: teacherMenu, student: studentMenu, parent: parentMenu, 'super-admin': adminMenu }
+  const menuMap: Record<string, typeof adminMenu> = { admin: adminMenu, teacher: teacherMenu, student: studentMenu, parent: parentMenu, 'super-admin': superAdminMenu }
   const menu = menuMap[role] || adminMenu
 
   const pageTitle = menu.find(m => m.href === location.pathname)?.label || 'Dashboard'

@@ -67,9 +67,10 @@ export default function FeeCollection() {
     setSaving(true)
     setError('')
     try {
-      const { data } = await api.post(`/fees/challans/${selectedChallan._id}/pay`, {
+      const { data } = await api.post('/fees/payments', {
+        challanId: selectedChallan._id,
         amount: Number(amount),
-        paymentMethod,
+        method: paymentMethod,
       })
       if (data.success) {
         setReceipt({

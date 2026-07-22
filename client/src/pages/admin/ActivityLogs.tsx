@@ -26,7 +26,7 @@ export default function ActivityLogs() {
   const fetchLogs = useCallback(async () => {
     setIsLoading(true)
     try {
-      const { data } = await api.get('/logs', { params: { page, limit: 25, search } })
+      const { data } = await api.get('/settings/logs', { params: { page, limit: 25, search } })
       if (data.success) {
         setLogs(data.data.logs || data.data || [])
         setTotalPages(data.data.totalPages || 1)

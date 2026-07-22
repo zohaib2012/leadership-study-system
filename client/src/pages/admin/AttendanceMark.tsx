@@ -82,7 +82,7 @@ export default function AttendanceMark() {
         })
         setAttendance(attMap)
       }
-      const attData = await api.get('/attendance', { params: { class: selectedClass, section: selectedSection || undefined, date } })
+      const attData = await api.get('/attendance/daily', { params: { class: selectedClass, section: selectedSection || undefined, date } })
       if (attData.data.success && attData.data.data?.length) {
         const existingMap: Record<string, string> = {}
         attData.data.data.forEach((a: any) => {
@@ -109,10 +109,8 @@ export default function AttendanceMark() {
     setSaving(true)
     try {
       const records = students.map((s) => ({
-        student: s.studentId || s._id,
-        class: selectedClass,
-        section: selectedSection || undefined,
-        date,
+        studentId: s.studentId || s._id,
+        classId: selectedClass,
         status: attendance[s.studentId || s._id] || 'PRESENT',
       }))
       await api.post('/attendance/mark', { records })
