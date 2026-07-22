@@ -52,6 +52,9 @@ import TeacherClasses from '@/pages/teacher/TeacherClasses'
 import TeacherAttendance from '@/pages/teacher/TeacherAttendance'
 import TeacherTimetable from '@/pages/teacher/TeacherTimetable'
 import TeacherHomework from '@/pages/teacher/TeacherHomework'
+import TeacherStudents from '@/pages/teacher/TeacherStudents'
+import TeacherSalary from '@/pages/teacher/TeacherSalary'
+import TeacherProfile from '@/pages/teacher/TeacherProfile'
 
 import StudentDashboard from '@/pages/student/StudentDashboard'
 import StudentSubjects from '@/pages/student/StudentSubjects'
@@ -59,11 +62,26 @@ import StudentTimetable from '@/pages/student/StudentTimetable'
 import StudentAttendance from '@/pages/student/StudentAttendance'
 import StudentFees from '@/pages/student/StudentFees'
 import StudentHomework from '@/pages/student/StudentHomework'
+import StudentLeaves from '@/pages/student/StudentLeaves'
+import StudentProfile from '@/pages/student/StudentProfile'
 
 import ParentDashboard from '@/pages/parent/ParentDashboard'
 
 import SuperDashboard from '@/pages/super-admin/SuperDashboard'
 import TenantList from '@/pages/super-admin/TenantList'
+import SuperStudents from '@/pages/super-admin/SuperStudents'
+import SuperTeachers from '@/pages/super-admin/SuperTeachers'
+import SuperClasses from '@/pages/super-admin/SuperClasses'
+import SuperSubjects from '@/pages/super-admin/SuperSubjects'
+import SuperTimetable from '@/pages/super-admin/SuperTimetable'
+import SuperAttendance from '@/pages/super-admin/SuperAttendance'
+import SuperFees from '@/pages/super-admin/SuperFees'
+import SuperHomework from '@/pages/super-admin/SuperHomework'
+import SuperCommunication from '@/pages/super-admin/SuperCommunication'
+import SuperAnnouncements from '@/pages/super-admin/SuperAnnouncements'
+import SuperReports from '@/pages/super-admin/SuperReports'
+import SuperSettings from '@/pages/super-admin/SuperSettings'
+import SuperLogs from '@/pages/super-admin/SuperLogs'
 
 export default function App() {
   const { initialize, isInitialized } = useAuthStore()
@@ -110,6 +128,19 @@ export default function App() {
             <Route element={<DashboardLayout role="super-admin" />}>
               <Route path="/super-admin/dashboard" element={<SuperDashboard />} />
               <Route path="/super-admin/tenants" element={<TenantList />} />
+              <Route path="/super-admin/students" element={<SuperStudents />} />
+              <Route path="/super-admin/teachers" element={<SuperTeachers />} />
+              <Route path="/super-admin/classes" element={<SuperClasses />} />
+              <Route path="/super-admin/subjects" element={<SuperSubjects />} />
+              <Route path="/super-admin/timetable" element={<SuperTimetable />} />
+              <Route path="/super-admin/attendance" element={<SuperAttendance />} />
+              <Route path="/super-admin/fees" element={<SuperFees />} />
+              <Route path="/super-admin/homework" element={<SuperHomework />} />
+              <Route path="/super-admin/communication/sms" element={<SuperCommunication />} />
+              <Route path="/super-admin/communication/announcements" element={<SuperAnnouncements />} />
+              <Route path="/super-admin/reports" element={<SuperReports />} />
+              <Route path="/super-admin/settings" element={<SuperSettings />} />
+              <Route path="/super-admin/logs" element={<SuperLogs />} />
             </Route>
           </Route>
 
@@ -149,6 +180,9 @@ export default function App() {
               <Route path="/teacher/attendance" element={<TeacherAttendance />} />
               <Route path="/teacher/timetable" element={<TeacherTimetable />} />
               <Route path="/teacher/homework" element={<TeacherHomework />} />
+              <Route path="/teacher/students" element={<TeacherStudents />} />
+              <Route path="/teacher/salary" element={<TeacherSalary />} />
+              <Route path="/teacher/profile" element={<TeacherProfile />} />
             </Route>
           </Route>
 
@@ -160,6 +194,8 @@ export default function App() {
               <Route path="/student/attendance" element={<StudentAttendance />} />
               <Route path="/student/fees" element={<StudentFees />} />
               <Route path="/student/homework" element={<StudentHomework />} />
+              <Route path="/student/leaves" element={<StudentLeaves />} />
+              <Route path="/student/profile" element={<StudentProfile />} />
             </Route>
           </Route>
 

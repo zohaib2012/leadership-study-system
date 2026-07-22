@@ -107,6 +107,69 @@ const seed = async () => {
     });
     console.log('Demo student created: student@demo.com / student123');
 
+    const ClassModel = require('./models/Class');
+    const seedClasses = await ClassModel.insertMany([
+      { tenant: tenant._id, name: 'Grade 6', numericLevel: 6, type: 'SCHOOL', sortOrder: 1 },
+      { tenant: tenant._id, name: 'Grade 7', numericLevel: 7, type: 'SCHOOL', sortOrder: 2 },
+      { tenant: tenant._id, name: 'Grade 8', numericLevel: 8, type: 'SCHOOL', sortOrder: 3 },
+      { tenant: tenant._id, name: 'Grade 9', numericLevel: 9, type: 'SCHOOL', sortOrder: 4 },
+      { tenant: tenant._id, name: 'Grade 10', numericLevel: 10, type: 'SCHOOL', sortOrder: 5 },
+    ]);
+    console.log('Classes seeded:', seedClasses.length);
+
+    await StudentModel.findByIdAndUpdate(student._id, { class: seedClasses[0]._id });
+    console.log('Student assigned to class');
+
+    const SectionModel = ClassModel.Section;
+    const sections = await SectionModel.insertMany([
+      { tenant: tenant._id, class: seedClasses[0]._id, name: 'A' },
+      { tenant: tenant._id, class: seedClasses[0]._id, name: 'B' },
+      { tenant: tenant._id, class: seedClasses[1]._id, name: 'A' },
+      { tenant: tenant._id, class: seedClasses[2]._id, name: 'A' },
+      { tenant: tenant._id, class: seedClasses[3]._id, name: 'A' },
+      { tenant: tenant._id, class: seedClasses[4]._id, name: 'A' },
+    ]);
+    console.log('Sections seeded:', sections.length);
+
+    const SubjectModel = require('./models/Subject');
+    const seedSubjects = await SubjectModel.insertMany([
+      { tenant: tenant._id, name: 'Mathematics', code: 'MATH', type: 'SCHOOL' },
+      { tenant: tenant._id, name: 'English', code: 'ENG', type: 'SCHOOL' },
+      { tenant: tenant._id, name: 'Urdu', code: 'URD', type: 'SCHOOL' },
+      { tenant: tenant._id, name: 'Science', code: 'SCI', type: 'SCHOOL' },
+      { tenant: tenant._id, name: 'Islamiat', code: 'ISL', type: 'SCHOOL' },
+      { tenant: tenant._id, name: 'Pakistan Studies', code: 'PST', type: 'SCHOOL' },
+    ]);
+    console.log('Subjects seeded:', seedSubjects.length);
+
+    const teacherProfile = await TeacherModel.findOne({ tenant: tenant._id }).lean();
+
+    const TimetableModel = require('./models/Timetable');
+    const timetableSlots = await TimetableModel.insertMany([
+      { tenant: tenant._id, class: seedClasses[0]._id, dayOfWeek: 'MONDAY', startTime: '08:00', endTime: '08:45', subject: seedSubjects[0]._id, teacher: teacherProfile._id, room: 'Room 101' },
+      { tenant: tenant._id, class: seedClasses[0]._id, dayOfWeek: 'MONDAY', startTime: '08:45', endTime: '09:30', subject: seedSubjects[1]._id, teacher: teacherProfile._id, room: 'Room 101' },
+      { tenant: tenant._id, class: seedClasses[0]._id, dayOfWeek: 'TUESDAY', startTime: '08:00', endTime: '08:45', subject: seedSubjects[2]._id, teacher: teacherProfile._id, room: 'Room 101' },
+    ]);
+    console.log('Timetable slots seeded:', timetableSlots.length);
+
+    const FeeStructureModel = require('./models/FeeStructure');
+    const feeStructures = await FeeStructureModel.insertMany([
+      { tenant: tenant._id, class: seedClasses[0]._id, name: 'Grade 6 Tuition Fee', amount: 5000, frequency: 'MONTHLY' },
+      { tenant: tenant._id, class: seedClasses[1]._id, name: 'Grade 7 Tuition Fee', amount: 5500, frequency: 'MONTHLY' },
+      { tenant: tenant._id, class: seedClasses[2]._id, name: 'Grade 8 Tuition Fee', amount: 6000, frequency: 'MONTHLY' },
+    ]);
+    console.log('Fee structures seeded:', feeStructures.length);
+
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 7);
+    const HomeworkModel = require('./models/Homework');
+    const homeworks = await HomeworkModel.insertMany([
+      { tenant: tenant._id, teacher: teacher._id, class: seedClasses[0]._id, subject: seedSubjects[0]._id, title: 'Algebra Exercise 3.1', description: 'Solve all problems from Chapter 3, Exercise 3.1', dueDate: futureDate },
+      { tenant: tenant._id, teacher: teacher._id, class: seedClasses[0]._id, subject: seedSubjects[1]._id, title: 'Essay: My Favorite Book', description: 'Write a 500-word essay on your favorite book', dueDate: futureDate },
+      { tenant: tenant._id, teacher: teacher._id, class: seedClasses[1]._id, subject: seedSubjects[0]._id, title: 'Fractions Worksheet', description: 'Complete the fractions worksheet', dueDate: futureDate },
+    ]);
+    console.log('Homeworks seeded:', homeworks.length);
+
     console.log('\n--- Seed Complete ---');
     console.log('Login URLs:');
     console.log('  Main site:   http://localhost:3000');

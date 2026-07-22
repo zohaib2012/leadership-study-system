@@ -30,7 +30,7 @@ interface TeacherOption {
 
 interface TimetableSlot {
   _id: string
-  day: string
+  dayOfWeek: string
   startTime: string
   endTime: string
   subject: { _id: string; name: string }
@@ -69,7 +69,7 @@ export default function TimetableBuilder() {
       ])
       if (cRes.data.success) setClasses(cRes.data.data || [])
       if (sRes.data.success) setSubjects(sRes.data.data || [])
-      if (tRes.data.success) setTeachers(tRes.data.data || [])
+      if (tRes.data.success) setTeachers(tRes.data.data?.teachers || [])
     } catch (err) {
       console.error('Failed to fetch options:', err)
     }
@@ -79,7 +79,7 @@ export default function TimetableBuilder() {
     if (!selectedClass) return
     setIsLoading(true)
     try {
-      const { data } = await api.get(`/timetable/${selectedClass}`)
+      const { data } = await api.get('/timetable', { params: { classId: selectedClass } })
       if (data.success) setTimetable(data.data || [])
     } catch (err) {
       console.error('Failed to fetch timetable:', err)
@@ -94,15 +94,16 @@ export default function TimetableBuilder() {
   }, [fetchTimetable])
 
   const checkConflict = () => {
+    const ucDay = slotForm.day.toUpperCase()
     const conflictSlot = timetable.find(
-      (s) => s.day === slotForm.day && s.startTime === slotForm.startTime
+      (s) => s.dayOfWeek === ucDay && s.startTime === slotForm.startTime
     )
     if (conflictSlot) {
       setConflict(`Conflict: ${conflictSlot.teacher?.name || 'Someone'} already teaches ${conflictSlot.subject?.name} at this time`)
       return true
     }
     const teacherConflict = timetable.find(
-      (s) => s.day === slotForm.day && s.startTime === slotForm.startTime && s.teacher?._id === slotForm.teacher
+      (s) => s.dayOfWeek === ucDay && s.startTime === slotForm.startTime && s.teacher?._id === slotForm.teacher
     )
     if (teacherConflict) {
       setConflict('This teacher is already assigned at this time')
@@ -115,7 +116,15 @@ export default function TimetableBuilder() {
   const handleAddSlot = async () => {
     if (!slotForm.subject || !slotForm.teacher || checkConflict()) return
     try {
-      await api.post(`/timetable/${selectedClass}`, slotForm)
+      await api.post('/timetable', {
+        class: selectedClass,
+        dayOfWeek: slotForm.day.toUpperCase(),
+        startTime: slotForm.startTime,
+        endTime: slotForm.endTime,
+        subject: slotForm.subject,
+        teacher: slotForm.teacher,
+        room: slotForm.room,
+      })
       setShowAddDialog(false)
       setSlotForm({ day: 'Monday', startTime: '08:00', endTime: '08:45', subject: '', teacher: '', room: '' })
       setConflict('')
@@ -128,7 +137,7 @@ export default function TimetableBuilder() {
   const handleDeleteSlot = async (slotId: string) => {
     if (!confirm('Remove this slot?')) return
     try {
-      await api.delete(`/timetable/${selectedClass}/${slotId}`)
+      await api.delete(`/timetable/${slotId}`)
       fetchTimetable()
     } catch (err) {
       console.error('Failed to delete slot:', err)
@@ -136,7 +145,7 @@ export default function TimetableBuilder() {
   }
 
   const getSlot = (day: string, time: string) => {
-    return timetable.find((s) => s.day === day && s.startTime === time)
+    return timetable.find((s) => s.dayOfWeek === day && s.startTime === time)
   }
 
   if (isLoading) {
@@ -188,13 +197,13 @@ export default function TimetableBuilder() {
                 <tr key={time} className="border-t">
                   <td className="px-3 py-2 border-r text-muted-foreground">{time}</td>
                   {DAYS.slice(0, 6).map((day) => {
-                    const slot = getSlot(day, time)
+                    const slot = getSlot(day.toUpperCase(), time)
                     return (
                       <td key={day} className="px-3 py-2 border-r min-w-[140px]">
                         {slot ? (
                           <div className="bg-primary-50 rounded p-1.5 text-xs relative group">
                             <p className="font-medium text-primary-800">{slot.subject?.name}</p>
-                            <p className="text-muted-foreground">{slot.teacher?.name}</p>
+                            <p className="text-muted-foreground">{slot.teacher?.user?.name || slot.teacher?.name}</p>
                             {slot.room && <p className="text-muted-foreground">Room: {slot.room}</p>}
                             <button
                               className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 text-red-500"

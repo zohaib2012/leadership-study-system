@@ -4,6 +4,7 @@ import { useAuthStore } from '@/store/auth-store'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { getInitials } from '@/lib/utils'
+import ErrorBoundary from '@/components/ErrorBoundary'
 import {
   LayoutDashboard, Users, UserCheck, GraduationCap, BookOpen, Calendar, ClipboardCheck,
   IndianRupee, MessageSquare, Megaphone, FileText, Settings, LogOut, Menu, X,
@@ -157,7 +158,9 @@ export default function DashboardLayout({ role = 'admin' }: Props) {
         </header>
 
         <main className="p-4 lg:p-6">
-          <Outlet />
+          <ErrorBoundary role={role}>
+            <Outlet />
+          </ErrorBoundary>
         </main>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react'
+import { useState, FormEvent, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthStore } from '@/store/auth-store'
 import { Button } from '@/components/ui/button'
@@ -20,8 +20,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
-  const { login, isLoading } = useAuthStore()
+  const { user, token, login, isLoading } = useAuthStore()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (token && user) {
+      const route = user.role ? roleRoutes[user.role] || '/admin/dashboard' : '/admin/dashboard'
+      navigate(route, { replace: true })
+    }
+  }, [token, user, navigate])
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -34,7 +41,7 @@ export default function LoginPage() {
       await login(email, password)
       const user = useAuthStore.getState().user
       const route = user?.role ? roleRoutes[user.role] || '/admin/dashboard' : '/admin/dashboard'
-      navigate(route)
+      navigate(route, { replace: true })
     } catch (err: any) {
       setError(err?.response?.data?.message || err?.message || 'Login failed. Please try again.')
     }
