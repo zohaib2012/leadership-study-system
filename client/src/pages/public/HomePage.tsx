@@ -2,7 +2,6 @@ import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import {
-  ChevronRight,
   Shield,
   Users,
   BookOpen,
@@ -10,8 +9,6 @@ import {
   Laptop,
   Star,
   Building2,
-  Quote,
-  ChevronLeft,
   GraduationCap,
   UserCheck,
   MessageSquare,
@@ -22,11 +19,8 @@ import {
   Award,
   ArrowRight,
   CheckCircle2,
-  Briefcase,
-  Layers,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
 const whyChooseUs = [
@@ -118,13 +112,6 @@ function FadeInSection({ children, className = '' }: { children: React.ReactNode
 }
 
 export default function HomePage() {
-  const [activeTestimonial, setActiveTestimonial] = useState(0)
-
-  useEffect(() => {
-    const timer = setInterval(() => setActiveTestimonial((prev) => (prev + 1) % testimonials.length), 5000)
-    return () => clearInterval(timer)
-  }, [])
-
   return (
     <>
       <Helmet>
@@ -158,15 +145,15 @@ export default function HomePage() {
               Join Pakistan's most trusted institute for Business Studies, Commerce, and Economics.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 animate-fade-in animation-delay-600">
-              <Link to="/register">
+              <Link to="/register/student/school">
                 <Button size="lg" className="bg-white text-primary-800 hover:bg-blue-50 font-semibold text-base px-8 py-6 h-auto rounded-xl shadow-2xl shadow-white/20 group">
-                  LSS Playgroup till Pre-O Levels
+                 LSS of School (playgroup to pre-O Level)
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
-              <Link to="/register">
+              <Link to="/register/student/academy">
                 <Button size="lg" className="bg-white/10 backdrop-blur-md border-2 border-white/40 text-white hover:bg-white/20 hover:border-white/60 font-semibold text-base px-8 py-6 h-auto rounded-xl group">
-                  LSS O and A Level Academy
+                  LSS of Academy
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
@@ -397,75 +384,41 @@ export default function HomePage() {
       </section>
 
       {/* ===== TESTIMONIALS ===== */}
-      <section className="relative py-24 bg-gray-50 overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.03]">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-500 rounded-full blur-3xl" />
-        </div>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeInSection>
             <div className="text-center mb-14">
               <Badge className="mb-4 px-4 py-1.5 bg-primary-100 text-primary-700 border-primary-200" variant="secondary">
                 <MessageSquare className="h-4 w-4 mr-1.5 inline" /> Testimonials
               </Badge>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">What People Say About Us</h2>
+              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">What People Say About Us</h2>
               <p className="text-gray-500 max-w-2xl mx-auto">Real stories from our students and parents</p>
             </div>
           </FadeInSection>
 
           <FadeInSection>
-            <div className="relative px-4 sm:px-12">
-              <div className="relative p-8 sm:p-12 rounded-2xl bg-white border border-gray-100 shadow-xl">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary-600 via-primary-400 to-primary-600 rounded-t-2xl" />
-                <div className="flex flex-col md:flex-row gap-8 items-start">
-                  <div className="flex-shrink-0 text-center md:text-left">
-                    <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl flex items-center justify-center mx-auto md:mx-0 shadow-inner">
-                      <Users className="h-10 w-10 text-primary-600" />
-                    </div>
-                    <div className="mt-3 flex gap-0.5 justify-center md:justify-start">
-                      {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+              {testimonials.map((t, i) => (
+                <div key={i} className="bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow p-6 flex flex-col">
+                  <div className="flex items-center gap-0.5 mb-4">
+                    {[...Array(t.rating)].map((_, j) => (
+                      <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
+                    ))}
                   </div>
                   <div className="flex-1">
-                    <Quote className="h-8 w-8 text-primary-200 mb-4" />
-                    <p className="text-base sm:text-lg text-gray-600 italic leading-relaxed mb-6">
-                      "{testimonials[activeTestimonial].quote}"
-                    </p>
+                    <p className="text-sm text-gray-600 leading-relaxed mb-5">"{t.quote}"</p>
+                  </div>
+                  <div className="flex items-center gap-3 pt-4 border-t border-gray-50">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-bold text-primary-700">{t.name.charAt(0)}</span>
+                    </div>
                     <div>
-                      <h4 className="font-bold text-gray-900 text-lg">{testimonials[activeTestimonial].name}</h4>
-                      <p className="text-sm text-primary-600 font-medium">{testimonials[activeTestimonial].role}</p>
+                      <p className="text-sm font-semibold text-gray-900">{t.name}</p>
+                      <p className="text-xs text-gray-500">{t.role}</p>
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <button
-                onClick={() => setActiveTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
-                className="absolute left-0 top-1/2 -translate-y-1/2 w-11 h-11 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-all hover:scale-110 border border-gray-100"
-              >
-                <ChevronLeft className="h-5 w-5 text-gray-600" />
-              </button>
-              <button
-                onClick={() => setActiveTestimonial((prev) => (prev + 1) % testimonials.length)}
-                className="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-all hover:scale-110 border border-gray-100"
-              >
-                <ChevronRight className="h-5 w-5 text-gray-600" />
-              </button>
-
-              <div className="flex justify-center gap-3 mt-8">
-                {testimonials.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveTestimonial(i)}
-                    className={`transition-all duration-300 ${
-                      i === activeTestimonial
-                        ? 'w-8 h-2.5 bg-primary-700 rounded-full'
-                        : 'w-2.5 h-2.5 bg-gray-300 rounded-full hover:bg-gray-400'
-                    }`}
-                  />
-                ))}
-              </div>
+              ))}
             </div>
           </FadeInSection>
         </div>
@@ -518,7 +471,7 @@ export default function HomePage() {
               Enroll today and take the first step towards a brighter future.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/register">
+              <Link to="/register/student">
                 <Button size="lg" className="bg-white text-primary-800 hover:bg-blue-50 font-semibold px-8 py-6 h-auto text-base rounded-xl shadow-2xl shadow-white/20 group">
                   Register Now
                   <CheckCircle2 className="ml-2 h-5 w-5 group-hover:scale-110 transition-transform" />

@@ -11,12 +11,12 @@ import { ArrowLeft, Save, X } from 'lucide-react'
 interface ClassOption {
   _id: string
   name: string
+  type: string
 }
 
 interface SubjectOption {
   _id: string
   name: string
-  type: string
 }
 
 export default function TeacherForm() {
@@ -34,11 +34,10 @@ export default function TeacherForm() {
     qualification: '',
     experience: '',
     salary: '',
-    contractType: 'FULL_TIME',
+    contractType: 'PERMANENT',
     password: '',
-    assignedClasses: [] as string[],
-    subjectAssignments: [] as { class: string; subjects: string[] }[],
   })
+  const [subjectSelections, setSubjectSelections] = useState<Record<string, string[]>>({})
 
   useEffect(() => {
     fetchOptions()
@@ -70,24 +69,37 @@ export default function TeacherForm() {
           qualification: t.qualification || '',
           experience: t.experience?.toString() || '',
           salary: t.salary?.toString() || '',
-          contractType: t.contractType || 'FULL_TIME',
+          contractType: t.contractType || 'PERMANENT',
           password: '',
-          assignedClasses: t.assignedClasses?.map((c: any) => c._id || c) || [],
-          subjectAssignments: t.subjectAssignments || [],
         })
+        const selections: Record<string, string[]> = {}
+        for (const ac of t.assignedClasses || []) {
+          const classId = ac.class?._id || ac.class
+          if (classId) {
+            if (!selections[classId]) selections[classId] = []
+            const subjectId = ac.subject?._id || ac.subject
+            if (subjectId && !selections[classId].includes(subjectId)) {
+              selections[classId].push(subjectId)
+            }
+          }
+        }
+        setSubjectSelections(selections)
       }
     } catch (err) {
       console.error('Failed to fetch teacher:', err)
     }
   }
 
-  const toggleClass = (classId: string) => {
-    setForm((f) => ({
-      ...f,
-      assignedClasses: f.assignedClasses.includes(classId)
-        ? f.assignedClasses.filter((id) => id !== classId)
-        : [...f.assignedClasses, classId],
-    }))
+  const toggleSubject = (classId: string, subjectId: string) => {
+    setSubjectSelections((prev) => {
+      const current = prev[classId] || []
+      return {
+        ...prev,
+        [classId]: current.includes(subjectId)
+          ? current.filter((id) => id !== subjectId)
+          : [...current, subjectId],
+      }
+    })
   }
 
   const handleSubmit = async (e: FormEvent) => {
@@ -99,11 +111,22 @@ export default function TeacherForm() {
     }
     setIsLoading(true)
     try {
+      const assignedClasses: { class: string; subject: string }[] = []
+      for (const [classId, subjectIds] of Object.entries(subjectSelections)) {
+        for (const subjectId of subjectIds) {
+          assignedClasses.push({ class: classId, subject: subjectId })
+        }
+      }
       const payload = {
-        ...form,
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+        qualification: form.qualification,
         experience: Number(form.experience) || 0,
         salary: Number(form.salary) || 0,
+        contractType: form.contractType,
         password: form.password || undefined,
+        assignedClasses,
       }
       if (isEditing) {
         await api.put(`/teachers/${id}`, payload)
@@ -165,9 +188,9 @@ export default function TeacherForm() {
                 <Select value={form.contractType} onValueChange={(v) => setForm((f) => ({ ...f, contractType: v }))}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="FULL_TIME">Full Time</SelectItem>
-                    <SelectItem value="PART_TIME">Part Time</SelectItem>
+                    <SelectItem value="PERMANENT">Permanent</SelectItem>
                     <SelectItem value="CONTRACT">Contract</SelectItem>
+                    <SelectItem value="VISITING">Visiting</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -183,33 +206,67 @@ export default function TeacherForm() {
           <Card>
             <CardHeader><CardTitle className="text-lg">Class & Subject Assignment</CardTitle></CardHeader>
             <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">
+                Check a class to assign it, then click subject badges to select them.
+              </p>
               <div className="space-y-3">
-                {classes.map((cls) => (
-                  <div key={cls._id} className="border rounded-lg p-3">
-                    <label className="flex items-center gap-2 mb-2">
-                      <input
-                        type="checkbox"
-                        checked={form.assignedClasses.includes(cls._id)}
-                        onChange={() => toggleClass(cls._id)}
-                        className="rounded"
-                      />
-                      <span className="text-sm font-medium">{cls.name}</span>
-                    </label>
-                    {form.assignedClasses.includes(cls._id) && (
-                      <div className="pl-6 flex flex-wrap gap-2">
-                        {subjects.map((sub) => (
-                          <Badge
-                            key={sub._id}
-                            variant="outline"
-                            className="cursor-pointer hover:bg-primary-50"
-                          >
-                            {sub.name}
+                {classes.map((cls) => {
+                  const selected = subjectSelections[cls._id] || []
+                  const isAssigned = selected.length > 0
+                  return (
+                    <div key={cls._id} className="border rounded-lg p-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={isAssigned}
+                            onChange={() => {
+                              if (isAssigned) {
+                                const next = { ...subjectSelections }
+                                delete next[cls._id]
+                                setSubjectSelections(next)
+                              } else {
+                                setSubjectSelections((prev) => ({ ...prev, [cls._id]: [] }))
+                              }
+                            }}
+                            className="rounded"
+                          />
+                          <span className="text-sm font-medium">{cls.name}</span>
+                          <Badge variant="outline" className="text-xs ml-1">
+                            {cls.type}
                           </Badge>
-                        ))}
+                        </label>
+                        {isAssigned && (
+                          <span className="text-xs text-muted-foreground">
+                            {selected.length} subject{selected.length !== 1 ? 's' : ''}
+                          </span>
+                        )}
                       </div>
-                    )}
-                  </div>
-                ))}
+                      {isAssigned && (
+                        <div className="pl-6 flex flex-wrap gap-1.5">
+                          {subjects.map((sub) => {
+                            const isSelected = selected.includes(sub._id)
+                            return (
+                              <Badge
+                                key={sub._id}
+                                variant={isSelected ? 'default' : 'outline'}
+                                className={`cursor-pointer transition-all text-xs ${
+                                  isSelected
+                                    ? 'bg-primary-600 hover:bg-primary-700'
+                                    : 'hover:bg-primary-50 hover:text-primary-700 hover:border-primary-300'
+                                }`}
+                                onClick={() => toggleSubject(cls._id, sub._id)}
+                              >
+                                {isSelected && <X className="h-3 w-3 mr-1" />}
+                                {sub.name}
+                              </Badge>
+                            )
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             </CardContent>
           </Card>

@@ -6,19 +6,23 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
-import { ArrowLeft, Save, School, GraduationCap } from 'lucide-react'
+import { ArrowLeft, Save, School, GraduationCap, Plus, X } from 'lucide-react'
 
 interface ClassOption {
   _id: string
   name: string
   type: string
-  sections: { _id: string; name: string }[]
 }
 
 interface SubjectOption {
   _id: string
   name: string
   type: string
+}
+
+interface SectionOption {
+  _id: string
+  name: string
 }
 
 interface FormData {
@@ -52,43 +56,32 @@ export default function StudentForm() {
   const navigate = useNavigate()
 
   const [classes, setClasses] = useState<ClassOption[]>([])
-  const [sections, setSections] = useState<{ _id: string; name: string }[]>([])
+  const [allSections, setAllSections] = useState<SectionOption[]>([])
   const [subjects, setSubjects] = useState<SubjectOption[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isFetching, setIsFetching] = useState(true)
   const [error, setError] = useState('')
+
   const [form, setForm] = useState<FormData>({
-    firstName: '',
-    lastName: '',
-    dob: '',
-    gender: 'MALE',
-    fatherName: '',
-    fatherCnic: '',
-    fatherPhone: '',
-    fatherEmail: '',
-    fatherOccupation: '',
-    motherName: '',
-    motherPhone: '',
-    address: '',
-    city: '',
-    bloodGroup: '',
-    previousSchool: '',
-    medicalNotes: '',
-    class: '',
-    section: '',
-    type: 'SCHOOL',
-    registrationNo: '',
-    academySeries: '',
-    subjects: [],
+    firstName: '', lastName: '', dob: '', gender: 'MALE',
+    fatherName: '', fatherCnic: '', fatherPhone: '', fatherEmail: '',
+    fatherOccupation: '', motherName: '', motherPhone: '', address: '',
+    city: '', bloodGroup: '', previousSchool: '', medicalNotes: '',
+    class: '', section: '', type: 'SCHOOL', registrationNo: '',
+    academySeries: '', subjects: [],
   })
 
   const isSchool = form.type === 'SCHOOL'
   const isAcademy = form.type === 'ACADEMY'
 
   useEffect(() => {
-    fetchClasses()
-    fetchSubjects()
-    if (isEditing) fetchStudent()
-  }, [id])
+    Promise.all([fetchClasses(), fetchSubjects()]).then(() => setIsFetching(false))
+  }, [])
+
+  useEffect(() => {
+    if (id && !isFetching) fetchStudent()
+    else if (!id) setIsFetching(false)
+  }, [id, isFetching])
 
   const fetchClasses = async () => {
     try {
@@ -138,8 +131,7 @@ export default function StudentForm() {
           subjects: s.subjects?.map((sub: any) => sub._id || sub) || [],
         })
         if (s.class?._id || s.class) {
-          const cls = classes.find((c) => c._id === (s.class?._id || s.class))
-          if (cls) setSections(cls.sections || [])
+          fetchSections(s.class?._id || s.class)
         }
       }
     } catch (err) {
@@ -147,17 +139,27 @@ export default function StudentForm() {
     }
   }
 
-  const handleClassChange = (classId: string) => {
-    setForm((f) => ({ ...f, class: classId, section: '' }))
-    const cls = classes.find((c) => c._id === classId)
-    setSections(cls?.sections || [])
+  const fetchSections = async (classId: string) => {
+    try {
+      const { data } = await api.get(`/classes/${classId}/sections`)
+      if (data.success) setAllSections(data.data || [])
+      else setAllSections([])
+    } catch {
+      setAllSections([])
+    }
+  }
+
+  const handleClassChange = async (classId: string) => {
+    setForm(f => ({ ...f, class: classId, section: '' }))
+    setAllSections([])
+    if (classId) fetchSections(classId)
   }
 
   const toggleSubject = (subjectId: string) => {
-    setForm((f) => ({
+    setForm(f => ({
       ...f,
       subjects: f.subjects.includes(subjectId)
-        ? f.subjects.filter((sid) => sid !== subjectId)
+        ? f.subjects.filter(sid => sid !== subjectId)
         : [...f.subjects, subjectId],
     }))
   }
@@ -176,11 +178,8 @@ export default function StudentForm() {
     setIsLoading(true)
     try {
       const payload = { ...form }
-      if (!isSchool) payload.section = ''
-      if (!isAcademy) {
-        payload.academySeries = ''
-        payload.subjects = []
-      }
+      if (!isSchool) { payload.section = '' }
+      if (!isAcademy) { payload.academySeries = ''; payload.subjects = [] }
       if (isEditing) {
         await api.put(`/students/${id}`, payload)
       } else {
@@ -195,21 +194,29 @@ export default function StudentForm() {
   }
 
   const updateField = (field: keyof FormData, value: string | string[]) => {
-    setForm((f) => ({ ...f, [field]: value }))
+    setForm(f => ({ ...f, [field]: value }))
   }
 
   const handleTypeChange = (v: string) => {
-    setForm((f) => ({
-      ...f,
-      type: v,
-      class: '',
-      section: '',
-      academySeries: '',
-      subjects: [],
+    setForm(f => ({
+      ...f, type: v, class: '', section: '', academySeries: '', subjects: [],
     }))
+    setAllSections([])
   }
 
-  const filteredClasses = classes.filter((c) => c.type === form.type || (isAcademy && c.type === 'ACADEMY') || (isSchool && c.type === 'SCHOOL'))
+  const filteredClasses = classes.filter(c => {
+    if (isSchool) return c.type === 'SCHOOL'
+    if (isAcademy) return c.type === 'ACADEMY'
+    return true
+  })
+
+  if (isFetching) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-4 border-primary-700 border-t-transparent rounded-full animate-spin" />
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-4 max-w-3xl">
@@ -236,37 +243,29 @@ export default function StudentForm() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => handleTypeChange('SCHOOL')}
-                  className={`p-4 rounded-xl border-2 text-left transition-all ${isSchool ? 'border-primary-600 bg-primary-50/50 shadow-sm' : 'border-gray-200 hover:border-gray-300'}`}
-                >
+                <button type="button" onClick={() => handleTypeChange('SCHOOL')}
+                  className={`p-4 rounded-xl border-2 text-left transition-all ${isSchool ? 'border-primary-600 bg-primary-50/50 shadow-sm' : 'border-gray-200 hover:border-gray-300'}`}>
                   <div className="flex items-center gap-3 mb-2">
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${isSchool ? 'bg-primary-100' : 'bg-gray-100'}`}>
                       <School className={`h-5 w-5 ${isSchool ? 'text-primary-700' : 'text-gray-400'}`} />
                     </div>
                     <div>
                       <p className={`font-semibold ${isSchool ? 'text-primary-800' : ''}`}>School</p>
-                      <p className="text-xs text-muted-foreground">Class 1-10</p>
+                      <p className="text-xs text-muted-foreground">Playgroup to Pre-O Level</p>
                     </div>
                   </div>
-                  <p className="text-xs text-muted-foreground">Regular school program with class sections and full curriculum</p>
                 </button>
-                <button
-                  type="button"
-                  onClick={() => handleTypeChange('ACADEMY')}
-                  className={`p-4 rounded-xl border-2 text-left transition-all ${isAcademy ? 'border-primary-600 bg-primary-50/50 shadow-sm' : 'border-gray-200 hover:border-gray-300'}`}
-                >
+                <button type="button" onClick={() => handleTypeChange('ACADEMY')}
+                  className={`p-4 rounded-xl border-2 text-left transition-all ${isAcademy ? 'border-primary-600 bg-primary-50/50 shadow-sm' : 'border-gray-200 hover:border-gray-300'}`}>
                   <div className="flex items-center gap-3 mb-2">
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${isAcademy ? 'bg-primary-100' : 'bg-gray-100'}`}>
                       <GraduationCap className={`h-5 w-5 ${isAcademy ? 'text-primary-700' : 'text-gray-400'}`} />
                     </div>
                     <div>
                       <p className={`font-semibold ${isAcademy ? 'text-primary-800' : ''}`}>Academy</p>
-                      <p className="text-xs text-muted-foreground">Coaching / Tuition</p>
+                      <p className="text-xs text-muted-foreground">IGCSE / A Level</p>
                     </div>
                   </div>
-                  <p className="text-xs text-muted-foreground">Subject-based coaching with flexible exam series selection</p>
                 </button>
               </div>
             </CardContent>
@@ -277,19 +276,19 @@ export default function StudentForm() {
             <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">First Name *</label>
-                <Input value={form.firstName} onChange={(e) => updateField('firstName', e.target.value)} placeholder="First name" />
+                <Input value={form.firstName} onChange={e => updateField('firstName', e.target.value)} placeholder="First name" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Last Name *</label>
-                <Input value={form.lastName} onChange={(e) => updateField('lastName', e.target.value)} placeholder="Last name" />
+                <Input value={form.lastName} onChange={e => updateField('lastName', e.target.value)} placeholder="Last name" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Date of Birth *</label>
-                <Input type="date" value={form.dob} onChange={(e) => updateField('dob', e.target.value)} />
+                <Input type="date" value={form.dob} onChange={e => updateField('dob', e.target.value)} />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Gender</label>
-                <Select value={form.gender} onValueChange={(v) => updateField('gender', v)}>
+                <Select value={form.gender} onValueChange={v => updateField('gender', v)}>
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="MALE">Male</SelectItem>
@@ -300,10 +299,10 @@ export default function StudentForm() {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Blood Group</label>
-                <Select value={form.bloodGroup} onValueChange={(v) => updateField('bloodGroup', v)}>
+                <Select value={form.bloodGroup} onValueChange={v => updateField('bloodGroup', v)}>
                   <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
                   <SelectContent>
-                    {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map((bg) => (
+                    {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(bg => (
                       <SelectItem key={bg} value={bg}>{bg}</SelectItem>
                     ))}
                   </SelectContent>
@@ -311,7 +310,7 @@ export default function StudentForm() {
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Registration No</label>
-                <Input value={form.registrationNo} disabled={!isEditing} placeholder={isEditing ? '' : 'Auto-generated'} onChange={(e) => updateField('registrationNo', e.target.value)} />
+                <Input value={form.registrationNo} disabled={!isEditing} placeholder={isEditing ? '' : 'Auto-generated'} onChange={e => updateField('registrationNo', e.target.value)} />
               </div>
             </CardContent>
           </Card>
@@ -321,39 +320,39 @@ export default function StudentForm() {
             <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium mb-1">Father Name *</label>
-                <Input value={form.fatherName} onChange={(e) => updateField('fatherName', e.target.value)} placeholder="Father name" />
+                <Input value={form.fatherName} onChange={e => updateField('fatherName', e.target.value)} placeholder="Father name" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Father CNIC</label>
-                <Input value={form.fatherCnic} onChange={(e) => updateField('fatherCnic', e.target.value)} placeholder="00000-0000000-0" />
+                <Input value={form.fatherCnic} onChange={e => updateField('fatherCnic', e.target.value)} placeholder="00000-0000000-0" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Father Phone</label>
-                <Input value={form.fatherPhone} onChange={(e) => updateField('fatherPhone', e.target.value)} placeholder="03XX-XXXXXXX" />
+                <Input value={form.fatherPhone} onChange={e => updateField('fatherPhone', e.target.value)} placeholder="03XX-XXXXXXX" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Father Email</label>
-                <Input type="email" value={form.fatherEmail} onChange={(e) => updateField('fatherEmail', e.target.value)} placeholder="father@email.com" />
+                <Input type="email" value={form.fatherEmail} onChange={e => updateField('fatherEmail', e.target.value)} placeholder="father@email.com" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Father Occupation</label>
-                <Input value={form.fatherOccupation} onChange={(e) => updateField('fatherOccupation', e.target.value)} placeholder="Occupation" />
+                <Input value={form.fatherOccupation} onChange={e => updateField('fatherOccupation', e.target.value)} placeholder="Occupation" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Mother Name</label>
-                <Input value={form.motherName} onChange={(e) => updateField('motherName', e.target.value)} placeholder="Mother name" />
+                <Input value={form.motherName} onChange={e => updateField('motherName', e.target.value)} placeholder="Mother name" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Mother Phone</label>
-                <Input value={form.motherPhone} onChange={(e) => updateField('motherPhone', e.target.value)} placeholder="03XX-XXXXXXX" />
+                <Input value={form.motherPhone} onChange={e => updateField('motherPhone', e.target.value)} placeholder="03XX-XXXXXXX" />
               </div>
               <div className="sm:col-span-2">
                 <label className="block text-sm font-medium mb-1">Address</label>
-                <Input value={form.address} onChange={(e) => updateField('address', e.target.value)} placeholder="Address" />
+                <Input value={form.address} onChange={e => updateField('address', e.target.value)} placeholder="Address" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">City</label>
-                <Input value={form.city} onChange={(e) => updateField('city', e.target.value)} placeholder="City" />
+                <Input value={form.city} onChange={e => updateField('city', e.target.value)} placeholder="City" />
               </div>
             </CardContent>
           </Card>
@@ -371,7 +370,7 @@ export default function StudentForm() {
                     <Select value={form.class} onValueChange={handleClassChange}>
                       <SelectTrigger><SelectValue placeholder="Select class" /></SelectTrigger>
                       <SelectContent>
-                        {filteredClasses.filter((c) => c.type === 'SCHOOL').map((c) => (
+                        {filteredClasses.map(c => (
                           <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
                         ))}
                       </SelectContent>
@@ -379,11 +378,11 @@ export default function StudentForm() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1">Section</label>
-                    <Select value={form.section} onValueChange={(v) => updateField('section', v)} disabled={!form.class}>
-                      <SelectTrigger><SelectValue placeholder="Select section" /></SelectTrigger>
+                    <Select value={form.section} onValueChange={v => updateField('section', v)} disabled={!form.class}>
+                      <SelectTrigger><SelectValue placeholder={form.class ? 'Select section' : 'Select class first'} /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="">No Section</SelectItem>
-                        {sections.map((s) => (
+                        {allSections.map(s => (
                           <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>
                         ))}
                       </SelectContent>
@@ -392,11 +391,11 @@ export default function StudentForm() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Previous School</label>
-                  <Input value={form.previousSchool} onChange={(e) => updateField('previousSchool', e.target.value)} placeholder="Previous school name" />
+                  <Input value={form.previousSchool} onChange={e => updateField('previousSchool', e.target.value)} placeholder="Previous school name" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Medical Notes</label>
-                  <Input value={form.medicalNotes} onChange={(e) => updateField('medicalNotes', e.target.value)} placeholder="Any medical conditions or allergies" />
+                  <Input value={form.medicalNotes} onChange={e => updateField('medicalNotes', e.target.value)} placeholder="Any medical conditions or allergies" />
                 </div>
               </CardContent>
             </Card>
@@ -411,29 +410,19 @@ export default function StudentForm() {
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium mb-1">Class/Level *</label>
+                    <label className="block text-sm font-medium mb-1">Class/Level</label>
                     <Select value={form.class} onValueChange={handleClassChange}>
                       <SelectTrigger><SelectValue placeholder="Select level" /></SelectTrigger>
                       <SelectContent>
-                        {filteredClasses.filter((c) => c.type === 'ACADEMY').length === 0 && classes.filter((c) => c.type === 'SCHOOL').length > 0 ? (
-                          classes.filter((c) => c.type === 'SCHOOL').map((c) => (
-                            <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
-                          ))
-                        ) : (
-                          filteredClasses.filter((c) => c.type === 'ACADEMY').length > 0
-                            ? filteredClasses.filter((c) => c.type === 'ACADEMY').map((c) => (
-                              <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
-                            ))
-                            : filteredClasses.map((c) => (
-                              <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
-                            ))
-                        )}
+                        {filteredClasses.map(c => (
+                          <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1">Exam Series</label>
-                    <Select value={form.academySeries} onValueChange={(v) => updateField('academySeries', v)}>
+                    <Select value={form.academySeries} onValueChange={v => updateField('academySeries', v)}>
                       <SelectTrigger><SelectValue placeholder="Select series" /></SelectTrigger>
                       <SelectContent>
                         <SelectItem value="MAY_JUNE">May / June</SelectItem>
@@ -446,17 +435,12 @@ export default function StudentForm() {
                   <label className="block text-sm font-medium mb-2">Subjects</label>
                   <div className="border rounded-lg p-3 max-h-48 overflow-y-auto">
                     {subjects.length === 0 ? (
-                      <p className="text-sm text-muted-foreground text-center py-4">No subjects available</p>
+                      <p className="text-sm text-muted-foreground text-center py-4">No subjects available. Create subjects first.</p>
                     ) : (
                       <div className="space-y-1">
-                        {subjects.map((s) => (
+                        {subjects.map(s => (
                           <label key={s._id} className="flex items-center gap-2 px-2 py-1.5 hover:bg-muted/50 rounded cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={form.subjects.includes(s._id)}
-                              onChange={() => toggleSubject(s._id)}
-                              className="rounded border-gray-300"
-                            />
+                            <input type="checkbox" checked={form.subjects.includes(s._id)} onChange={() => toggleSubject(s._id)} className="rounded border-gray-300" />
                             <span className="text-sm">{s.name}</span>
                             <Badge variant="outline" className="text-xs ml-auto">{s.type}</Badge>
                           </label>

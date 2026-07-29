@@ -146,7 +146,7 @@ export default function BlogPostPage() {
       <section className="bg-gradient-to-br from-primary-900 via-primary-800 to-primary-700 py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <Link to="/blog" className="inline-flex items-center text-blue-200 hover:text-white mb-8 text-sm transition-colors group">
+          <Link to="/blog" className="inline-flex items-center text-primary-200 hover:text-white mb-8 text-sm transition-colors group">
             <ArrowLeft className="h-4 w-4 mr-1.5 transition-transform group-hover:-translate-x-1" />
             Back to Blog
           </Link>
@@ -156,7 +156,7 @@ export default function BlogPostPage() {
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
             {post.title}
           </h1>
-          <div className="flex flex-wrap items-center gap-5 text-blue-200/90 text-sm">
+          <div className="flex flex-wrap items-center gap-5 text-primary-200/90 text-sm">
             <span className="flex items-center gap-2">
               <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
                 <User className="h-4 w-4" />
@@ -233,7 +233,7 @@ export default function BlogPostPage() {
               </div>
 
               {/* Author Bio */}
-              <div className="mt-12 bg-gradient-to-r from-primary-50 to-blue-50 rounded-2xl p-6 sm:p-8 border border-primary-100">
+              <div className="mt-12 bg-gradient-to-r from-primary-50 to-primary-100 rounded-2xl p-6 sm:p-8 border border-primary-100">
                 <div className="flex flex-col sm:flex-row items-start gap-5">
                   <div className="w-16 h-16 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
                     <User className="h-8 w-8 text-white" />
@@ -306,16 +306,16 @@ export default function BlogPostPage() {
       <section className="py-16 lg:py-20 bg-gradient-to-r from-primary-800 to-primary-900 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNCI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
-          <GraduationCap className="h-12 w-12 text-blue-200 mx-auto mb-6" />
+          <GraduationCap className="h-12 w-12 text-primary-200 mx-auto mb-6" />
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
             Ready to Start Your Learning Journey?
           </h2>
-          <p className="text-blue-100/90 text-lg mb-8 max-w-xl mx-auto">
+          <p className="text-primary-100/90 text-lg mb-8 max-w-xl mx-auto">
             Join Leadership Study System and experience world-class Cambridge education with expert faculty and personalized support.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/contact">
-              <Button size="lg" className="bg-white text-primary-800 hover:bg-blue-50 font-semibold px-8 py-6 h-auto text-base shadow-lg">
+              <Button size="lg" className="bg-white text-primary-800 hover:bg-primary-50 font-semibold px-8 py-6 h-auto text-base shadow-lg">
                 Contact Us
               </Button>
             </Link>

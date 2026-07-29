@@ -104,6 +104,7 @@ exports.createTeacher = async (req, res) => {
       contractType,
       cnic,
       address,
+      assignedClasses,
     } = req.body;
 
     const tenantId = req.tenant._id;
@@ -133,6 +134,7 @@ exports.createTeacher = async (req, res) => {
       contractType,
       cnic,
       address,
+      assignedClasses: assignedClasses || [],
     });
 
     const populated = await Teacher.findById(teacher._id)

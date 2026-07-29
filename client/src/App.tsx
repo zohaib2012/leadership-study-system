@@ -17,6 +17,9 @@ import PricingPage from '@/pages/public/PricingPage'
 import BlogPage from '@/pages/public/BlogPage'
 import BlogPostPage from '@/pages/public/BlogPostPage'
 import RegisterPage from '@/pages/public/RegisterPage'
+import StudentSchoolRegister from '@/pages/public/StudentSchoolRegister'
+import StudentAcademyRegister from '@/pages/public/StudentAcademyRegister'
+import StudentRegisterSelect from '@/pages/public/StudentRegisterSelect'
 import PrivacyPage from '@/pages/public/PrivacyPage'
 import TermsPage from '@/pages/public/TermsPage'
 
@@ -63,7 +66,7 @@ import StudentAttendance from '@/pages/student/StudentAttendance'
 import StudentFees from '@/pages/student/StudentFees'
 import StudentHomework from '@/pages/student/StudentHomework'
 import StudentLeaves from '@/pages/student/StudentLeaves'
-import StudentProfile from '@/pages/student/StudentProfile'
+// import StudentProfile from '@/pages/student/StudentProfile'
 
 import ParentDashboard from '@/pages/parent/ParentDashboard'
 
@@ -115,12 +118,18 @@ export default function App() {
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/register/student" element={<StudentRegisterSelect />} />
+            <Route path="/register/student/school" element={<StudentSchoolRegister />} />
+            <Route path="/register/student/academy" element={<StudentAcademyRegister />} />
             <Route path="/privacy" element={<PrivacyPage />} />
             <Route path="/terms" element={<TermsPage />} />
           </Route>
 
-          <Route element={<AuthLayout />}>
+          <Route element={<PublicLayout />}>
             <Route path="/login" element={<LoginPage />} />
+          </Route>
+
+          <Route element={<AuthLayout />}>
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           </Route>
 

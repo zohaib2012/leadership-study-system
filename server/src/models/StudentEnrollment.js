@@ -1,4 +1,3 @@
-const StudentEnrollment = require('../models/StudentEnrollment');
 const mongoose = require('mongoose');
 
 const studentEnrollmentSchema = new mongoose.Schema({

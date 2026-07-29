@@ -171,6 +171,14 @@ exports.updateStudent = async (req, res) => {
     delete updates.email;
     delete updates.password;
 
+    if (!updates.academySeries) delete updates.academySeries;
+    if (updates.subjects && updates.subjects.length === 0) delete updates.subjects;
+    if (!updates.section) delete updates.section;
+    if (!updates.previousSchool) delete updates.previousSchool;
+    if (!updates.medicalNotes) delete updates.medicalNotes;
+    if (!updates.bloodGroup) delete updates.bloodGroup;
+    if (!updates.bFormNo) delete updates.bFormNo;
+
     const student = await Student.findOneAndUpdate(
       { _id: req.params.id, tenant: req.tenant._id },
       { $set: updates },

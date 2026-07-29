@@ -15,7 +15,7 @@ const posts = [
     author: 'Mr. Muzammil Ameer',
     readTime: '5 min read',
     category: 'Education',
-    gradient: 'from-blue-500 to-blue-700',
+    gradient: 'from-primary-500 to-primary-700',
   },
   {
     slug: 'a-level-preparation-tips',
@@ -25,7 +25,7 @@ const posts = [
     author: 'Mr. Saeed Khan',
     readTime: '7 min read',
     category: 'Exam Tips',
-    gradient: 'from-emerald-500 to-emerald-700',
+    gradient: 'from-primary-600 to-primary-800',
   },
   {
     slug: 'online-vs-in-person-learning',
@@ -35,7 +35,7 @@ const posts = [
     author: 'Ms. Sana Muzammil',
     readTime: '6 min read',
     category: 'Learning',
-    gradient: 'from-violet-500 to-violet-700',
+    gradient: 'from-primary-700 to-primary-900',
   },
   {
     slug: 'business-studies-career-paths',
@@ -45,7 +45,7 @@ const posts = [
     author: 'Mr. Muzammil Ameer',
     readTime: '8 min read',
     category: 'Career',
-    gradient: 'from-amber-500 to-amber-700',
+    gradient: 'from-primary-600 to-primary-800',
   },
   {
     slug: 'tips-for-parents',
@@ -55,7 +55,7 @@ const posts = [
     author: 'Ms. Sana Muzammil',
     readTime: '6 min read',
     category: 'Parents',
-    gradient: 'from-rose-500 to-rose-700',
+    gradient: 'from-primary-500 to-primary-700',
   },
   {
     slug: 'importance-of-extra-curricular',
@@ -65,7 +65,7 @@ const posts = [
     author: 'Mr. Muhammad Ajmal Pervaiz',
     readTime: '5 min read',
     category: 'Development',
-    gradient: 'from-cyan-500 to-cyan-700',
+    gradient: 'from-primary-500 to-primary-700',
   },
 ]
 
@@ -106,8 +106,8 @@ export default function BlogPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-primary-950 to-gray-900" />
         <div className="absolute inset-0 opacity-30">
           <div className="absolute top-20 left-10 w-96 h-96 bg-primary-500 rounded-full blur-[128px] animate-pulse" />
-          <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-blue-500 rounded-full blur-[128px] animate-pulse animation-delay-2000" />
-          <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-violet-500 rounded-full blur-[128px] animate-pulse animation-delay-4000" />
+          <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-primary-600 rounded-full blur-[128px] animate-pulse animation-delay-2000" />
+          <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-primary-400 rounded-full blur-[128px] animate-pulse animation-delay-4000" />
         </div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
 
@@ -119,11 +119,11 @@ export default function BlogPage() {
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-6">
               Our{' '}
-              <span className="bg-gradient-to-r from-blue-300 via-white to-blue-200 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary-300 via-white to-primary-200 bg-clip-text text-transparent">
                 Blog
               </span>
             </h1>
-            <p className="text-lg sm:text-xl text-blue-100/80 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg sm:text-xl text-primary-200/80 max-w-2xl mx-auto leading-relaxed">
               Expert insights, tips, and resources to help students, parents, and educators
               navigate the world of Cambridge education.
             </p>
@@ -230,7 +230,7 @@ export default function BlogPage() {
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
               Subscribe to Our Newsletter
             </h2>
-            <p className="text-blue-100/70 mb-8 max-w-lg mx-auto">
+            <p className="text-primary-200/70 mb-8 max-w-lg mx-auto">
               Get the latest tips, resources, and updates from Leadership Study System delivered straight to your inbox.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">

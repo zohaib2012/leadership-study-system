@@ -179,35 +179,12 @@ function FadeInSection({ children }: { children: React.ReactNode }) {
   return (
     <div
       ref={ref}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? 'translateY(0)' : 'translateY(30px)',
-        transition: 'opacity 0.7s ease-out, transform 0.7s ease-out',
-      }}
+      className={`transition-all duration-700 ease-out ${
+        visible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+      }`}
     >
       {children}
     </div>
-  );
-}
-
-function Orb({ size, color, top, left, delay }: { size: number; color: string; top: string; left: string; delay: number }) {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        width: size,
-        height: size,
-        borderRadius: '50%',
-        background: `radial-gradient(circle at 30% 30%, ${color}, transparent)`,
-        top,
-        left,
-        filter: 'blur(60px)',
-        opacity: 0.4,
-        animation: `float ${6 + delay}s ease-in-out infinite`,
-        animationDelay: `${delay}s`,
-        pointerEvents: 'none',
-      }}
-    />
   );
 }
 
@@ -219,129 +196,49 @@ export default function PricingPage() {
     <>
       <Helmet>
         <title>Pricing - Leadership Study System</title>
+        <meta name="description" content="Choose the perfect plan for your institution. Transparent pricing for schools and academies of all sizes." />
       </Helmet>
 
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) scale(1); }
-          50% { transform: translateY(-30px) scale(1.05); }
-        }
-        @keyframes shimmer {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .gradient-border {
-          position: relative;
-          border-radius: 1rem;
-        }
-        .gradient-border::before {
-          content: '';
-          position: absolute;
-          inset: -2px;
-          border-radius: inherit;
-          background: linear-gradient(135deg, #f59e0b, #ec4899, #8b5cf6, #f59e0b);
-          background-size: 300% 300%;
-          animation: shimmer 4s ease infinite;
-          z-index: -1;
-        }
-        .glass {
-          background: rgba(255, 255, 255, 0.05);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .glass-card {
-          background: rgba(255, 255, 255, 0.04);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          transition: all 0.3s ease;
-        }
-        .glass-card:hover {
-          border-color: rgba(255, 255, 255, 0.18);
-          transform: translateY(-4px);
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-      `}</style>
-
       {/* Hero */}
-      <section style={{ position: 'relative', overflow: 'hidden', padding: '6rem 1rem 4rem', background: 'linear-gradient(135deg, #0f0c29, #302b63, #24243e)' }}>
-        <Orb size={500} color="rgba(139, 92, 246, 0.6)" top="-10%" left="-10%" delay={0} />
-        <Orb size={400} color="rgba(236, 72, 153, 0.5)" top="20%" left="60%" delay={2} />
-        <Orb size={350} color="rgba(245, 158, 11, 0.4)" top="70%" left="30%" delay={4} />
+      <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-primary-950 to-gray-900 px-4 pb-16 pt-28 lg:pt-36">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -left-32 -top-32 h-[500px] w-[500px] animate-pulse rounded-full bg-primary-500/10 blur-3xl" />
+          <div className="absolute -bottom-40 -right-32 h-[600px] w-[600px] animate-pulse rounded-full bg-primary-700/10 blur-3xl" />
+          <div className="absolute left-1/3 top-1/2 h-[400px] w-[400px] animate-pulse rounded-full bg-primary-400/5 blur-3xl" />
+        </div>
 
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: 800, margin: '0 auto', textAlign: 'center' }}>
-          <Badge
-            variant="outline"
-            style={{
-              background: 'rgba(139, 92, 246, 0.15)',
-              border: '1px solid rgba(139, 92, 246, 0.3)',
-              color: '#c4b5fd',
-              padding: '0.4rem 1.2rem',
-              borderRadius: 9999,
-              fontSize: '0.85rem',
-              marginBottom: '1.5rem',
-            }}
-          >
-            <Sparkles size={14} style={{ marginRight: 6 }} />
+        <div className="relative z-10 mx-auto max-w-3xl text-center">
+          <Badge className="mb-6 border-primary-400/30 bg-primary-500/10 px-4 py-1.5 text-primary-200 backdrop-blur-sm">
+            <Sparkles className="mr-2 h-3.5 w-3.5" />
             Flexible Plans for Every Institution
           </Badge>
-
-          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 800, color: '#fff', marginBottom: '1rem', lineHeight: 1.2 }}>
-            Simple, Transparent{' '}
-            <span style={{ background: 'linear-gradient(135deg, #f59e0b, #ec4899)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              Pricing
-            </span>
+          <h1 className="mb-6 bg-gradient-to-r from-white via-primary-100 to-primary-200 bg-clip-text text-4xl font-bold leading-tight text-transparent md:text-5xl lg:text-6xl">
+            Simple, Transparent Pricing
           </h1>
-          <p style={{ fontSize: '1.1rem', color: '#a5b4fc', maxWidth: 600, margin: '0 auto 2rem', lineHeight: 1.7 }}>
+          <p className="mx-auto mb-8 max-w-2xl text-lg leading-relaxed text-primary-200/80">
             Choose the perfect plan for your institution. No hidden fees, no surprises. Scale as you grow.
           </p>
 
           {/* Toggle */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', marginBottom: '3rem' }}>
-            <span style={{ color: yearly ? '#94a3b8' : '#fff', fontWeight: yearly ? 400 : 600, transition: 'color 0.3s' }}>
+          <div className="flex items-center justify-center gap-3">
+            <span className={`text-sm font-medium transition-colors ${yearly ? 'text-primary-200/60' : 'text-white'}`}>
               Monthly
             </span>
             <button
               onClick={() => setYearly(!yearly)}
-              style={{
-                width: 52,
-                height: 28,
-                borderRadius: 9999,
-                background: yearly ? 'linear-gradient(135deg, #8b5cf6, #ec4899)' : 'rgba(255,255,255,0.15)',
-                border: 'none',
-                cursor: 'pointer',
-                position: 'relative',
-                transition: 'background 0.3s',
-              }}
+              className={`relative h-7 w-12 rounded-full transition-colors ${
+                yearly ? 'bg-primary-600' : 'bg-white/20'
+              }`}
             >
               <div
-                style={{
-                  width: 22,
-                  height: 22,
-                  borderRadius: '50%',
-                  background: '#fff',
-                  position: 'absolute',
-                  top: 3,
-                  left: yearly ? 27 : 3,
-                  transition: 'left 0.3s ease',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
-                }}
+                className={`absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow transition-transform ${
+                  yearly ? 'translate-x-5' : 'translate-x-0'
+                }`}
               />
             </button>
-            <span style={{ color: yearly ? '#fff' : '#94a3b8', fontWeight: yearly ? 600 : 400, transition: 'color 0.3s' }}>
+            <span className={`text-sm font-medium transition-colors ${yearly ? 'text-white' : 'text-primary-200/60'}`}>
               Yearly
-              <Badge
-                variant="secondary"
-                style={{
-                  marginLeft: 6,
-                  background: 'rgba(245, 158, 11, 0.2)',
-                  color: '#fbbf24',
-                  fontSize: '0.7rem',
-                  padding: '0.15rem 0.5rem',
-                }}
-              >
+              <Badge className="ml-1.5 bg-amber-500/20 px-1.5 py-0 text-xs text-amber-400">
                 Save up to 15%
               </Badge>
             </span>
@@ -350,117 +247,79 @@ export default function PricingPage() {
       </section>
 
       {/* Pricing Cards */}
-      <section
-        style={{
-          position: 'relative',
-          zIndex: 2,
-          marginTop: '-2rem',
-          padding: '2rem 1rem 5rem',
-          background: 'linear-gradient(180deg, #24243e 0%, #1a1a2e 50%, #0f0c29 100%)',
-        }}
-      >
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: '1.5rem',
-            maxWidth: 1280,
-            margin: '0 auto',
-            alignItems: 'start',
-          }}
-        >
+      <section className="relative z-10 -mt-8 bg-gradient-to-b from-gray-50 to-white px-4 pb-20 pt-8 dark:from-gray-900 dark:to-gray-900">
+        <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-2 lg:grid-cols-4">
           {pricingPlans.map((plan) => (
             <FadeInSection key={plan.name}>
-              <div className={plan.popular ? 'gradient-border' : ''} style={{ height: '100%' }}>
-                <Card
-                  className="glass-card"
-                  style={{
-                    height: '100%',
-                    border: plan.popular ? 'none' : undefined,
-                    position: 'relative',
-                    overflow: 'visible',
-                  }}
-                >
-                  {plan.popular && (
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: '-12px',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        background: 'linear-gradient(135deg, #f59e0b, #ec4899)',
-                        color: '#fff',
-                        padding: '0.3rem 1.2rem',
-                        borderRadius: 9999,
-                        fontSize: '0.75rem',
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.05em',
-                        whiteSpace: 'nowrap',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 4,
-                      }}
-                    >
-                      <Star size={12} fill="currentColor" />
+              <div className="relative h-full">
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 z-10 -translate-x-1/2">
+                    <Badge className="bg-gradient-to-r from-primary-600 to-primary-700 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-lg">
+                      <Star className="mr-1 h-3 w-3 fill-current" />
                       Most Popular
-                    </div>
-                  )}
-
-                  <CardHeader style={{ padding: '1.75rem 1.75rem 1rem', textAlign: 'center' }}>
-                    <CardTitle style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '0.25rem' }}>
+                    </Badge>
+                  </div>
+                )}
+                <Card
+                  className={`h-full border-0 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${
+                    plan.popular
+                      ? 'relative ring-2 ring-primary-600'
+                      : 'dark:bg-gray-800'
+                  }`}
+                >
+                  <CardHeader className={`pb-4 text-center ${plan.popular ? 'bg-gradient-to-br from-primary-600 to-primary-700 rounded-t-lg' : ''}`}>
+                    <CardTitle className={`text-xl font-bold ${plan.popular ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
                       {plan.name}
                     </CardTitle>
-                    <p style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '1rem' }}>{plan.subtitle}</p>
-
-                    <div style={{ marginBottom: '0.5rem' }}>
-                      <span style={{ fontSize: '2rem', fontWeight: 800, color: '#fff' }}>
+                    <p className={`text-sm ${plan.popular ? 'text-primary-100' : 'text-gray-500 dark:text-gray-400'}`}>
+                      {plan.subtitle}
+                    </p>
+                    <div className="mt-3">
+                      <span className={`text-3xl font-extrabold ${plan.popular ? 'text-white' : 'text-gray-900 dark:text-white'}`}>
                         {plan.monthlyPrice === 'Custom' ? 'Custom' : yearly ? plan.yearlyPrice : plan.monthlyPrice}
                       </span>
                       {plan.monthlyPrice !== 'Custom' && (
-                        <span style={{ fontSize: '0.85rem', color: '#64748b', marginLeft: 4 }}>
+                        <span className={`ml-1 text-sm ${plan.popular ? 'text-primary-200' : 'text-gray-400'}`}>
                           /{yearly ? 'year' : 'month'}
                         </span>
                       )}
                     </div>
-
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4, color: '#818cf8', fontSize: '0.85rem' }}>
-                      <Users size={14} />
+                    <div className={`mt-2 flex items-center justify-center gap-1 text-sm ${plan.popular ? 'text-primary-200' : 'text-primary-600 dark:text-primary-400'}`}>
+                      <Users className="h-4 w-4" />
                       <span>{plan.students}</span>
                     </div>
                   </CardHeader>
-
-                  <CardContent style={{ padding: '1rem 1.75rem 1.75rem' }}>
-                    <p style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '1.25rem', textAlign: 'center' }}>
+                  <CardContent className="p-6">
+                    <p className={`mb-5 text-center text-sm ${plan.popular ? 'text-gray-600 dark:text-gray-300' : 'text-gray-500 dark:text-gray-400'}`}>
                       {plan.description}
                     </p>
 
                     <Button
                       asChild
+                      className={`mb-6 w-full ${
+                        plan.popular
+                          ? 'bg-primary-600 text-white hover:bg-primary-700'
+                          : 'border border-primary-200 bg-white text-primary-700 hover:bg-primary-50 dark:border-primary-700 dark:bg-gray-800 dark:text-primary-300 dark:hover:bg-gray-700'
+                      }`}
                       variant={plan.popular ? 'default' : 'outline'}
-                      style={{
-                        width: '100%',
-                        marginBottom: '1.5rem',
-                        background: plan.popular ? 'linear-gradient(135deg, #8b5cf6, #ec4899)' : undefined,
-                        borderColor: plan.popular ? 'transparent' : 'rgba(139, 92, 246, 0.3)',
-                        color: plan.popular ? '#fff' : '#c4b5fd',
-                      }}
                     >
                       <Link to="/contact">
                         {plan.monthlyPrice === 'Custom' ? 'Contact Sales' : 'Get Started'}
-                        <ChevronRight size={16} style={{ marginLeft: 6 }} />
+                        <ChevronRight className="ml-1 h-4 w-4" />
                       </Link>
                     </Button>
 
-                    <ul style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                    <ul className="space-y-3">
                       {plan.features.map((f) => (
-                        <li key={f.name} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.85rem' }}>
+                        <li key={f.name} className="flex items-center gap-2 text-sm">
                           {f.included ? (
-                            <CheckCircle size={16} color="#22c55e" style={{ flexShrink: 0 }} />
+                            <CheckCircle className="h-4 w-4 shrink-0 text-emerald-500" />
                           ) : (
-                            <XCircle size={16} color="#475569" style={{ flexShrink: 0 }} />
+                            <XCircle className="h-4 w-4 shrink-0 text-gray-300 dark:text-gray-600" />
                           )}
-                          <span style={{ color: f.included ? '#e2e8f0' : '#475569' }}>{f.name}</span>
+                          <span className={f.included ? 'text-gray-700 dark:text-gray-200' : 'text-gray-400 dark:text-gray-500'}>
+                            {f.name}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -473,57 +332,39 @@ export default function PricingPage() {
       </section>
 
       {/* Feature Comparison */}
-      <section style={{ padding: '4rem 1rem', background: '#0f0c29' }}>
+      <section className="bg-white px-4 py-20 dark:bg-gray-900">
         <FadeInSection>
-          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: '#fff', textAlign: 'center', marginBottom: '0.5rem' }}>
+          <h2 className="mb-2 text-center text-3xl font-bold text-gray-900 dark:text-white">
             Compare Plans Side by Side
           </h2>
-          <p style={{ color: '#94a3b8', textAlign: 'center', marginBottom: '3rem', maxWidth: 500, margin: '0 auto 3rem' }}>
+          <p className="mx-auto mb-10 max-w-lg text-center text-gray-500 dark:text-gray-400">
             Find the perfect fit for your institution's needs.
           </p>
 
-          <div style={{ overflowX: 'auto', maxWidth: 1100, margin: '0 auto' }}>
-            <table
-              style={{
-                width: '100%',
-                borderCollapse: 'collapse',
-                background: 'rgba(255,255,255,0.03)',
-                borderRadius: 12,
-                overflow: 'hidden',
-                minWidth: 640,
-              }}
-            >
+          <div className="mx-auto max-w-5xl overflow-x-auto">
+            <table className="w-full min-w-[640px] border-collapse overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
               <thead>
-                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-                  <th style={{ padding: '1rem', textAlign: 'left', color: '#94a3b8', fontWeight: 600, fontSize: '0.9rem' }}>Feature</th>
+                <tr className="bg-gray-50 dark:bg-gray-800">
+                  <th className="p-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">Feature</th>
                   {pricingPlans.map((p) => (
-                    <th
-                      key={p.name}
-                      style={{
-                        padding: '1rem',
-                        textAlign: 'center',
-                        color: p.popular ? '#fbbf24' : '#e2e8f0',
-                        fontWeight: 700,
-                        fontSize: '0.9rem',
-                      }}
-                    >
+                    <th key={p.name} className={`p-4 text-center text-sm font-bold ${p.popular ? 'text-primary-700 dark:text-primary-400' : 'text-gray-700 dark:text-gray-200'}`}>
                       {p.name}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                {allFeatures.map((feature) => (
-                  <tr key={feature} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <td style={{ padding: '0.85rem 1rem', color: '#cbd5e1', fontSize: '0.9rem' }}>{feature}</td>
+                {allFeatures.map((feature, i) => (
+                  <tr key={feature} className={`border-t border-gray-100 dark:border-gray-700 ${i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-gray-50/50 dark:bg-gray-800/50'}`}>
+                    <td className="p-4 text-sm text-gray-600 dark:text-gray-300">{feature}</td>
                     {pricingPlans.map((p) => {
                       const f = p.features.find((ff) => ff.name === feature);
                       return (
-                        <td key={p.name} style={{ padding: '0.85rem', textAlign: 'center' }}>
+                        <td key={p.name} className="p-4 text-center">
                           {f?.included ? (
-                            <CheckCircle size={18} color="#22c55e" style={{ margin: '0 auto' }} />
+                            <CheckCircle className="mx-auto h-5 w-5 text-emerald-500" />
                           ) : (
-                            <XCircle size={18} color="#475569" style={{ margin: '0 auto' }} />
+                            <XCircle className="mx-auto h-5 w-5 text-gray-300 dark:text-gray-600" />
                           )}
                         </td>
                       );
@@ -537,80 +378,65 @@ export default function PricingPage() {
       </section>
 
       {/* Features Grid */}
-      <section style={{ padding: '5rem 1rem', background: 'linear-gradient(180deg, #0f0c29, #1a1a2e)' }}>
+      <section className="bg-gray-50 px-4 py-20 dark:bg-gray-800">
         <FadeInSection>
-          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: '#fff', textAlign: 'center', marginBottom: '3rem' }}>
+          <h2 className="mb-2 text-center text-3xl font-bold text-gray-900 dark:text-white">
             Why Choose Leadership Study System?
           </h2>
+          <p className="mx-auto mb-12 max-w-lg text-center text-gray-500 dark:text-gray-400">
+            Built to empower educational institutions with modern tools.
+          </p>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: '1.5rem',
-              maxWidth: 1100,
-              margin: '0 auto',
-            }}
-          >
+          <div className="mx-auto grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { icon: <Shield size={28} />, title: 'Secure & Reliable', desc: 'Enterprise-grade security with 99.9% uptime guarantee.' },
-              { icon: <Zap size={28} />, title: 'Lightning Fast', desc: 'Optimized performance for smooth day-to-day operations.' },
-              { icon: <Headphones size={28} />, title: '24/7 Support', desc: 'Dedicated support team available round the clock.' },
-              { icon: <Server size={28} />, title: 'Cloud Based', desc: 'Access from anywhere, anytime. No installation needed.' },
-              { icon: <GraduationCap size={28} />, title: 'Easy to Use', desc: 'Intuitive interface designed for teachers and admin staff.' },
-              { icon: <Users size={28} />, title: 'Scalable', desc: 'Grows with your institution from 50 to unlimited students.' },
+              { icon: <Shield className="h-7 w-7" />, title: 'Secure & Reliable', desc: 'Enterprise-grade security with 99.9% uptime guarantee.' },
+              { icon: <Zap className="h-7 w-7" />, title: 'Lightning Fast', desc: 'Optimized performance for smooth day-to-day operations.' },
+              { icon: <Headphones className="h-7 w-7" />, title: '24/7 Support', desc: 'Dedicated support team available round the clock.' },
+              { icon: <Server className="h-7 w-7" />, title: 'Cloud Based', desc: 'Access from anywhere, anytime. No installation needed.' },
+              { icon: <GraduationCap className="h-7 w-7" />, title: 'Easy to Use', desc: 'Intuitive interface designed for teachers and admin staff.' },
+              { icon: <Users className="h-7 w-7" />, title: 'Scalable', desc: 'Grows with your institution from 50 to unlimited students.' },
             ].map((item) => (
-              <div key={item.title} className="glass" style={{ padding: '1.75rem', borderRadius: 12, textAlign: 'center' }}>
-                <div style={{ color: '#818cf8', marginBottom: '1rem', display: 'inline-flex' }}>{item.icon}</div>
-                <h3 style={{ color: '#fff', fontWeight: 600, marginBottom: '0.5rem', fontSize: '1.05rem' }}>{item.title}</h3>
-                <p style={{ color: '#94a3b8', fontSize: '0.85rem', lineHeight: 1.6 }}>{item.desc}</p>
-              </div>
+              <Card key={item.title} className="border border-gray-200 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-900">
+                <CardContent className="p-6 text-center">
+                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 text-white shadow-lg">
+                    {item.icon}
+                  </div>
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">{item.title}</h3>
+                  <p className="text-sm leading-relaxed text-gray-500 dark:text-gray-400">{item.desc}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </FadeInSection>
       </section>
 
       {/* FAQ */}
-      <section style={{ padding: '5rem 1rem', background: '#0f0c29' }}>
+      <section className="bg-white px-4 py-20 dark:bg-gray-900">
         <FadeInSection>
-          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700, color: '#fff', textAlign: 'center', marginBottom: '0.5rem' }}>
+          <h2 className="mb-2 text-center text-3xl font-bold text-gray-900 dark:text-white">
             Frequently Asked Questions
           </h2>
-          <p style={{ color: '#94a3b8', textAlign: 'center', marginBottom: '3rem' }}>
+          <p className="mx-auto mb-10 max-w-lg text-center text-gray-500 dark:text-gray-400">
             Got questions? We've got answers.
           </p>
 
-          <div style={{ maxWidth: 720, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div className="mx-auto max-w-2xl space-y-3">
             {faqs.map((faq, idx) => (
               <div
                 key={idx}
-                className="glass"
-                style={{ borderRadius: 12, overflow: 'hidden', cursor: 'pointer' }}
+                className="cursor-pointer rounded-xl border border-gray-200 transition-all dark:border-gray-700"
                 onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
               >
-                <div
-                  style={{
-                    padding: '1.25rem 1.5rem',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    color: '#e2e8f0',
-                    fontWeight: 500,
-                  }}
-                >
-                  <span>{faq.q}</span>
+                <div className="flex items-center justify-between px-6 py-4">
+                  <span className="font-medium text-gray-900 dark:text-white">{faq.q}</span>
                   <ChevronRight
-                    size={18}
-                    style={{
-                      transform: openFaq === idx ? 'rotate(90deg)' : 'rotate(0deg)',
-                      transition: 'transform 0.3s',
-                      flexShrink: 0,
-                      color: '#818cf8',
-                    }}
+                    className={`h-5 w-5 shrink-0 text-primary-600 transition-transform ${
+                      openFaq === idx ? 'rotate-90' : ''
+                    }`}
                   />
                 </div>
                 {openFaq === idx && (
-                  <div style={{ padding: '0 1.5rem 1.25rem', color: '#94a3b8', fontSize: '0.9rem', lineHeight: 1.7 }}>
+                  <div className="border-t border-gray-100 px-6 pb-4 pt-3 text-sm leading-relaxed text-gray-600 dark:border-gray-700 dark:text-gray-400">
                     {faq.a}
                   </div>
                 )}
@@ -621,56 +447,38 @@ export default function PricingPage() {
       </section>
 
       {/* CTA */}
-      <section style={{ padding: '5rem 1rem', background: 'linear-gradient(135deg, #0f0c29, #302b63, #24243e)', textAlign: 'center' }}>
+      <section className="relative overflow-hidden bg-gradient-to-r from-primary-700 to-primary-900 px-4 py-20 text-center">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
+          <div className="absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
+        </div>
         <FadeInSection>
-          <Badge
-            variant="outline"
-            style={{
-              background: 'rgba(139, 92, 246, 0.15)',
-              border: '1px solid rgba(139, 92, 246, 0.3)',
-              color: '#c4b5fd',
-              padding: '0.4rem 1.2rem',
-              borderRadius: 9999,
-              fontSize: '0.85rem',
-              marginBottom: '1rem',
-            }}
-          >
-            <Sparkles size={14} style={{ marginRight: 6 }} />
+          <Badge className="mb-6 border-white/20 bg-white/10 px-4 py-1.5 text-white backdrop-blur-sm">
+            <Sparkles className="mr-2 h-4 w-4" />
             Get Started Today
           </Badge>
-
-          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2.2rem)', fontWeight: 700, color: '#fff', marginBottom: '1rem' }}>
+          <h2 className="mb-4 text-3xl font-bold text-white sm:text-4xl">
             Ready to Transform Your Institution?
           </h2>
-          <p style={{ color: '#a5b4fc', maxWidth: 500, margin: '0 auto 2rem', lineHeight: 1.7 }}>
+          <p className="mx-auto mb-8 max-w-xl text-primary-100">
             Join thousands of institutions already using Leadership Study System. Start your free trial today.
           </p>
-
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <Button
               asChild
               size="lg"
-              style={{
-                background: 'linear-gradient(135deg, #8b5cf6, #ec4899)',
-                color: '#fff',
-                border: 'none',
-                padding: '0.75rem 2rem',
-              }}
+              className="bg-white px-8 py-6 text-base font-semibold text-primary-800 shadow-lg hover:bg-gray-100"
             >
               <Link to="/contact">
                 Start Free Trial
-                <ArrowRight size={18} style={{ marginLeft: 8 }} />
+                <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             <Button
               asChild
               size="lg"
               variant="outline"
-              style={{
-                borderColor: 'rgba(139, 92, 246, 0.4)',
-                color: '#c4b5fd',
-                padding: '0.75rem 2rem',
-              }}
+              className="border-white/30 px-8 py-6 text-base font-semibold text-white hover:bg-white/10"
             >
               <Link to="/contact">Talk to Sales</Link>
             </Button>

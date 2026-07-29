@@ -11,15 +11,15 @@ import { formatCurrency } from '@/lib/utils'
 
 interface TeacherItem {
   _id: string
-  name: string
-  email: string
-  phone: string
+  user?: { name: string; email: string; phone: string }
   qualification: string
   experience: number
   salary: number
   joinDate: string
-  subjects: { _id: string; name: string }[]
-  assignedClasses: { _id: string; name: string }[]
+  assignedClasses: {
+    class: { _id: string; name: string }
+    subject: { _id: string; name: string }
+  }[]
   status: string
 }
 
@@ -79,29 +79,40 @@ export default function TeacherList() {
             header: 'Name',
             render: (row: TeacherItem) => (
               <div>
-                <p className="font-medium">{row.name || row.email}</p>
-                <p className="text-xs text-muted-foreground">{row.email}</p>
+                <p className="font-medium">{row.user?.name || row.qualification || 'N/A'}</p>
+                <p className="text-xs text-muted-foreground">{row.user?.email}</p>
               </div>
             ),
           },
-          { key: 'phone', header: 'Phone' },
+          {
+            key: 'phone',
+            header: 'Phone',
+            render: (row: TeacherItem) => row.user?.phone || '-',
+          },
           {
             key: 'subjects',
             header: 'Subjects',
-            render: (row: TeacherItem) => (
-              <div className="flex flex-wrap gap-1">
-                {row.subjects?.length ? row.subjects.map((s, i) => (
-                  <Badge key={i} variant="secondary" className="text-xs">{s.name}</Badge>
-                )) : '-'}
-              </div>
-            ),
+            render: (row: TeacherItem) => {
+              const subjectNames = [...new Set(row.assignedClasses?.map((ac) => ac.subject?.name).filter(Boolean) || [])]
+              return (
+                <div className="flex flex-wrap gap-1">
+                  {subjectNames.length ? subjectNames.map((name, i) => (
+                    <Badge key={i} variant="secondary" className="text-xs">{name}</Badge>
+                  )) : '-'}
+                </div>
+              )
+            },
           },
           {
             key: 'classes',
             header: 'Classes',
-            render: (row: TeacherItem) => (
-              <span>{row.assignedClasses?.length || 0}</span>
-            ),
+            render: (row: TeacherItem) => {
+              const classIds = new Set(row.assignedClasses?.map((ac) => ac.class?._id).filter(Boolean) || [])
+              const classNames = [...new Set(row.assignedClasses?.map((ac) => ac.class?.name).filter(Boolean) || [])]
+              return (
+                <span title={classNames.join(', ')}>{classIds.size || 0}</span>
+              )
+            },
           },
           {
             key: 'salary',

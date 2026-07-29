@@ -7,9 +7,9 @@ import { Badge } from '@/components/ui/badge'
 import { DataTable } from '@/components/ui/data-table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
+  Dialog, DialogContent, DialogHeader, DialogTitle,
 } from '@/components/ui/dialog'
-import { Plus, Search, ChevronLeft, ChevronRight, Trash2, Edit, Eye, School, GraduationCap } from 'lucide-react'
+import { Plus, Search, ChevronLeft, ChevronRight, Trash2, Edit, Eye, School, GraduationCap, CheckCircle, XCircle } from 'lucide-react'
 
 interface StudentItem {
   _id: string
@@ -29,12 +29,15 @@ interface ClassOption {
   name: string
 }
 
-const statusVariants: Record<string, 'success' | 'destructive' | 'warning' | 'secondary'> = {
+const statusVariants: Record<string, 'success' | 'destructive' | 'warning' | 'secondary' | 'default'> = {
   ACTIVE: 'success',
   INACTIVE: 'secondary',
+  PENDING: 'warning',
   PASSED_OUT: 'warning',
   TRANSFERRED: 'destructive',
 }
+
+const statusOptions = ['ACTIVE', 'INACTIVE', 'PENDING', 'PASSED_OUT', 'TRANSFERRED']
 
 export default function StudentList() {
   const [students, setStudents] = useState<StudentItem[]>([])
@@ -48,6 +51,7 @@ export default function StudentList() {
   const [isLoading, setIsLoading] = useState(true)
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [actionLoading, setActionLoading] = useState<string | null>(null)
   const navigate = useNavigate()
 
   const fetchStudents = useCallback(async () => {
@@ -60,7 +64,7 @@ export default function StudentList() {
       const { data } = await api.get('/students', { params })
       if (data.success) {
         setStudents(data.data.students || data.data || [])
-        setTotalPages(data.data.totalPages || 1)
+        setTotalPages(data.data.totalPages || data.data.pages || Math.ceil((data.data.total || 0) / 10) || 1)
       }
     } catch (err) {
       console.error('Failed to fetch students:', err)
@@ -72,21 +76,15 @@ export default function StudentList() {
   const fetchClasses = async () => {
     try {
       const { data } = await api.get('/classes')
-      if (data.success) {
-        setClasses(data.data || [])
-      }
+      if (data.success) setClasses(data.data || [])
     } catch (err) {
       console.error('Failed to fetch classes:', err)
     }
   }
 
-  useEffect(() => {
-    fetchClasses()
-  }, [])
+  useEffect(() => { fetchClasses() }, [])
 
-  useEffect(() => {
-    fetchStudents()
-  }, [fetchStudents])
+  useEffect(() => { fetchStudents() }, [fetchStudents])
 
   const handleDelete = async () => {
     if (!deleteId) return
@@ -99,6 +97,18 @@ export default function StudentList() {
       console.error('Failed to delete student:', err)
     } finally {
       setIsDeleting(false)
+    }
+  }
+
+  const handleStatusChange = async (studentId: string, newStatus: string) => {
+    setActionLoading(studentId)
+    try {
+      await api.put(`/students/${studentId}`, { status: newStatus })
+      fetchStudents()
+    } catch (err) {
+      console.error('Failed to update student status:', err)
+    } finally {
+      setActionLoading(null)
     }
   }
 
@@ -140,10 +150,9 @@ export default function StudentList() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="ACTIVE">Active</SelectItem>
-            <SelectItem value="INACTIVE">Inactive</SelectItem>
-            <SelectItem value="PASSED_OUT">Passed Out</SelectItem>
-            <SelectItem value="TRANSFERRED">Transferred</SelectItem>
+            {statusOptions.map(s => (
+              <SelectItem key={s} value={s}>{s.replace(/_/g, ' ')}</SelectItem>
+            ))}
           </SelectContent>
         </Select>
         <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setPage(1) }}>
@@ -198,6 +207,30 @@ export default function StudentList() {
             header: 'Actions',
             render: (row: StudentItem) => (
               <div className="flex items-center gap-1">
+                {(row.status === 'INACTIVE' || row.status === 'PENDING') && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    title="Approve"
+                    disabled={actionLoading === row._id}
+                    onClick={() => handleStatusChange(row._id, 'ACTIVE')}
+                    className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50"
+                  >
+                    <CheckCircle className="h-4 w-4" />
+                  </Button>
+                )}
+                {row.status === 'ACTIVE' && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    title="Deactivate"
+                    disabled={actionLoading === row._id}
+                    onClick={() => handleStatusChange(row._id, 'INACTIVE')}
+                    className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                  >
+                    <XCircle className="h-4 w-4" />
+                  </Button>
+                )}
                 <Button variant="ghost" size="icon" onClick={() => navigate(`/admin/students/${row._id}`)}>
                   <Eye className="h-4 w-4" />
                 </Button>

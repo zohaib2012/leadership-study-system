@@ -78,14 +78,14 @@ export default function PublicLayout() {
             </div>
 
             <div className="hidden lg:flex items-center gap-3">
-              <Link to="/register">
+                <Link to="/register/student">
                 <Button
-                  variant="outline"
+                  variant={scrolled || !isHome ? 'outline' : 'ghost'}
                   size="sm"
                   className={`rounded-lg font-medium border-2 transition-all ${
                     scrolled || !isHome
                       ? 'border-primary-600 text-primary-700 hover:bg-primary-600 hover:text-white'
-                      : 'border-white/60 text-white hover:bg-white hover:text-primary-800'
+                      : 'border-white/60 text-white bg-white/10 backdrop-blur-sm hover:bg-white hover:text-primary-800'
                   }`}
                 >
                   Register Now
@@ -130,7 +130,7 @@ export default function PublicLayout() {
                 </Link>
               ))}
               <div className="pt-3 flex gap-3">
-                <Link to="/register" className="flex-1">
+                <Link to="/register/student" className="flex-1">
                   <Button variant="outline" size="sm" className="w-full rounded-xl border-primary-600 text-primary-700">Register</Button>
                 </Link>
                 <Link to="/login" className="flex-1">
@@ -185,7 +185,7 @@ export default function PublicLayout() {
                   { label: 'Our Services', href: '/services' },
                   { label: 'Faculty', href: '/faculty' },
                   { label: 'Contact Us', href: '/contact' },
-                  { label: 'Registration', href: '/register' },
+                  { label: 'Registration', href: '/register/student' },
                   { label: 'Pricing', href: '/pricing' },
                 ].map((l) => (
                   <Link key={l.href} to={l.href} className="block text-gray-400 hover:text-white transition-colors">

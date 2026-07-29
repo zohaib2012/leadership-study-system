@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent, useEffect, useRef } from 'react';
 import {
   Phone,
   Mail,
@@ -10,6 +10,7 @@ import {
   MessageSquare,
   Building2,
   GraduationCap,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,60 +25,37 @@ interface ContactInfo {
 }
 
 const contactInfo: ContactInfo[] = [
-  {
-    icon: MapPin,
-    label: 'Address',
-    value: 'F-8/3, Islamabad',
-    detail: 'Sector F-8, Capital Territory',
-  },
-  {
-    icon: Phone,
-    label: 'Phone',
-    value: '+92 305 9079079',
-    detail: 'Mon-Fri 9am-6pm',
-  },
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'info@leadershipstudysystem.pk',
-    detail: 'We reply within 24 hours',
-  },
-  {
-    icon: Clock,
-    label: 'Working Hours',
-    value: 'Monday - Friday',
-    detail: '9:00 AM - 6:00 PM',
-  },
+  { icon: MapPin, label: 'Address', value: 'Street No.14, Sector F-8/3', detail: 'Islamabad, Pakistan' },
+  { icon: Phone, label: 'Phone', value: '+92 305 9079079', detail: 'Mon-Fri 9am-6pm' },
+  { icon: Mail, label: 'Email', value: 'info@leadershipstudysystem.pk', detail: 'We reply within 24 hours' },
+  { icon: Clock, label: 'Working Hours', value: 'Monday - Friday', detail: '9:00 AM - 6:00 PM' },
 ];
 
-const fadeInUp = (index: number) => ({
-  opacity: 0,
-  transform: 'translateY(30px)',
-  transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.12}s`,
-});
+function FadeInSection({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.unobserve(el); } },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className={`transition-all duration-700 ease-out ${visible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+      {children}
+    </div>
+  );
+}
 
 const ContactPage = () => {
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
-  const [visible, setVisible] = useState<Set<number>>(new Set());
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = Number(entry.target.getAttribute('data-index'));
-            setVisible((prev) => new Set(prev).add(idx));
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    const elements = document.querySelectorAll('[data-observe]');
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -90,252 +68,158 @@ const ContactPage = () => {
     <>
       <Helmet>
         <title>Contact Us | Leadership Study System</title>
-        <meta
-          name="description"
-          content="Get in touch with Leadership Study System. Visit us in F-8/3 Islamabad, call +92 305 9079079, or email info@leadershipstudysystem.pk."
-        />
+        <meta name="description" content="Get in touch with Leadership Study System. Visit us at Street No.14, Sector F-8/3, Islamabad, Pakistan. Call +92 305 9079079 or email info@leadershipstudysystem.pk." />
       </Helmet>
 
-      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-emerald-500/10 blur-[120px] animate-pulse" />
-          <div className="absolute top-1/3 -right-32 w-[400px] h-[400px] rounded-full bg-blue-500/10 blur-[120px] animate-pulse [animation-delay:2s]" />
-          <div className="absolute -bottom-32 left-1/4 w-[350px] h-[350px] rounded-full bg-emerald-400/5 blur-[100px] animate-pulse [animation-delay:4s]" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-emerald-500/3 to-blue-500/3 blur-[150px]" />
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-primary-950 to-gray-900 px-4 pb-16 pt-28 lg:pt-36">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute -left-32 -top-32 h-[500px] w-[500px] animate-pulse rounded-full bg-primary-500/10 blur-3xl" />
+          <div className="absolute -bottom-40 -right-32 h-[600px] w-[600px] animate-pulse rounded-full bg-primary-700/10 blur-3xl" />
         </div>
+        <div className="relative z-10 mx-auto max-w-3xl text-center">
+          <Badge className="mb-6 border-primary-400/30 bg-primary-500/10 px-4 py-1.5 text-primary-200 backdrop-blur-sm">
+            <MessageSquare className="mr-2 h-3.5 w-3.5" />Get In Touch
+          </Badge>
+          <h1 className="mb-6 bg-gradient-to-r from-white via-primary-100 to-primary-200 bg-clip-text text-4xl font-bold leading-tight text-transparent md:text-5xl lg:text-6xl">
+            Let's Connect
+          </h1>
+          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-primary-200/80">
+            Have questions about our programs or leadership development opportunities? We're here to help.
+          </p>
+        </div>
+      </section>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
-          <div className="text-center mb-12 lg:mb-16" data-observe data-index={0}>
-            <Badge className="mb-4 px-4 py-1.5 text-xs font-medium tracking-wider uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">
-              <MessageSquare className="w-3.5 h-3.5 mr-1.5" />
-              Get In Touch
-            </Badge>
-            <h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight"
-              style={{
-                ...fadeInUp(0),
-                ...(visible.has(0)
-                  ? { opacity: 1, transform: 'translateY(0)' }
-                  : {}),
-              }}
-            >
-              Let's{' '}
-              <span className="bg-gradient-to-r from-emerald-400 to-blue-400 bg-clip-text text-transparent">
-                Connect
-              </span>
-            </h1>
-            <p
-              className="text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed"
-              style={{
-                ...fadeInUp(1),
-                ...(visible.has(0)
-                  ? { opacity: 1, transform: 'translateY(0)' }
-                  : {}),
-              }}
-            >
-              Have questions about our programs or leadership development
-              opportunities? We're here to help you take the next step in your
-              journey.
-            </p>
-          </div>
+      {/* Content */}
+      <section className="bg-white px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid gap-10 lg:grid-cols-5 lg:gap-14">
+            {/* Form */}
+            <div className="lg:col-span-3">
+              <FadeInSection>
+                <div className="mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900">Send us a Message</h2>
+                  <p className="mt-1 text-sm text-gray-500">Fill out the form below and we'll get back to you within 24 hours.</p>
+                </div>
 
-          <div className="grid lg:grid-cols-5 gap-8 lg:gap-12 items-start">
-            <div
-              className="lg:col-span-3"
-              data-observe
-              data-index={1}
-              style={{
-                ...fadeInUp(0),
-                ...(visible.has(1)
-                  ? { opacity: 1, transform: 'translateY(0)' }
-                  : {}),
-              }}
-            >
-              <Card className="backdrop-blur-xl bg-white/[0.03] border border-white/[0.06] rounded-2xl shadow-2xl overflow-hidden">
-                <CardContent className="p-6 sm:p-8 lg:p-10">
-                  <div className="flex items-center gap-3 mb-8">
-                    <div className="p-2.5 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/5 border border-emerald-500/20">
-                      <MessageSquare className="w-5 h-5 text-emerald-400" />
-                    </div>
-                    <div>
-                      <h2 className="text-xl font-semibold text-white">
-                        Send us a Message
-                      </h2>
-                      <p className="text-sm text-slate-400">
-                        Fill out the form and we'll get back to you
-                      </p>
-                    </div>
-                  </div>
-
-                  {submitted && (
-                    <div className="mb-6 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium animate-in fade-in slide-in-from-top-2 duration-300">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                <Card className="border border-gray-200 shadow-sm">
+                  <CardContent className="p-6 sm:p-8">
+                    {submitted && (
+                      <div className="mb-5 flex items-center gap-2.5 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+                        <div className="h-2 w-2 rounded-full bg-emerald-500" />
                         Message sent successfully! We'll respond within 24 hours.
                       </div>
-                    </div>
-                  )}
+                    )}
 
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="grid sm:grid-cols-2 gap-5">
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-slate-300">
-                          Full Name
-                        </label>
-                        <Input
-                          placeholder="Your full name"
-                          value={form.name}
-                          onChange={(e) =>
-                            setForm({ ...form, name: e.target.value })
-                          }
-                          required
-                          className="h-12 bg-white/[0.04] border-white/[0.08] text-white placeholder:text-slate-500 rounded-xl focus:border-emerald-500/50 focus:ring-emerald-500/20 transition-all duration-300"
-                        />
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div className="space-y-1.5">
+                          <label className="text-sm font-medium text-gray-700">Full Name</label>
+                          <Input placeholder="Your full name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className="h-11 rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500/20" />
+                        </div>
+                        <div className="space-y-1.5">
+                          <label className="text-sm font-medium text-gray-700">Email Address</label>
+                          <Input type="email" placeholder="your@email.com" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required className="h-11 rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500/20" />
+                        </div>
                       </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-slate-300">
-                          Email Address
-                        </label>
-                        <Input
-                          type="email"
-                          placeholder="your@email.com"
-                          value={form.email}
-                          onChange={(e) =>
-                            setForm({ ...form, email: e.target.value })
-                          }
-                          required
-                          className="h-12 bg-white/[0.04] border-white/[0.08] text-white placeholder:text-slate-500 rounded-xl focus:border-emerald-500/50 focus:ring-emerald-500/20 transition-all duration-300"
-                        />
-                      </div>
-                    </div>
 
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-slate-300">
-                        Phone Number
-                      </label>
-                      <Input
-                        type="tel"
-                        placeholder="+92 300 1234567"
-                        value={form.phone}
-                        onChange={(e) =>
-                          setForm({ ...form, phone: e.target.value })
-                        }
-                        className="h-12 bg-white/[0.04] border-white/[0.08] text-white placeholder:text-slate-500 rounded-xl focus:border-emerald-500/50 focus:ring-emerald-500/20 transition-all duration-300"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-slate-300">
-                        Message
-                      </label>
-                      <textarea
-                        placeholder="Tell us about your inquiry..."
-                        value={form.message}
-                        onChange={(e) =>
-                          setForm({ ...form, message: e.target.value })
-                        }
-                        required
-                        rows={5}
-                        className="w-full px-4 py-3 bg-white/[0.04] border border-white/[0.08] text-white placeholder:text-slate-500 rounded-xl focus:border-emerald-500/50 focus:ring-emerald-500/20 transition-all duration-300 resize-none outline-none"
-                      />
-                    </div>
-
-                    <Button
-                      type="submit"
-                      className="w-full h-12 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-semibold rounded-xl shadow-lg shadow-emerald-500/20 transition-all duration-300 group"
-                    >
-                      <Send className="w-4 h-4 mr-2 transition-transform duration-300 group-hover:translate-x-1" />
-                      Send Message
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div
-              className="lg:col-span-2 space-y-5"
-              data-observe
-              data-index={2}
-              style={{
-                ...fadeInUp(0),
-                ...(visible.has(2)
-                  ? { opacity: 1, transform: 'translateY(0)' }
-                  : {}),
-              }}
-            >
-              {contactInfo.map((item, index) => (
-                <div
-                  key={item.label}
-                  data-observe
-                  data-index={3 + index}
-                  style={{
-                    ...fadeInUp(0),
-                    ...(visible.has(3 + index)
-                      ? { opacity: 1, transform: 'translateY(0)' }
-                      : {}),
-                  }}
-                >
-                  <Card className="backdrop-blur-xl bg-white/[0.03] border border-white/[0.06] rounded-xl hover:bg-white/[0.06] transition-all duration-300 group">
-                    <CardContent className="p-5 flex items-start gap-4">
-                      <div className="p-2.5 rounded-xl bg-gradient-to-br from-emerald-500/15 to-emerald-500/5 border border-emerald-500/15 shrink-0 transition-transform duration-300 group-hover:scale-105">
-                        <item.icon className="w-5 h-5 text-emerald-400" />
+                      <div className="space-y-1.5">
+                        <label className="text-sm font-medium text-gray-700">Phone Number</label>
+                        <Input type="tel" placeholder="+92 300 1234567" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="h-11 rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500/20" />
                       </div>
-                      <div>
-                        <p className="text-xs font-medium uppercase tracking-wider text-slate-500 mb-0.5">
-                          {item.label}
-                        </p>
-                        <p className="text-sm font-semibold text-white">
-                          {item.value}
-                        </p>
-                        {item.detail && (
-                          <p className="text-xs text-slate-400 mt-0.5">
-                            {item.detail}
-                          </p>
-                        )}
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-slate-600 ml-auto mt-1 transition-all duration-300 group-hover:translate-x-1 group-hover:text-emerald-400" />
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
 
-              <div
-                data-observe
-                data-index={7}
-                style={{
-                  ...fadeInUp(0),
-                  ...(visible.has(7)
-                    ? { opacity: 1, transform: 'translateY(0)' }
-                    : {}),
-                }}
-              >
-                <Card className="backdrop-blur-xl bg-white/[0.03] border border-white/[0.06] rounded-xl overflow-hidden mt-5">
-                  <CardContent className="p-0">
-                    <div className="relative h-48 bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center">
-                      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-500/5 via-transparent to-transparent" />
-                      <div className="relative text-center px-6">
-                        <Building2 className="w-8 h-8 text-emerald-400/60 mx-auto mb-2" />
-                        <p className="text-sm text-slate-400">
-                          F-8/3, Islamabad
-                        </p>
-                        <p className="text-xs text-slate-500 mt-1">
-                          Capital Territory, Pakistan
-                        </p>
+                      <div className="space-y-1.5">
+                        <label className="text-sm font-medium text-gray-700">Message</label>
+                        <textarea placeholder="Tell us about your inquiry..." value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required rows={4} className="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:border-primary-500 focus:ring-1 focus:ring-primary-500/20" />
                       </div>
-                      <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
-                        <GraduationCap className="w-3.5 h-3.5 text-emerald-500/40" />
-                        <span className="text-[10px] text-slate-600 font-medium uppercase tracking-wider">
-                          Visit Us
-                        </span>
-                      </div>
-                    </div>
+
+                      <Button type="submit" className="h-11 w-full rounded-lg bg-primary-600 font-semibold text-white shadow-sm hover:bg-primary-700">
+                        <Send className="mr-2 h-4 w-4" />Send Message
+                      </Button>
+                    </form>
                   </CardContent>
                 </Card>
-              </div>
+              </FadeInSection>
+            </div>
+
+            {/* Info + Map */}
+            <div className="space-y-5 lg:col-span-2">
+              {contactInfo.map((item, index) => (
+                <FadeInSection key={item.label}>
+                  <Card className="group border border-gray-200 shadow-sm transition-all duration-200 hover:border-primary-200 hover:shadow-md">
+                    <CardContent className="flex items-start gap-4 p-4">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-50">
+                        <item.icon className="h-5 w-5 text-primary-600" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-xs font-medium uppercase tracking-wider text-gray-400">{item.label}</p>
+                        <p className="text-sm font-semibold text-gray-900">{item.value}</p>
+                        {item.detail && <p className="mt-0.5 text-xs text-gray-500">{item.detail}</p>}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </FadeInSection>
+              ))}
+
+              {/* Map */}
+              <FadeInSection>
+                <Card className="overflow-hidden border border-gray-200 shadow-sm">
+                  <div className="aspect-[4/3] w-full bg-gray-100">
+                    <iframe
+                      title="Leadership Study System Location"
+                      src="https://www.openstreetmap.org/export/embed.html?bbox=73.0375%2C33.7150%2C73.0475%2C33.7250&amp;layer=mapnik&amp;marker=33.7200%2C73.0425"
+                      width="100%" height="100%" style={{ border: 0 }}
+                      allowFullScreen loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    />
+                  </div>
+                  <div className="flex items-center justify-center gap-1.5 border-t border-gray-100 px-4 py-2.5">
+                    <MapPin className="h-3.5 w-3.5 text-primary-500" />
+                    <span className="text-xs font-medium text-gray-500">Street No.14, Sector F-8/3, Islamabad, Pakistan</span>
+                  </div>
+                </Card>
+              </FadeInSection>
+
+              {/* Quick Contact */}
+              <FadeInSection>
+                <div className="rounded-xl border border-primary-100 bg-primary-50/50 p-4 text-center">
+                  <p className="text-xs font-medium text-primary-700">Need immediate assistance?</p>
+                  <a href="tel:+923059079079" className="mt-1 inline-flex items-center gap-1 text-sm font-bold text-primary-800 hover:text-primary-900">
+                    <Phone className="h-4 w-4" />+92 305 9079079
+                  </a>
+                </div>
+              </FadeInSection>
             </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* CTA */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-primary-700 to-primary-900 px-4 py-20 text-center">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
+          <div className="absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
+        </div>
+        <FadeInSection>
+          <Badge className="mb-6 border-white/20 bg-white/10 px-4 py-1.5 text-white backdrop-blur-sm">
+            <Sparkles className="mr-2 h-4 w-4" />Get Started Today
+          </Badge>
+          <h2 className="mb-4 text-3xl font-bold text-white sm:text-4xl">Ready to Start Your Journey?</h2>
+          <p className="mx-auto mb-8 max-w-xl text-primary-100">Take the first step towards academic excellence. Enroll at Leadership Study System today.</p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <a href="tel:+923059079079">
+              <Button size="lg" className="bg-white px-8 py-6 text-base font-semibold text-primary-800 shadow-lg hover:bg-gray-100">
+                <Phone className="mr-2 h-5 w-5" />Call Us Now
+              </Button>
+            </a>
+            <a href="mailto:info@leadershipstudysystem.pk">
+              <Button size="lg" variant="outline" className="border-white/30 px-8 py-6 text-base font-semibold text-white hover:bg-white/10">
+                <Mail className="mr-2 h-5 w-5" />Email Us
+              </Button>
+            </a>
+          </div>
+        </FadeInSection>
+      </section>
     </>
   );
 };
