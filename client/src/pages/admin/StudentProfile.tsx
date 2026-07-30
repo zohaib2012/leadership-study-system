@@ -151,6 +151,22 @@ export default function StudentProfile() {
                     <span className="text-muted-foreground">Join Date:</span>
                     <span className="font-medium">{formatDate(student.joiningDate)}</span>
                   </div>
+                  {student.leavingDate && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Leave Date:</span>
+                      <span className="font-medium text-red-600">{formatDate(student.leavingDate)}</span>
+                    </div>
+                  )}
+                  {student.subjects && student.subjects.length > 0 && (
+                    <div className="pt-2 border-t mt-2">
+                      <span className="text-muted-foreground text-xs block mb-1">Subjects:</span>
+                      <div className="flex flex-wrap gap-1">
+                        {student.subjects.map((s: any) => (
+                          <span key={s._id} className="text-xs bg-primary-50 text-primary-700 px-2 py-0.5 rounded">{s.name}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -182,6 +198,10 @@ export default function StudentProfile() {
                   <div>
                     <p className="text-muted-foreground">City</p>
                     <p className="font-medium">{student.city || '-'}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">B-Form No</p>
+                    <p className="font-medium">{student.bFormNo || '-'}</p>
                   </div>
                   <div className="col-span-2">
                     <p className="text-muted-foreground">Address</p>

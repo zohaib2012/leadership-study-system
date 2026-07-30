@@ -5,7 +5,8 @@ const FeeChallan = require('../models/FeeChallan');
 const FeePayment = require('../models/FeePayment');
 const Attendance = require('../models/Attendance');
 const ClassModel = require('../models/Class');
-const { generateRegistrationNo } = require('../utils/helpers');
+const FeeStructure = require('../models/FeeStructure');
+const { generateRegistrationNo, generateChallanNo } = require('../utils/helpers');
 
 const Section = ClassModel.Section;
 
@@ -182,6 +183,43 @@ exports.createStudent = async (req, res) => {
     if (!studentData.bFormNo) delete studentData.bFormNo;
 
     const student = await Student.create(studentData);
+
+    // Auto-generate fee challan if fee structure exists for this class
+    try {
+      const feeStructures = await FeeStructure.find({
+        tenant,
+        class: student.class,
+        isActive: true,
+      }).lean();
+
+      if (feeStructures.length > 0) {
+        const now = new Date();
+        const month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+        const dueDate = new Date(now.getFullYear(), now.getMonth() + 1, 10);
+        const totalAmount = feeStructures.reduce((sum, fs) => sum + fs.amount, 0);
+
+        let challanNo = generateChallanNo();
+        let attempts = 0;
+        while (attempts < 5) {
+          const exists = await FeeChallan.findOne({ challanNo });
+          if (!exists) break;
+          challanNo = generateChallanNo();
+          attempts++;
+        }
+
+        await FeeChallan.create({
+          tenant,
+          student: student._id,
+          challanNo,
+          month,
+          totalAmount,
+          dueDate,
+          status: 'PENDING',
+        });
+      }
+    } catch (err) {
+      console.error('Failed to auto-generate challan:', err);
+    }
 
     const populated = await Student.findById(student._id)
       .populate('class')
