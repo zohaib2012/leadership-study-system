@@ -57,7 +57,7 @@ export default function HomeworkForm() {
     }
     setIsLoading(true)
     try {
-      await api.post('/homework', form)
+      await api.post('/homework', { classId: form.class, subjectId: form.subject, title: form.title, description: form.description, dueDate: form.dueDate })
       navigate('/admin/homework')
     } catch (err: any) {
       setError(err?.response?.data?.message || 'Failed to create homework')
