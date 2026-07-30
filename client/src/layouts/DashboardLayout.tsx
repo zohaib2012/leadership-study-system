@@ -7,7 +7,7 @@ import { getInitials } from '@/lib/utils'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import {
   LayoutDashboard, Users, UserCheck, GraduationCap, BookOpen, Calendar, ClipboardCheck,
-  IndianRupee, Clock, FileText, Settings, LogOut, Menu, X,
+  IndianRupee, Clock, FileText, Megaphone, Settings, LogOut, Menu, X,
   Bell, Shield, School, BarChart3, ChevronLeft, Home, ChevronDown, Search,
   Building2, Activity,
 } from 'lucide-react'
@@ -26,7 +26,7 @@ const superAdminMenu = [
   { label: 'Fees', href: '/super-admin/fees', icon: IndianRupee },
   { label: 'Homework', href: '/super-admin/homework', icon: FileText },
   // { label: 'Communication', href: '/super-admin/communication/sms', icon: MessageSquare },
-  // { label: 'Announcements', href: '/super-admin/communication/announcements', icon: Megaphone },
+  { label: 'Announcements', href: '/super-admin/communication/announcements', icon: Megaphone },
   { label: 'Reports', href: '/super-admin/reports', icon: BarChart3 },
   { label: 'Settings', href: '/super-admin/settings', icon: Settings },
   { label: 'Logs', href: '/super-admin/logs', icon: Activity },
@@ -44,7 +44,7 @@ const adminMenu = [
   { label: 'Payroll', href: '/admin/payroll', icon: IndianRupee },
   { label: 'Homework', href: '/admin/homework', icon: FileText },
   // { label: 'Communication', href: '/admin/communication/sms', icon: MessageSquare },
-  // { label: 'Announcements', href: '/admin/communication/announcements', icon: Megaphone },
+  { label: 'Announcements', href: '/admin/communication/announcements', icon: Megaphone },
   { label: 'Reports', href: '/admin/reports', icon: BarChart3 },
   { label: 'Settings', href: '/admin/settings', icon: Settings },
 ]
