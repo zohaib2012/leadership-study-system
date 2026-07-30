@@ -29,7 +29,7 @@ export default function StudentAttendance() {
 
   useEffect(() => {
     setLoading(true)
-    api.get(`/student/attendance?month=${month + 1}&year=${year}`)
+    api.get('/attendance/student/me', { params: { month: month + 1, year } })
       .then((res) => setData(res.data.data))
       .catch(() => {})
       .finally(() => setLoading(false))

@@ -35,7 +35,7 @@ export default function StudentHomework() {
 
   const fetchHomework = () => {
     setLoading(true)
-    api.get('/student/homework')
+    api.get('/homework/student')
       .then((res) => setHomework(res.data.data))
       .catch(() => {})
       .finally(() => setLoading(false))

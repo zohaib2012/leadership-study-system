@@ -33,7 +33,7 @@ exports.login = async (req, res) => {
     }
 
     if (user.status !== 'ACTIVE') {
-      return res.status(401).json({ success: false, message: 'Account is inactive. Contact your administrator.' });
+      return res.status(401).json({ success: false, message: 'Your account is pending approval. Please wait for admin to activate your account.' });
     }
 
     const isMatch = await user.comparePassword(password);

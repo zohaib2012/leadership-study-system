@@ -11,7 +11,7 @@ export default function SuperTeachers() {
 
   useEffect(() => {
     api.get('/super-admin/users', { params: { role: 'TEACHER', limit: 50 } }).then(({ data }) => {
-      if (data.success) setTeachers(data.data?.users || data.data || [])
+      if (data.success) setTeachers(data.data || [])
     }).catch(console.error).finally(() => setLoading(false))
   }, [])
 

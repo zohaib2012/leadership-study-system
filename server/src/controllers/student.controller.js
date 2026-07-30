@@ -275,6 +275,11 @@ exports.updateStudent = async (req, res) => {
       });
     }
 
+    if (updates.status) {
+      const userStatus = updates.status === 'ACTIVE' ? 'ACTIVE' : 'INACTIVE';
+      await User.findByIdAndUpdate(student.user, { status: userStatus, updatedAt: new Date() });
+    }
+
     res.json({ success: true, data: student });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -614,6 +619,81 @@ exports.promoteStudents = async (req, res) => {
       success: true,
       data: updatedStudents,
       pagination: { total: updatedStudentIds.length },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.getMyFees = async (req, res) => {
+  try {
+    const tenantId = req.tenant._id;
+    const student = await Student.findOne({ user: req.user._id, tenant: tenantId });
+    if (!student) {
+      return res.status(404).json({ success: false, message: 'Student profile not found' });
+    }
+
+    const challans = await FeeChallan.find({ student: student._id, tenant: tenantId })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    const challanIds = challans.map((c) => c._id);
+    const payments = await FeePayment.find({ challan: { $in: challanIds }, tenant: tenantId })
+      .sort({ paidAt: -1 })
+      .lean();
+
+    let totalDue = 0;
+    let totalPaid = 0;
+    for (const c of challans) {
+      totalDue += c.totalAmount;
+      totalPaid += c.paidAmount || 0;
+    }
+    const pending = totalDue - totalPaid;
+
+    const paymentsByChallan = {};
+    for (const p of payments) {
+      const cid = p.challan.toString();
+      if (!paymentsByChallan[cid]) paymentsByChallan[cid] = [];
+      paymentsByChallan[cid].push(p);
+    }
+
+    const transactions = [];
+    let runningBalance = 0;
+
+    for (const c of challans) {
+      runningBalance += c.totalAmount;
+      transactions.push({
+        _id: c._id,
+        date: c.issuedAt || c.createdAt,
+        description: `Fee Challan - ${c.month}`,
+        type: 'CHALLAN',
+        debit: c.totalAmount,
+        credit: 0,
+        balance: runningBalance,
+        status: c.status,
+      });
+
+      const challanPayments = paymentsByChallan[c._id.toString()] || [];
+      for (const p of challanPayments) {
+        runningBalance -= p.amount;
+        transactions.push({
+          _id: p._id,
+          date: p.paidAt,
+          description: `Payment${p.reference ? ` (${p.reference})` : ''}`,
+          type: 'PAYMENT',
+          debit: 0,
+          credit: p.amount,
+          balance: runningBalance,
+          status: 'PAID',
+        });
+      }
+    }
+
+    transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    res.json({
+      success: true,
+      data: { totalDue, totalPaid, pending, transactions },
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

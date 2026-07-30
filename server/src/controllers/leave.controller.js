@@ -41,9 +41,12 @@ exports.getLeaves = async (req, res) => {
 exports.createLeave = async (req, res) => {
   try {
     const tenant = req.tenant._id;
-    const { student: studentId, type, fromDate, toDate, reason } = req.body;
+    const { student: studentId, type, fromDate, toDate, startDate, endDate, reason } = req.body;
 
-    if (!type || !fromDate || !toDate || !reason) {
+    const finalFromDate = fromDate || startDate;
+    const finalToDate = toDate || endDate;
+
+    if (!type || !finalFromDate || !finalToDate || !reason) {
       return res.status(400).json({
         success: false,
         message: 'type, fromDate, toDate and reason are required',
@@ -64,8 +67,8 @@ exports.createLeave = async (req, res) => {
       user: req.user._id,
       student: finalStudentId,
       type,
-      fromDate: new Date(fromDate),
-      toDate: new Date(toDate),
+      fromDate: new Date(finalFromDate),
+      toDate: new Date(finalToDate),
       reason,
     });
 

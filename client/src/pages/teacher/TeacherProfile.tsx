@@ -14,10 +14,10 @@ export default function TeacherProfile() {
   const [form, setForm] = useState({ phone: '', address: '' })
 
   useEffect(() => {
-    api.get('/teachers/me').then(({ data }) => {
+    api.get('/auth/me').then(({ data }) => {
       if (data.success) {
         setProfile(data.data)
-        setForm({ phone: data.data.user?.phone || '', address: data.data.address || '' })
+        setForm({ phone: data.data.phone || '', address: data.data.address || '' })
       }
     }).catch(console.error).finally(() => setLoading(false))
   }, [])
@@ -25,7 +25,7 @@ export default function TeacherProfile() {
   const handleSave = async () => {
     setSaving(true)
     try {
-      await api.put('/teachers/me', form)
+      await api.put('/auth/profile', form)
       alert('Profile updated successfully')
     } catch { alert('Failed to update profile') }
     finally { setSaving(false) }

@@ -8,7 +8,7 @@ export default function SuperSubjects() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/super-admin/subjects').then(({ data }) => {
+    api.get('/super-admin/subjects?type=SCHOOL').then(({ data }) => {
       if (data.success) setSubjects(data.data || [])
     }).catch(console.error).finally(() => setLoading(false))
   }, [])

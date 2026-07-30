@@ -13,6 +13,7 @@ router.get('/export', authorize('ADMIN', 'SUB_ADMIN'), studentController.exportS
 router.get('/:id', authorize('ADMIN', 'SUB_ADMIN', 'TEACHER'), studentController.getStudent);
 router.put('/:id', authorize('ADMIN', 'SUB_ADMIN'), studentController.updateStudent);
 router.delete('/:id', authorize('ADMIN', 'SUB_ADMIN'), studentController.deleteStudent);
+router.get('/me/fees', authorize('STUDENT', 'PARENT'), studentController.getMyFees);
 router.get('/:id/fees', authorize('ADMIN', 'SUB_ADMIN', 'ACCOUNTANT', 'STUDENT', 'PARENT'), studentController.getStudentFees);
 router.get('/:id/attendance', authorize('ADMIN', 'SUB_ADMIN', 'TEACHER', 'STUDENT', 'PARENT'), studentController.getStudentAttendance);
 router.get('/:id/id-card', authorize('ADMIN', 'SUB_ADMIN'), studentController.generateIdCard);

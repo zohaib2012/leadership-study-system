@@ -1,5 +1,6 @@
 const Subject = require('../models/Subject');
 const Teacher = require('../models/Teacher');
+const Student = require('../models/Student');
 
 const requireTenant = (req) => {
   if (!req.tenant || !req.tenant._id) {
@@ -18,6 +19,15 @@ exports.getSubjects = async (req, res) => {
     const { type } = req.query;
     const filter = { tenant: tenantId };
     if (type) filter.type = type;
+
+    if (req.user.role === 'STUDENT') {
+      const student = await Student.findOne({ user: req.user._id, tenant: tenantId });
+      if (student && student.subjects && student.subjects.length > 0) {
+        filter._id = { $in: student.subjects };
+      } else {
+        return res.json({ success: true, data: [] });
+      }
+    }
 
     const subjects = await Subject.find(filter).sort({ type: 1, name: 1 });
 

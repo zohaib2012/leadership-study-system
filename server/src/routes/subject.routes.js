@@ -4,9 +4,8 @@ const { protect, authorize } = require('../middleware/auth.middleware');
 const subjectController = require('../controllers/subject.controller');
 
 router.use(protect);
-router.use(authorize('ADMIN', 'SUB_ADMIN'));
 
-router.get('/', subjectController.getSubjects);
+router.get('/', authorize('ADMIN', 'SUB_ADMIN', 'STUDENT'), subjectController.getSubjects);
 router.post('/', subjectController.createSubject);
 router.put('/:id', subjectController.updateSubject);
 router.delete('/:id', subjectController.deleteSubject);

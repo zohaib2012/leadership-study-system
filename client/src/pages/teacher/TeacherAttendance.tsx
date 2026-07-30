@@ -44,7 +44,7 @@ export default function TeacherAttendance() {
   const [message, setMessage] = useState('')
 
   useEffect(() => {
-    api.get('/teacher/classes')
+    api.get('/teachers/my-classes')
       .then((res) => setClasses(res.data.data))
       .catch(() => {})
   }, [])
@@ -53,7 +53,7 @@ export default function TeacherAttendance() {
     if (!selectedClassId) return
     setLoading(true)
     setMessage('')
-    api.get(`/teacher/classes/${selectedClassId}/students`)
+    api.get('/students', { params: { class: selectedClassId } })
       .then((res) => {
         setStudents(res.data.data)
         setAttendance(res.data.data.map((s: Student) => ({ studentId: s._id, status: 'PRESENT' as AttendanceStatus })))

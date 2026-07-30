@@ -7,6 +7,7 @@ const FeePayment = require('../models/FeePayment');
 const Homework = require('../models/Homework');
 const HomeworkSubmission = require('../models/HomeworkSubmission');
 const Timetable = require('../models/Timetable');
+const Announcement = require('../models/Announcement');
 
 const DAYS = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
 
@@ -169,6 +170,7 @@ exports.getTeacherDashboard = async (req, res) => {
       todayAttendanceMarked,
       pendingHomeworkSubmissions,
       todayTimetable,
+      announcements,
     ] = await Promise.all([
       Promise.resolve(classIds.length),
       classIds.length > 0
@@ -212,6 +214,24 @@ exports.getTeacherDashboard = async (req, res) => {
         .populate('class', 'name')
         .sort({ startTime: 1 })
         .lean(),
+      classIds.length > 0
+        ? Announcement.find({
+            tenant,
+            $or: [
+              { target: 'ALL' },
+              { target: 'TEACHERS' },
+              { target: 'CLASS', class: { $in: classIds } },
+            ],
+            $or: [
+              { expiresAt: { $exists: false } },
+              { expiresAt: null },
+              { expiresAt: { $gte: new Date() } },
+            ],
+          })
+            .sort({ isPinned: -1, createdAt: -1 })
+            .limit(10)
+            .lean()
+        : [],
     ]);
 
     const totalStudentsInClasses = classIds.length > 0
@@ -229,6 +249,7 @@ exports.getTeacherDashboard = async (req, res) => {
         pendingHomeworkSubmissions,
         todayTimetable,
       },
+      announcements,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -251,11 +272,14 @@ exports.getStudentDashboard = async (req, res) => {
 
     const todayName = DAYS[new Date().getDay()];
 
+    const classId = student.class ? student.class._id || student.class : null;
+
     const [
       attendanceRecords,
       pendingFeeTotal,
       pendingHomework,
       todayTimetable,
+      announcements,
     ] = await Promise.all([
       Attendance.find({ tenant, student: student._id }).lean(),
       FeeChallan.aggregate([
@@ -274,11 +298,11 @@ exports.getStudentDashboard = async (req, res) => {
         },
       ]),
       (async () => {
-        if (!student.class) return 0;
+        if (!classId) return 0;
 
         const homeworks = await Homework.find({
           tenant,
-          class: student.class._id || student.class,
+          class: classId,
         }).select('_id');
 
         const homeworkIds = homeworks.map((h) => h._id);
@@ -292,10 +316,10 @@ exports.getStudentDashboard = async (req, res) => {
 
         return homeworks.length - submissions.length;
       })(),
-      student.class
+      classId
         ? Timetable.find({
             tenant,
-            class: student.class._id || student.class,
+            class: classId,
             dayOfWeek: todayName,
           })
             .populate('subject', 'name')
@@ -307,6 +331,22 @@ exports.getStudentDashboard = async (req, res) => {
             .sort({ startTime: 1 })
             .lean()
         : [],
+      Announcement.find({
+        tenant,
+        $or: [
+          { target: 'ALL' },
+          { target: 'STUDENTS' },
+          ...(classId ? [{ target: 'CLASS', class: classId }] : []),
+        ],
+        $or: [
+          { expiresAt: { $exists: false } },
+          { expiresAt: null },
+          { expiresAt: { $gte: new Date() } },
+        ],
+      })
+        .sort({ isPinned: -1, createdAt: -1 })
+        .limit(10)
+        .lean(),
     ]);
 
     const totalAttendance = attendanceRecords.length;
@@ -325,6 +365,7 @@ exports.getStudentDashboard = async (req, res) => {
         pendingHomework,
         todayTimetable,
       },
+      announcements,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

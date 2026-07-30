@@ -35,22 +35,26 @@ router.post('/students/register', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Registration system is not configured' });
     }
 
-    const { firstName, lastName, dob, gender, fatherName, fatherPhone, address, city, type } = req.body;
+    const { firstName, lastName, dob, gender, fatherName, fatherPhone, address, city, type, email, password } = req.body;
 
     if (!firstName || !lastName || !dob || !gender || !fatherName || !fatherPhone || !address) {
       return res.status(400).json({ success: false, message: 'Required fields are missing' });
     }
 
+    if (email && !password) {
+      return res.status(400).json({ success: false, message: 'Password is required when email is provided' });
+    }
+
     const registrationNo = generateRegistrationNo(type === 'ACADEMY' ? 'ACADEMY' : 'SCHOOL');
 
-    const studentEmail = `${registrationNo.toLowerCase()}@lss.edu.pk`;
-    const password = 'lss@' + registrationNo;
+    const studentEmail = email || `${registrationNo.toLowerCase()}@lss.edu.pk`;
+    const studentPassword = password || 'lss@' + registrationNo;
 
     const user = await User.create({
       tenant: tenant._id,
       name: `${firstName} ${lastName}`,
       email: studentEmail,
-      password,
+      password: studentPassword,
       phone: fatherPhone,
       role: 'STUDENT',
       status: 'INACTIVE',
@@ -107,8 +111,8 @@ router.post('/students/register', async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: 'Registration submitted successfully. Our admissions team will contact you soon.',
-      data: { registrationNo, studentId: student._id },
+      message: 'Registration submitted successfully. You can login once admin approves your account.',
+      data: { registrationNo, studentId: student._id, email: studentEmail },
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

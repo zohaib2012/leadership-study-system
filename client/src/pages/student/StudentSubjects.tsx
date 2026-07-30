@@ -8,8 +8,8 @@ interface Subject {
   _id: string
   name: string
   code?: string
-  teacherName: string
-  attendancePercent: number
+  teacherName?: string
+  attendancePercent?: number
 }
 
 export default function StudentSubjects() {
@@ -17,7 +17,7 @@ export default function StudentSubjects() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/student/subjects')
+    api.get('/subjects')
       .then((res) => setSubjects(res.data.data))
       .catch(() => {})
       .finally(() => setLoading(false))
@@ -31,7 +31,8 @@ export default function StudentSubjects() {
     )
   }
 
-  const attendanceColor = (pct: number) => {
+  const attendanceColor = (pct: number | undefined) => {
+    if (pct === undefined || pct === null) return 'secondary'
     if (pct >= 80) return 'success'
     if (pct >= 60) return 'warning'
     return 'destructive'
@@ -53,7 +54,7 @@ export default function StudentSubjects() {
                   <BookOpen className="h-5 w-5 text-primary-700" />
                 </div>
                 <Badge variant={attendanceColor(subject.attendancePercent)}>
-                  {subject.attendancePercent}% attendance
+                  {subject.attendancePercent !== undefined ? `${subject.attendancePercent}% attendance` : 'N/A'}
                 </Badge>
               </div>
               <h3 className="font-semibold text-lg">{subject.name}</h3>
@@ -62,14 +63,16 @@ export default function StudentSubjects() {
               )}
               <div className="flex items-center gap-1.5 mt-3 text-sm text-muted-foreground">
                 <UserCircle className="h-4 w-4" />
-                <span>{subject.teacherName}</span>
+                <span>{subject.teacherName || 'N/A'}</span>
               </div>
+              {subject.attendancePercent !== undefined && (
               <div className="mt-3 w-full bg-muted rounded-full h-2">
                 <div
                   className="h-2 rounded-full bg-primary-600 transition-all"
                   style={{ width: `${subject.attendancePercent}%` }}
                 />
               </div>
+              )}
             </CardContent>
           </Card>
         ))}

@@ -36,7 +36,7 @@ export default function TeacherClasses() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/teacher/classes')
+    api.get('/teachers/my-classes')
       .then((res) => setClasses(res.data.data))
       .catch(() => {})
       .finally(() => setLoading(false))

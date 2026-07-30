@@ -8,7 +8,7 @@ export default function SuperClasses() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/super-admin/classes').then(({ data }) => {
+    api.get('/super-admin/classes?type=SCHOOL').then(({ data }) => {
       if (data.success) setClasses(data.data || [])
     }).catch(console.error).finally(() => setLoading(false))
   }, [])

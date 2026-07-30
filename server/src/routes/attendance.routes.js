@@ -9,6 +9,7 @@ router.post('/mark', authorize('ADMIN', 'SUB_ADMIN', 'TEACHER'), attendanceContr
 router.get('/daily', authorize('ADMIN', 'SUB_ADMIN', 'TEACHER'), attendanceController.getDailyAttendance);
 router.get('/monthly', authorize('ADMIN', 'SUB_ADMIN'), attendanceController.getMonthlyReport);
 router.get('/stats', authorize('ADMIN', 'SUB_ADMIN'), attendanceController.getAttendanceStats);
+router.get('/student/me', authorize('STUDENT'), attendanceController.getMyAttendance);
 router.get('/student/:id', authorize('ADMIN', 'SUB_ADMIN', 'TEACHER', 'STUDENT', 'PARENT'), attendanceController.getStudentAttendance);
 router.post('/teacher', authorize('ADMIN', 'SUB_ADMIN'), attendanceController.markTeacherAttendance);
 router.get('/teacher-report', authorize('ADMIN', 'SUB_ADMIN'), attendanceController.getTeacherAttendanceReport);

@@ -28,7 +28,7 @@ export default function StudentTimetable() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/student/timetable')
+    api.get('/timetable')
       .then((res) => setTimetable(res.data.data))
       .catch(() => {})
       .finally(() => setLoading(false))

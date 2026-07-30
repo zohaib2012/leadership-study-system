@@ -29,7 +29,8 @@ import ForgotPasswordPage from '@/pages/auth/ForgotPasswordPage'
 import AdminDashboard from '@/pages/admin/AdminDashboard'
 import StudentList from '@/pages/admin/StudentList'
 import StudentForm from '@/pages/admin/StudentForm'
-import StudentProfile from '@/pages/admin/StudentProfile'
+import AdminStudentProfile from '@/pages/admin/StudentProfile'
+import StudentProfile from '@/pages/student/StudentProfile'
 import TeacherList from '@/pages/admin/TeacherList'
 import TeacherForm from '@/pages/admin/TeacherForm'
 import ClassList from '@/pages/admin/ClassList'
@@ -68,7 +69,7 @@ import StudentAttendance from '@/pages/student/StudentAttendance'
 import StudentFees from '@/pages/student/StudentFees'
 import StudentHomework from '@/pages/student/StudentHomework'
 import StudentLeaves from '@/pages/student/StudentLeaves'
-// import StudentProfile from '@/pages/student/StudentProfile'
+
 
 import ParentDashboard from '@/pages/parent/ParentDashboard'
 
@@ -160,7 +161,7 @@ export default function App() {
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/students" element={<StudentList />} />
               <Route path="/admin/students/add" element={<StudentForm />} />
-              <Route path="/admin/students/:id" element={<StudentProfile />} />
+              <Route path="/admin/students/:id" element={<AdminStudentProfile />} />
               <Route path="/admin/students/:id/edit" element={<StudentForm />} />
               <Route path="/admin/teachers" element={<TeacherList />} />
               <Route path="/admin/teachers/add" element={<TeacherForm />} />

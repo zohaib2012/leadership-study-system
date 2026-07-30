@@ -25,7 +25,7 @@ export default function SuperDashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/dashboard/super-admin')
+    api.get('/super-admin/dashboard')
       .then((res) => setData(res.data.data))
       .catch(() => {})
       .finally(() => setLoading(false))

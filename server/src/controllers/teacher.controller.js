@@ -1,5 +1,6 @@
 const Teacher = require('../models/Teacher');
 const User = require('../models/User');
+const Student = require('../models/Student');
 const SalarySlip = require('../models/SalarySlip');
 const { generateSlipNo } = require('../utils/helpers');
 
@@ -252,6 +253,69 @@ exports.deleteTeacher = async (req, res) => {
     }
 
     res.json({ success: true, data: teacher });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.getMyClasses = async (req, res) => {
+  try {
+    if (!requireTenant(req)) {
+      return res.status(400).json({ success: false, message: 'Tenant context required' });
+    }
+
+    const teacher = await Teacher.findOne({
+      user: req.user._id,
+      tenant: req.tenant._id,
+    })
+      .populate({ path: 'assignedClasses.class', select: 'name section' })
+      .populate({ path: 'assignedClasses.subject', select: 'name' })
+      .lean();
+
+    if (!teacher) {
+      return res.status(404).json({ success: false, message: 'Teacher profile not found' });
+    }
+
+    const classIds = (teacher.assignedClasses || [])
+      .filter(a => a.class)
+      .map(a => a.class._id);
+
+    const [studentCounts, studentsByClass] = await Promise.all([
+      classIds.length > 0
+        ? Student.aggregate([
+            { $match: { tenant: req.tenant._id, class: { $in: classIds }, status: 'ACTIVE' } },
+            { $group: { _id: '$class', count: { $sum: 1 } } },
+          ])
+        : [],
+      classIds.length > 0
+        ? Student.find({ tenant: req.tenant._id, class: { $in: classIds }, status: 'ACTIVE' })
+            .select('firstName lastName registrationNo photo class')
+            .lean()
+        : [],
+    ]);
+
+    const countMap = {};
+    studentCounts.forEach(item => { countMap[item._id.toString()] = item.count; });
+
+    const studentsMap = {};
+    studentsByClass.forEach(s => {
+      const key = s.class.toString();
+      if (!studentsMap[key]) studentsMap[key] = [];
+      studentsMap[key].push({ _id: s._id, firstName: s.firstName, lastName: s.lastName, registrationNo: s.registrationNo });
+    });
+
+    const classes = (teacher.assignedClasses || [])
+      .filter(a => a.class)
+      .map(a => ({
+        _id: a.class._id,
+        name: a.class.name,
+        section: a.class.section,
+        subject: a.subject?.name || '',
+        studentCount: countMap[a.class._id.toString()] || 0,
+        students: studentsMap[a.class._id.toString()] || [],
+      }));
+
+    res.json({ success: true, data: classes });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

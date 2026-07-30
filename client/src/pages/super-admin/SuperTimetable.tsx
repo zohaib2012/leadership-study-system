@@ -8,7 +8,7 @@ export default function SuperTimetable() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/super-admin/timetable').then(({ data }) => {
+    api.get('/super-admin/timetable?classId=all').then(({ data }) => {
       if (data.success) setSlots(data.data || [])
     }).catch(console.error).finally(() => setLoading(false))
   }, [])

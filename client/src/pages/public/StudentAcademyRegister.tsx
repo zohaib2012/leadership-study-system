@@ -17,6 +17,8 @@ interface AcademyFormData {
   lastName: string
   dob: string
   gender: string
+  email: string
+  password: string
   fatherName: string
   fatherCnic: string
   fatherPhone: string
@@ -38,8 +40,8 @@ const academySeries = ['MAY_JUNE', 'OCT_NOV']
 
 export default function StudentAcademyRegister() {
   const [formData, setFormData] = useState<AcademyFormData>({
-    firstName: '', lastName: '', dob: '', gender: '', fatherName: '',
-    fatherCnic: '', fatherPhone: '', fatherEmail: '', fatherOccupation: '',
+    firstName: '', lastName: '', dob: '', gender: '', email: '', password: '',
+    fatherName: '', fatherCnic: '', fatherPhone: '', fatherEmail: '', fatherOccupation: '',
     motherName: '', motherPhone: '', address: '', city: '',
     previousSchool: '', programLevel: '', subjects: '', academySeries: '',
     agreeTerms: false
@@ -67,7 +69,7 @@ export default function StudentAcademyRegister() {
     setIsSubmitting(true)
     try {
       const api = (await import('@/lib/api')).default
-      await api.post('/public/students/register', { ...formData, type: 'ACADEMY' })
+      await api.post('/public/students/register', { ...formData, type: 'ACADEMY', email: formData.email, password: formData.password })
       setIsSuccess(true)
     } catch (err: any) {
       alert(err.response?.data?.message || 'Registration failed. Please try again.')
@@ -99,7 +101,7 @@ export default function StudentAcademyRegister() {
                 Thank you, <span className="font-semibold text-gray-900">{formData.firstName} {formData.lastName}</span>
               </p>
               <p className="text-gray-400 text-sm mb-8">
-                We have received your academy registration request. Our admissions team will contact you at <span className="text-primary-600 font-medium">{formData.fatherPhone}</span> soon.
+                Your account <span className="text-primary-600 font-medium">{formData.email}</span> is pending admin approval. You will be able to login once approved.
               </p>
               <div className="flex flex-col gap-3">
                 <Button asChild className="w-full h-12 bg-primary-700 hover:bg-primary-800 text-white font-semibold text-base rounded-xl shadow-lg">
@@ -180,6 +182,14 @@ export default function StudentAcademyRegister() {
                             <SelectItem value="FEMALE">Female</SelectItem>
                           </SelectContent>
                         </Select>
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-sm font-medium text-gray-700">Email <span className="text-red-500">*</span></label>
+                        <Input type="email" value={formData.email} onChange={handleChange('email')} required placeholder="your@email.com" className="h-11" />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-sm font-medium text-gray-700">Password <span className="text-red-500">*</span></label>
+                        <Input type="password" value={formData.password} onChange={handleChange('password')} required placeholder="Create a password" className="h-11" />
                       </div>
                       <div className="space-y-1.5">
                         <label className="text-sm font-medium text-gray-700">Program Level <span className="text-red-500">*</span></label>

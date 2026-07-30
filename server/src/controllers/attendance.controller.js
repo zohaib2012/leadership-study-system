@@ -206,6 +206,46 @@ const getStudentAttendance = async (req, res) => {
   }
 };
 
+const getMyAttendance = async (req, res) => {
+  try {
+    const tenantId = req.tenant._id;
+    const student = await Student.findOne({ user: req.user._id, tenant: tenantId });
+    if (!student) {
+      return res.status(404).json({ success: false, message: 'Student profile not found' });
+    }
+
+    const { month, year } = req.query;
+    const m = month ? parseInt(month) - 1 : new Date().getMonth();
+    const y = year ? parseInt(year) : new Date().getFullYear();
+
+    const startDate = new Date(y, m, 1);
+    const endDate = new Date(y, m + 1, 0, 23, 59, 59, 999);
+
+    const records = await Attendance.find({
+      tenant: tenantId,
+      student: student._id,
+      date: { $gte: startDate, $lte: endDate },
+    }).sort({ date: 1 });
+
+    const data = records.map((r) => ({
+      date: r.date.toISOString().split('T')[0],
+      status: r.status,
+    }));
+
+    const summary = { present: 0, absent: 0, late: 0, total: 0 };
+    for (const r of records) {
+      summary.total += 1;
+      if (r.status === 'PRESENT') summary.present += 1;
+      else if (r.status === 'ABSENT') summary.absent += 1;
+      else if (r.status === 'LATE') summary.late += 1;
+    }
+
+    res.status(200).json({ success: true, data: { records: data, summary } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 const getAttendanceStats = async (req, res) => {
   try {
     const tenantId = req.tenant._id;
@@ -343,6 +383,7 @@ module.exports = {
   getDailyAttendance,
   getMonthlyReport,
   getStudentAttendance,
+  getMyAttendance,
   getAttendanceStats,
   markTeacherAttendance,
   getTeacherAttendanceReport,

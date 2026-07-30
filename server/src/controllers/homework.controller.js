@@ -243,7 +243,7 @@ const getStudentHomework = async (req, res) => {
     }
 
     if (!student.class) {
-      return res.status(400).json({ success: false, message: 'Student is not assigned to any class' });
+      return res.status(200).json({ success: true, data: [] });
     }
 
     const homework = await Homework.find({

@@ -76,7 +76,7 @@ export default function TeacherHomework() {
   }
 
   const fetchClasses = () => {
-    api.get('/teacher/classes')
+    api.get('/teachers/my-classes')
       .then((res) => setClasses(res.data.data))
       .catch(() => {})
   }

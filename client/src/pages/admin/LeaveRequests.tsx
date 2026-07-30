@@ -48,7 +48,8 @@ export default function LeaveRequests() {
 
   const handleAction = async (id: string, action: 'APPROVED' | 'REJECTED') => {
     try {
-      await api.put(`/leaves/${id}`, { status: action })
+      const endpoint = action === 'APPROVED' ? 'approve' : 'reject'
+      await api.put(`/leaves/${id}/${endpoint}`)
       fetchLeaves()
     } catch (err) {
       console.error('Failed to update leave:', err)

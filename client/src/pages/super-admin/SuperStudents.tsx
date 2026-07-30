@@ -11,7 +11,7 @@ export default function SuperStudents() {
 
   useEffect(() => {
     api.get('/super-admin/users', { params: { role: 'STUDENT', limit: 50 } }).then(({ data }) => {
-      if (data.success) setStudents(data.data?.users || data.data || [])
+      if (data.success) setStudents(data.data || [])
     }).catch(console.error).finally(() => setLoading(false))
   }, [])
 

@@ -27,7 +27,7 @@ export default function StudentFees() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/student/fees')
+    api.get('/students/me/fees')
       .then((res) => setData(res.data.data))
       .catch(() => {})
       .finally(() => setLoading(false))

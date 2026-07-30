@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { CheckCircle2, DollarSign, ClipboardList, CalendarDays, BookOpen, Clock, TrendingUp, GraduationCap } from 'lucide-react'
+import { CheckCircle2, DollarSign, ClipboardList, CalendarDays, BookOpen, Clock, TrendingUp, GraduationCap, Megaphone, Bell } from 'lucide-react'
 import api from '@/lib/api'
 import { useAuthStore } from '@/store/auth-store'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -22,12 +22,14 @@ export default function StudentDashboard() {
   const { user } = useAuthStore()
   const [data, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [announcements, setAnnouncements] = useState<any[]>([])
 
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
         const res = await api.get('/dashboard/student')
         setData(res.data?.data || res.data)
+        if (res.data.announcements) setAnnouncements(res.data.announcements)
       } catch (err) {
         console.error('Failed to fetch dashboard', err)
       } finally {
@@ -216,6 +218,39 @@ export default function StudentDashboard() {
                   <p className="text-xs text-muted-foreground line-clamp-2">{exam.syllabus}</p>
                 </div>
               ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card className="border-0 shadow-lg">
+        <CardHeader className="flex flex-row items-center justify-between pb-3">
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Megaphone className="w-5 h-5 text-primary" />
+            Announcements
+          </CardTitle>
+          <Bell className="w-5 h-5 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          {announcements.length > 0 ? (
+            <div className="space-y-3">
+              {announcements.slice(0, 5).map((ann: any, i: number) => (
+                <div key={ann._id || i} className="p-3.5 rounded-xl bg-muted/40 border border-border/50 hover:bg-muted/60 transition-colors">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="font-medium text-sm">{ann.title}</p>
+                    <Badge variant="outline" className="text-[10px] px-2 py-0.5 flex-shrink-0">
+                      {new Date(ann.createdAt || ann.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </Badge>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{ann.content || ann.description}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
+              <Megaphone className="h-10 w-10 mb-3 opacity-30" />
+              <p className="text-sm">No announcements yet.</p>
+              <p className="text-xs">Check back later for updates.</p>
             </div>
           )}
         </CardContent>

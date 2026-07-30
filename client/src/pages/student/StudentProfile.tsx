@@ -10,7 +10,7 @@ export default function StudentProfile() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.get('/students/me').then(({ data }) => {
+    api.get('/auth/me').then(({ data }) => {
       if (data.success) setProfile(data.data)
     }).catch(console.error).finally(() => setLoading(false))
   }, [])

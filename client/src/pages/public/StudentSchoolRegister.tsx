@@ -17,6 +17,8 @@ interface SchoolFormData {
   lastName: string
   dob: string
   gender: string
+  email: string
+  password: string
   fatherName: string
   fatherCnic: string
   fatherPhone: string
@@ -42,8 +44,8 @@ const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
 
 export default function StudentSchoolRegister() {
   const [formData, setFormData] = useState<SchoolFormData>({
-    firstName: '', lastName: '', dob: '', gender: '', fatherName: '',
-    fatherCnic: '', fatherPhone: '', fatherEmail: '', fatherOccupation: '',
+    firstName: '', lastName: '', dob: '', gender: '', email: '', password: '',
+    fatherName: '', fatherCnic: '', fatherPhone: '', fatherEmail: '', fatherOccupation: '',
     motherName: '', motherPhone: '', address: '', city: '',
     previousSchool: '', grade: '', bloodGroup: '', medicalNotes: '',
     agreeTerms: false
@@ -71,7 +73,7 @@ export default function StudentSchoolRegister() {
     setIsSubmitting(true)
     try {
       const api = (await import('@/lib/api')).default
-      await api.post('/public/students/register', { ...formData, type: 'SCHOOL' })
+      await api.post('/public/students/register', { ...formData, type: 'SCHOOL', email: formData.email, password: formData.password })
       setIsSuccess(true)
     } catch (err: any) {
       alert(err.response?.data?.message || 'Registration failed. Please try again.')
@@ -95,16 +97,16 @@ export default function StudentSchoolRegister() {
         <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center p-4">
           <Card className="w-full max-w-lg shadow-xl border-0">
             <CardContent className="pt-12 pb-10 px-8 text-center">
-              <div className="mx-auto w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mb-6">
-                <CheckCircle className="w-10 h-10 text-emerald-600" />
-              </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">Registration Submitted!</h2>
-              <p className="text-gray-500 text-lg mb-2">
-                Thank you, <span className="font-semibold text-gray-900">{formData.firstName} {formData.lastName}</span>
-              </p>
-              <p className="text-gray-400 text-sm mb-8">
-                We have received your school registration request. Our admissions team will contact you at <span className="text-primary-600 font-medium">{formData.fatherPhone}</span> soon.
-              </p>
+                  <div className="mx-auto w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mb-6">
+                    <CheckCircle className="w-10 h-10 text-emerald-600" />
+                  </div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-3">Registration Submitted!</h2>
+                  <p className="text-gray-500 text-lg mb-2">
+                    Thank you, <span className="font-semibold text-gray-900">{formData.firstName} {formData.lastName}</span>
+                  </p>
+                  <p className="text-gray-400 text-sm mb-8">
+                    Your account <span className="text-primary-600 font-medium">{formData.email}</span> is pending admin approval. You will be able to login once approved.
+                  </p>
               <div className="flex flex-col gap-3">
                 <Button asChild className="w-full h-12 bg-primary-700 hover:bg-primary-800 text-white font-semibold text-base rounded-xl shadow-lg">
                   <Link to="/">Return to Home <ArrowRight className="ml-2 w-5 h-5" /></Link>
@@ -184,6 +186,14 @@ export default function StudentSchoolRegister() {
                             <SelectItem value="FEMALE">Female</SelectItem>
                           </SelectContent>
                         </Select>
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-sm font-medium text-gray-700">Email <span className="text-red-500">*</span></label>
+                        <Input type="email" value={formData.email} onChange={handleChange('email')} required placeholder="your@email.com" className="h-11" />
+                      </div>
+                      <div className="space-y-1.5">
+                        <label className="text-sm font-medium text-gray-700">Password <span className="text-red-500">*</span></label>
+                        <Input type="password" value={formData.password} onChange={handleChange('password')} required placeholder="Create a password" className="h-11" />
                       </div>
                       <div className="space-y-1.5">
                         <label className="text-sm font-medium text-gray-700">Grade Applying For <span className="text-red-500">*</span></label>
