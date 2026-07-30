@@ -139,19 +139,19 @@ export default function TeacherList() {
                     <IndianRupee className="h-4 w-4 text-primary-600" />
                   </Button>
                 </Link>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => {
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation()
                     if (window.confirm('Delete this teacher?')) {
                       api.delete(`/teachers/${row._id}`)
                         .then(() => fetchTeachers())
                         .catch(() => alert('Failed to delete teacher'))
                     }
                   }}
+                  className="inline-flex items-center justify-center w-8 h-8 rounded-md hover:bg-muted cursor-pointer"
                 >
                   <Trash2 className="h-4 w-4 text-red-500" />
-                </Button>
+                </span>
               </div>
             ),
           },
