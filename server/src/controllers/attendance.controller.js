@@ -26,7 +26,7 @@ const markAttendance = async (req, res) => {
         update: {
           tenant: tenantId,
           student: studentId,
-      class: resolvedClassId,
+          class: classId,
           date: attendanceDate,
           status,
           remark: remark || '',

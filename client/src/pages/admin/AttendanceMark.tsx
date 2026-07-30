@@ -78,7 +78,7 @@ export default function AttendanceMark() {
         setStudents(list)
         const attMap: Record<string, string> = {}
         list.forEach((s: StudentRecord) => {
-          attMap[s.studentId || s._id] = s.status || 'PRESENT'
+          attMap[s.studentId || s._id] = 'PRESENT'
         })
         setAttendance(attMap)
       }
@@ -86,7 +86,7 @@ export default function AttendanceMark() {
       if (attData.data.success && attData.data.data?.length) {
         const existingMap: Record<string, string> = {}
         attData.data.data.forEach((a: any) => {
-          existingMap[a.student?._id || a.student] = a.status
+          existingMap[a._id] = a.attendance?.status || a.status
         })
         setAttendance((prev) => ({ ...prev, ...existingMap }))
       }
