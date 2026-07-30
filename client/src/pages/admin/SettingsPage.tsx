@@ -69,7 +69,7 @@ export default function SettingsPage() {
     setIsSaving(true)
     setMessage('')
     try {
-      await api.put('/settings', { profile, academicSession: session })
+      await api.put('/settings', { settings: { ...profile, academicSession: session } })
       setMessage('Settings saved successfully!')
     } catch (err: any) {
       setMessage(err?.response?.data?.message || 'Failed to save settings')
