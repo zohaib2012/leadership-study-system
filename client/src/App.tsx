@@ -164,6 +164,7 @@ export default function App() {
               <Route path="/admin/students/:id/edit" element={<StudentForm />} />
               <Route path="/admin/teachers" element={<TeacherList />} />
               <Route path="/admin/teachers/add" element={<TeacherForm />} />
+              <Route path="/admin/teachers/:id/edit" element={<TeacherForm />} />
               <Route path="/admin/classes" element={<ClassList />} />
               <Route path="/admin/subjects" element={<SubjectList />} />
               <Route path="/admin/timetable" element={<TimetableBuilder />} />

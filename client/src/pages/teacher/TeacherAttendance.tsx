@@ -77,9 +77,8 @@ export default function TeacherAttendance() {
     setMessage('')
     try {
       await api.post('/attendance/mark', {
-        classId: selectedClassId,
         date,
-        records: attendance,
+        records: attendance.map((a) => ({ ...a, classId: selectedClassId })),
       })
       setMessage('Attendance saved successfully!')
     } catch {

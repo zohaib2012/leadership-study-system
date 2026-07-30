@@ -142,10 +142,11 @@ export default function TeacherList() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={async () => {
-                    if (confirm('Are you sure?')) {
-                      await api.delete(`/teachers/${row._id}`)
-                      fetchTeachers()
+                  onClick={() => {
+                    if (window.confirm('Delete this teacher?')) {
+                      api.delete(`/teachers/${row._id}`)
+                        .then(() => fetchTeachers())
+                        .catch(() => alert('Failed to delete teacher'))
                     }
                   }}
                 >
