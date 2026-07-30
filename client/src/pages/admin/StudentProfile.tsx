@@ -135,10 +135,17 @@ export default function StudentProfile() {
                   {student.status?.replace(/_/g, ' ')}
                 </Badge>
                 <div className="w-full space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Class:</span>
-                    <span className="font-medium">{student.class?.name || '-'}</span>
-                  </div>
+                  {student.type === 'ACADEMY' ? (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Program Level:</span>
+                      <span className="font-medium">{student.class?.name || '-'}</span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Class:</span>
+                      <span className="font-medium">{student.class?.name || '-'}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Section:</span>
                     <span className="font-medium">{student.section?.name || '-'}</span>
@@ -147,6 +154,12 @@ export default function StudentProfile() {
                     <span className="text-muted-foreground">Type:</span>
                     <span className="font-medium">{student.type || '-'}</span>
                   </div>
+                  {student.type === 'ACADEMY' && student.academySeries && (
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Exam Series:</span>
+                      <span className="font-medium">{student.academySeries === 'MAY_JUNE' ? 'May / June' : 'Oct / Nov'}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Join Date:</span>
                     <span className="font-medium">{formatDate(student.joiningDate)}</span>
@@ -251,12 +264,6 @@ export default function StudentProfile() {
                     <p className="text-muted-foreground">Mother Phone</p>
                     <p className="font-medium">{student.motherPhone || '-'}</p>
                   </div>
-                  {student.academySeries && (
-                    <div>
-                      <p className="text-muted-foreground">Academy Series</p>
-                      <p className="font-medium">{student.academySeries === 'MAY_JUNE' ? 'May/June' : student.academySeries === 'OCT_NOV' ? 'Oct/Nov' : student.academySeries}</p>
-                    </div>
-                  )}
                 </div>
               </CardContent>
             </Card>
