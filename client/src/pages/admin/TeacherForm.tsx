@@ -212,7 +212,7 @@ export default function TeacherForm() {
               <div className="space-y-3">
                 {classes.map((cls) => {
                   const selected = subjectSelections[cls._id] || []
-                  const isAssigned = selected.length > 0
+                  const isAssigned = cls._id in subjectSelections
                   return (
                     <div key={cls._id} className="border rounded-lg p-3">
                       <div className="flex items-center justify-between mb-2">
@@ -244,6 +244,9 @@ export default function TeacherForm() {
                       </div>
                       {isAssigned && (
                         <div className="pl-6 flex flex-wrap gap-1.5">
+                          {subjects.length === 0 && (
+                            <p className="text-xs text-muted-foreground">No subjects available</p>
+                          )}
                           {subjects.map((sub) => {
                             const isSelected = selected.includes(sub._id)
                             return (
