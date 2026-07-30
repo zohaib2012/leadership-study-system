@@ -105,7 +105,7 @@ export default function StudentForm() {
     try {
       const { data } = await api.get(`/students/${id}`)
       if (data.success) {
-        const s = data.data
+        const s = data.data.student || data.data
         setForm({
           firstName: s.firstName || '',
           lastName: s.lastName || '',
