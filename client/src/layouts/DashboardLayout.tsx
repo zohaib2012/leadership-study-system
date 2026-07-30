@@ -7,7 +7,7 @@ import { getInitials } from '@/lib/utils'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import {
   LayoutDashboard, Users, UserCheck, GraduationCap, BookOpen, Calendar, ClipboardCheck,
-  IndianRupee, Clock, MessageSquare, Megaphone, FileText, Settings, LogOut, Menu, X,
+  IndianRupee, Clock, FileText, Settings, LogOut, Menu, X,
   Bell, Shield, School, BarChart3, ChevronLeft, Home, ChevronDown, Search,
   Building2, Activity,
 } from 'lucide-react'
@@ -43,8 +43,8 @@ const adminMenu = [
   { label: 'Fees', href: '/admin/fees/structure', icon: IndianRupee },
   { label: 'Payroll', href: '/admin/payroll', icon: IndianRupee },
   { label: 'Homework', href: '/admin/homework', icon: FileText },
-  { label: 'Communication', href: '/admin/communication/sms', icon: MessageSquare },
-  { label: 'Announcements', href: '/admin/communication/announcements', icon: Megaphone },
+  // { label: 'Communication', href: '/admin/communication/sms', icon: MessageSquare },
+  // { label: 'Announcements', href: '/admin/communication/announcements', icon: Megaphone },
   { label: 'Reports', href: '/admin/reports', icon: BarChart3 },
   { label: 'Settings', href: '/admin/settings', icon: Settings },
 ]

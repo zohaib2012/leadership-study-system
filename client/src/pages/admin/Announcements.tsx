@@ -52,7 +52,7 @@ export default function Announcements() {
   const fetchAnnouncements = useCallback(async () => {
     setIsLoading(true)
     try {
-      const { data } = await api.get('/announcements')
+      const { data } = await api.get('/communication/announcements')
       if (data.success) setAnnouncements(data.data.announcements || data.data || [])
     } catch (err) {
       console.error('Failed to fetch announcements:', err)
@@ -72,9 +72,9 @@ export default function Announcements() {
     try {
       const payload = { ...form }
       if (editItem) {
-        await api.put(`/announcements/${editItem._id}`, payload)
+        await api.put(`/communication/announcements/${editItem._id}`, payload)
       } else {
-        await api.post('/announcements', payload)
+        await api.post('/communication/announcements', payload)
       }
       setShowDialog(false)
       resetForm()
@@ -101,7 +101,7 @@ export default function Announcements() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure?')) return
     try {
-      await api.delete(`/announcements/${id}`)
+      await api.delete(`/communication/announcements/${id}`)
       fetchAnnouncements()
     } catch (err) {
       console.error('Failed to delete announcement:', err)

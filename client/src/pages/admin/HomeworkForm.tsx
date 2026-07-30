@@ -84,25 +84,33 @@ export default function HomeworkForm() {
             )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
+              <div className="relative">
                 <label className="block text-sm font-medium mb-1">Class *</label>
-                <Select value={form.class} onValueChange={(v) => setForm((f) => ({ ...f, class: v }))}>
+                <Select value={form.class || undefined} onValueChange={(v) => setForm((f) => ({ ...f, class: v }))}>
                   <SelectTrigger><SelectValue placeholder="Select class" /></SelectTrigger>
-                  <SelectContent>
-                    {classes.map((c) => (
-                      <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
-                    ))}
+                  <SelectContent className="z-50">
+                    {classes.length === 0 ? (
+                      <div className="px-2 py-4 text-sm text-muted-foreground text-center">No classes available</div>
+                    ) : (
+                      classes.map((c) => (
+                        <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
+                      ))
+                    )}
                   </SelectContent>
                 </Select>
               </div>
-              <div>
+              <div className="relative">
                 <label className="block text-sm font-medium mb-1">Subject</label>
-                <Select value={form.subject} onValueChange={(v) => setForm((f) => ({ ...f, subject: v }))}>
+                <Select value={form.subject || undefined} onValueChange={(v) => setForm((f) => ({ ...f, subject: v }))}>
                   <SelectTrigger><SelectValue placeholder="Select subject" /></SelectTrigger>
-                  <SelectContent>
-                    {subjects.map((s) => (
-                      <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>
-                    ))}
+                  <SelectContent className="z-50">
+                    {subjects.length === 0 ? (
+                      <div className="px-2 py-4 text-sm text-muted-foreground text-center">No subjects available</div>
+                    ) : (
+                      subjects.map((s) => (
+                        <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>
+                      ))
+                    )}
                   </SelectContent>
                 </Select>
               </div>
