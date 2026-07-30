@@ -40,6 +40,7 @@ interface FormData {
   address: string
   city: string
   bloodGroup: string
+  bFormNo: string
   previousSchool: string
   medicalNotes: string
   class: string
@@ -66,7 +67,7 @@ export default function StudentForm() {
     firstName: '', lastName: '', dob: '', gender: 'MALE',
     fatherName: '', fatherCnic: '', fatherPhone: '', fatherEmail: '',
     fatherOccupation: '', motherName: '', motherPhone: '', address: '',
-    city: '', bloodGroup: '', previousSchool: '', medicalNotes: '',
+    city: '', bloodGroup: '', bFormNo: '', previousSchool: '', medicalNotes: '',
     class: '', section: '', type: 'SCHOOL', registrationNo: '',
     academySeries: '', subjects: [],
   })
@@ -121,6 +122,7 @@ export default function StudentForm() {
           address: s.address || '',
           city: s.city || '',
           bloodGroup: s.bloodGroup || '',
+          bFormNo: s.bFormNo || '',
           previousSchool: s.previousSchool || '',
           medicalNotes: s.medicalNotes || '',
           class: s.class?._id || s.class || '',
@@ -307,6 +309,10 @@ export default function StudentForm() {
                     ))}
                   </SelectContent>
                 </Select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">B-Form No</label>
+                <Input value={form.bFormNo || ''} onChange={e => updateField('bFormNo', e.target.value)} placeholder="B-Form number" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Registration No</label>

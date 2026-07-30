@@ -19,7 +19,14 @@ router.post('/tenants/check-subdomain', async (req, res) => {
 
 const Student = require('../models/Student');
 const User = require('../models/User');
+const ClassModel = require('../models/Class');
 const { generateRegistrationNo } = require('../utils/helpers');
+
+const programLevelToClassType = {
+  'IGCSE O Level': 'O_LEVEL',
+  'AS Level': 'AS_LEVEL',
+  'A Level': 'A_LEVEL',
+};
 
 router.post('/students/register', async (req, res) => {
   try {
@@ -49,6 +56,23 @@ router.post('/students/register', async (req, res) => {
       status: 'INACTIVE',
     });
 
+    // Resolve class from grade (School) or programLevel (Academy)
+    let classId;
+    if (type === 'ACADEMY') {
+      const programLevel = req.body.programLevel || '';
+      const classType = programLevelToClassType[programLevel];
+      if (classType) {
+        const cls = await ClassModel.findOne({ tenant: tenant._id, type: classType }).lean();
+        if (cls) classId = cls._id;
+      }
+    } else {
+      const grade = req.body.grade || '';
+      if (grade) {
+        const cls = await ClassModel.findOne({ tenant: tenant._id, name: grade, type: 'SCHOOL' }).lean();
+        if (cls) classId = cls._id;
+      }
+    }
+
     const studentData = {
       tenant: tenant._id,
       user: user._id,
@@ -69,10 +93,12 @@ router.post('/students/register', async (req, res) => {
       previousSchool: req.body.previousSchool || '',
       medicalNotes: req.body.medicalNotes || '',
       bloodGroup: req.body.bloodGroup || '',
+      bFormNo: req.body.bFormNo || '',
       type: type === 'ACADEMY' ? 'ACADEMY' : 'SCHOOL',
       status: 'INACTIVE',
     };
 
+    if (classId) studentData.class = classId;
     if (type === 'ACADEMY') {
       studentData.academySeries = req.body.academySeries || 'MAY_JUNE';
     }
