@@ -337,3 +337,259 @@ exports.generateSalarySlip = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+exports.getMySalary = async (req, res) => {
+  try {
+    if (!requireTenant(req)) {
+      return res.status(400).json({ success: false, message: 'Tenant context required' });
+    }
+
+    const teacher = await Teacher.findOne({
+      user: req.user._id,
+      tenant: req.tenant._id,
+    }).lean();
+
+    if (!teacher) {
+      return res.status(404).json({ success: false, message: 'Teacher profile not found' });
+    }
+
+    res.json({ success: true, data: { salary: teacher.salary || 0 } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.getMySlips = async (req, res) => {
+  try {
+    if (!requireTenant(req)) {
+      return res.status(400).json({ success: false, message: 'Tenant context required' });
+    }
+
+    const teacher = await Teacher.findOne({
+      user: req.user._id,
+      tenant: req.tenant._id,
+    }).select('_id').lean();
+
+    if (!teacher) {
+      return res.status(404).json({ success: false, message: 'Teacher profile not found' });
+    }
+
+    const slips = await SalarySlip.find({
+      teacher: teacher._id,
+      tenant: req.tenant._id,
+    })
+      .sort({ createdAt: -1 })
+      .lean();
+
+    res.json({ success: true, data: slips });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.getSalarySlips = async (req, res) => {
+  try {
+    if (!requireTenant(req)) {
+      return res.status(400).json({ success: false, message: 'Tenant context required' });
+    }
+
+    const { month, status, teacherId, page = 1, limit = 50 } = req.query;
+    const filter = { tenant: req.tenant._id };
+
+    if (month) filter.month = month;
+    if (status) filter.status = status;
+    if (teacherId) filter.teacher = teacherId;
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    const [slips, total] = await Promise.all([
+      SalarySlip.find(filter)
+        .populate({ path: 'teacher', select: 'salary', populate: { path: 'user', select: 'name email phone' } })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(parseInt(limit))
+        .lean(),
+      SalarySlip.countDocuments(filter),
+    ]);
+
+    res.json({
+      success: true,
+      data: slips,
+      pagination: { page: parseInt(page), limit: parseInt(limit), total, pages: Math.ceil(total / parseInt(limit)) },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.getSalarySlip = async (req, res) => {
+  try {
+    if (!requireTenant(req)) {
+      return res.status(400).json({ success: false, message: 'Tenant context required' });
+    }
+
+    const slip = await SalarySlip.findOne({ _id: req.params.id, tenant: req.tenant._id })
+      .populate({ path: 'teacher', select: 'salary', populate: { path: 'user', select: 'name email phone' } })
+      .lean();
+
+    if (!slip) {
+      return res.status(404).json({ success: false, message: 'Salary slip not found' });
+    }
+
+    res.json({ success: true, data: slip });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.markSlipPaid = async (req, res) => {
+  try {
+    if (!requireTenant(req)) {
+      return res.status(400).json({ success: false, message: 'Tenant context required' });
+    }
+
+    const slip = await SalarySlip.findOneAndUpdate(
+      { _id: req.params.id, tenant: req.tenant._id },
+      { $set: { status: 'PAID', paidAt: new Date() } },
+      { new: true }
+    );
+
+    if (!slip) {
+      return res.status(404).json({ success: false, message: 'Salary slip not found' });
+    }
+
+    res.json({ success: true, data: slip });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.bulkGenerateSlips = async (req, res) => {
+  try {
+    if (!requireTenant(req)) {
+      return res.status(400).json({ success: false, message: 'Tenant context required' });
+    }
+
+    const { month, teacherIds } = req.body;
+
+    if (!month) {
+      return res.status(400).json({ success: false, message: 'Month is required (YYYY-MM)' });
+    }
+
+    const filter = { tenant: req.tenant._id, status: 'ACTIVE' };
+    if (teacherIds && Array.isArray(teacherIds) && teacherIds.length) {
+      filter._id = { $in: teacherIds };
+    }
+
+    const teachers = await Teacher.find(filter).select('_id salary').lean();
+
+    if (!teachers.length) {
+      return res.status(400).json({ success: false, message: 'No active teachers found' });
+    }
+
+    const existingSlips = await SalarySlip.find({
+      tenant: req.tenant._id,
+      month,
+      teacher: { $in: teachers.map((t) => t._id) },
+    }).select('teacher').lean();
+
+    const existingTeacherIds = new Set(existingSlips.map((s) => s.teacher.toString()));
+
+    const newTeachers = teachers.filter((t) => !existingTeacherIds.has(t._id.toString()));
+
+    if (!newTeachers.length) {
+      return res.json({ success: true, data: { generated: 0, message: 'All teachers already have slips for this month' } });
+    }
+
+    const slips = [];
+    for (const teacher of newTeachers) {
+      let slipNo = generateSlipNo();
+      let attempts = 0;
+      while (attempts < 5) {
+        const exists = await SalarySlip.findOne({ slipNo });
+        if (!exists) break;
+        slipNo = generateSlipNo();
+        attempts++;
+      }
+
+      slips.push({
+        teacher: teacher._id,
+        tenant: req.tenant._id,
+        month,
+        basicSalary: teacher.salary || 0,
+        deductions: 0,
+        bonuses: 0,
+        netSalary: teacher.salary || 0,
+        status: 'PENDING',
+        slipNo,
+      });
+    }
+
+    await SalarySlip.insertMany(slips);
+
+    res.status(201).json({ success: true, data: { generated: slips.length } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.updateSalarySlip = async (req, res) => {
+  try {
+    if (!requireTenant(req)) {
+      return res.status(400).json({ success: false, message: 'Tenant context required' });
+    }
+
+    const { deductions, bonuses, remark } = req.body;
+
+    const slip = await SalarySlip.findOne({ _id: req.params.id, tenant: req.tenant._id });
+
+    if (!slip) {
+      return res.status(404).json({ success: false, message: 'Salary slip not found' });
+    }
+
+    if (slip.status === 'PAID') {
+      return res.status(400).json({ success: false, message: 'Cannot modify a paid slip' });
+    }
+
+    if (deductions !== undefined) slip.deductions = deductions;
+    if (bonuses !== undefined) slip.bonuses = bonuses;
+    if (remark !== undefined) slip.remark = remark;
+    slip.netSalary = slip.basicSalary - slip.deductions + slip.bonuses;
+    slip.updatedAt = new Date();
+
+    await slip.save();
+
+    const updated = await SalarySlip.findById(slip._id)
+      .populate({ path: 'teacher', select: 'salary', populate: { path: 'user', select: 'name email phone' } })
+      .lean();
+
+    res.json({ success: true, data: updated });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.bulkMarkPaid = async (req, res) => {
+  try {
+    if (!requireTenant(req)) {
+      return res.status(400).json({ success: false, message: 'Tenant context required' });
+    }
+
+    const { month, slipIds } = req.body;
+    const filter = { tenant: req.tenant._id, status: 'PENDING' };
+
+    if (month) filter.month = month;
+    if (slipIds && Array.isArray(slipIds) && slipIds.length) {
+      filter._id = { $in: slipIds };
+    }
+
+    const result = await SalarySlip.updateMany(
+      filter,
+      { $set: { status: 'PAID', paidAt: new Date() } }
+    );
+
+    res.json({ success: true, data: { modifiedCount: result.modifiedCount } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

@@ -72,12 +72,12 @@ export default function FeeChallans() {
     setMessage('')
     try {
       const { data } = await api.post('/fees/challans/generate', {
-        class: selectedClass,
+        classId: selectedClass,
         month,
         dueDate: dueDate || undefined,
       })
       if (data.success) {
-        setMessage(`Generated ${data.data.count || 0} challans successfully!`)
+        setMessage(`Generated ${data.data.generated || data.data.count || 0} challans successfully!`)
         fetchChallans()
       } else {
         setMessage(data.message || 'Failed to generate challans')

@@ -11,9 +11,9 @@ export default function TeacherSalary() {
   useEffect(() => {
     Promise.all([
       api.get('/teachers/me/salary').catch(() => null),
-      api.get('/salary/my-slips').catch(() => null),
+      api.get('/teachers/my-slips').catch(() => null),
     ]).then(([sRes, slipRes]) => {
-      if (sRes?.data?.success) setSalary(sRes.data.data)
+      if (sRes?.data?.success) setSalary(sRes.data.data.salary)
       if (slipRes?.data?.success) setSlips(slipRes.data.data || [])
     }).finally(() => setLoading(false))
   }, [])
@@ -49,8 +49,8 @@ export default function TeacherSalary() {
                   <div className="flex items-center gap-3">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                     <div>
-                      <p className="font-medium">{slip.month} {slip.year}</p>
-                      <p className="text-sm text-muted-foreground">Rs. {slip.netSalary?.toLocaleString() || slip.amount?.toLocaleString()}</p>
+                      <p className="font-medium">{slip.month}</p>
+                      <p className="text-sm text-muted-foreground">Slip #: {slip.slipNo} &middot; Rs. {slip.netSalary?.toLocaleString() || slip.amount?.toLocaleString()}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">

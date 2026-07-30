@@ -101,18 +101,21 @@ exports.deleteFeeStructure = async (req, res) => {
 exports.generateChallans = async (req, res) => {
   try {
     const tenant = req.tenant._id;
-    const { classId, month, dueDate, studentIds } = req.body;
+    const { classId, class: classAlias, month, dueDate, studentIds } = req.body;
+    const resolvedClassId = classId || classAlias;
 
-    if (!classId || !month || !dueDate) {
+    if (!resolvedClassId || !month) {
       return res.status(400).json({
         success: false,
-        message: 'classId, month and dueDate are required',
+        message: 'classId/class and month are required',
       });
     }
 
+    const resolvedDueDate = dueDate || new Date(new Date().getFullYear(), new Date().getMonth() + 1, 10);
+
     const feeStructures = await FeeStructure.find({
       tenant,
-      class: classId,
+      class: resolvedClassId,
       isActive: true,
     }).lean();
 
@@ -127,7 +130,7 @@ exports.generateChallans = async (req, res) => {
 
     const studentFilter = {
       tenant,
-      class: classId,
+      class: resolvedClassId,
       status: 'ACTIVE',
     };
 
@@ -165,7 +168,7 @@ exports.generateChallans = async (req, res) => {
       });
     }
 
-    const batchDate = new Date(dueDate);
+    const batchDate = new Date(resolvedDueDate);
     const challans = [];
 
     for (const student of newStudents) {
@@ -280,16 +283,22 @@ exports.getChallans = async (req, res) => {
 exports.getPendingChallans = async (req, res) => {
   try {
     const tenant = req.tenant._id;
-    const { class: classId, month } = req.query;
+    const { class: classId, month, search } = req.query;
 
     const filter = { tenant, status: { $in: ['PENDING', 'OVERDUE'] } };
 
-    if (classId) {
-      const classStudents = await Student.find({ tenant, class: classId })
-        .select('_id')
-        .lean();
-      filter.student = { $in: classStudents.map((s) => s._id) };
+    const studentFilter = { tenant };
+    if (classId) studentFilter.class = classId;
+    if (search) {
+      studentFilter.$or = [
+        { firstName: new RegExp(search, 'i') },
+        { lastName: new RegExp(search, 'i') },
+        { registrationNo: new RegExp(search, 'i') },
+      ];
     }
+
+    const studentIds = await Student.find(studentFilter).select('_id').lean();
+    filter.student = { $in: studentIds.map((s) => s._id) };
 
     if (month) filter.month = month;
 

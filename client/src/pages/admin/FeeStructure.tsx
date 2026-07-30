@@ -12,9 +12,8 @@ import { formatCurrency } from '@/lib/utils'
 
 interface FeeItem {
   _id: string
-  className: string
   class: { _id: string; name: string }
-  feeName: string
+  name: string
   amount: number
   frequency: string
 }
@@ -30,13 +29,17 @@ export default function FeeStructure() {
   const [isLoading, setIsLoading] = useState(true)
   const [showDialog, setShowDialog] = useState(false)
   const [editItem, setEditItem] = useState<FeeItem | null>(null)
-  const [form, setForm] = useState({ className: '', feeName: '', amount: '', frequency: 'MONTHLY' })
+  const [form, setForm] = useState({ class: '', name: '', amount: '', frequency: 'MONTHLY' })
   const [saving, setSaving] = useState(false)
+  const [classFilter, setClassFilter] = useState('all')
+
+  useEffect(() => {
+    fetchClasses()
+  }, [])
 
   useEffect(() => {
     fetchFees()
-    fetchClasses()
-  }, [])
+  }, [classFilter])
 
   const fetchClasses = async () => {
     try {
@@ -50,22 +53,24 @@ export default function FeeStructure() {
   const fetchFees = useCallback(async () => {
     setIsLoading(true)
     try {
-      const { data } = await api.get('/fees/structures')
+      const params: any = {}
+      if (classFilter !== 'all') params.class = classFilter
+      const { data } = await api.get('/fees/structures', { params })
       if (data.success) setFees(data.data || [])
     } catch (err) {
       console.error('Failed to fetch fees:', err)
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [classFilter])
 
   const resetForm = () => {
-    setForm({ className: '', feeName: '', amount: '', frequency: 'MONTHLY' })
+    setForm({ class: '', name: '', amount: '', frequency: 'MONTHLY' })
     setEditItem(null)
   }
 
   const handleSave = async () => {
-    if (!form.className || !form.feeName || !form.amount) return
+    if (!form.class || !form.name || !form.amount) return
     setSaving(true)
     try {
       const payload = { ...form, amount: Number(form.amount) }
@@ -86,8 +91,8 @@ export default function FeeStructure() {
 
   const handleEdit = (fee: FeeItem) => {
     setForm({
-      className: fee.class?._id || fee.className,
-      feeName: fee.feeName,
+      class: fee.class?._id || '',
+      name: fee.name,
       amount: fee.amount?.toString() || '',
       frequency: fee.frequency || 'MONTHLY',
     })
@@ -108,7 +113,18 @@ export default function FeeStructure() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Fee Structure</h1>
+        <div className="flex items-center gap-4">
+          <h1 className="text-2xl font-bold">Fee Structure</h1>
+          <Select value={classFilter} onValueChange={setClassFilter}>
+            <SelectTrigger className="w-44"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Classes</SelectItem>
+              {classes.map((c) => (
+                <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <Button onClick={() => { resetForm(); setShowDialog(true) }}>
           <Plus className="h-4 w-4 mr-2" /> Add Fee
         </Button>
@@ -117,11 +133,11 @@ export default function FeeStructure() {
       <DataTable
         columns={[
           {
-            key: 'className',
+            key: 'class',
             header: 'Class',
-            render: (row: FeeItem) => row.class?.name || row.className || '-',
+            render: (row: FeeItem) => row.class?.name || '-',
           },
-          { key: 'feeName', header: 'Fee Name' },
+          { key: 'name', header: 'Fee Name' },
           {
             key: 'amount',
             header: 'Amount',
@@ -156,7 +172,7 @@ export default function FeeStructure() {
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-1">Class *</label>
-              <Select value={form.className} onValueChange={(v) => setForm((f) => ({ ...f, className: v }))}>
+              <Select value={form.class} onValueChange={(v) => setForm((f) => ({ ...f, class: v }))}>
                 <SelectTrigger><SelectValue placeholder="Select class" /></SelectTrigger>
                 <SelectContent>
                   {classes.map((c) => (
@@ -167,7 +183,7 @@ export default function FeeStructure() {
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Fee Name *</label>
-              <Input value={form.feeName} onChange={(e) => setForm((f) => ({ ...f, feeName: e.target.value }))} placeholder="e.g. Tuition Fee" />
+              <Input value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} placeholder="e.g. Tuition Fee" />
             </div>
             <div>
               <label className="block text-sm font-medium mb-1">Amount *</label>

@@ -26,7 +26,7 @@ const markAttendance = async (req, res) => {
         update: {
           tenant: tenantId,
           student: studentId,
-          class: classId,
+      class: resolvedClassId,
           date: attendanceDate,
           status,
           remark: remark || '',
@@ -53,10 +53,11 @@ const markAttendance = async (req, res) => {
 const getDailyAttendance = async (req, res) => {
   try {
     const tenantId = req.tenant._id;
-    const { classId, date } = req.query;
+    const { classId, class: classAlias, date } = req.query;
+    const resolvedClassId = classId || classAlias;
 
-    if (!classId) {
-      return res.status(400).json({ success: false, message: 'classId is required' });
+    if (!resolvedClassId) {
+      return res.status(400).json({ success: false, message: 'classId/class is required' });
     }
 
     const attendanceDate = date ? new Date(date) : new Date();
@@ -64,14 +65,14 @@ const getDailyAttendance = async (req, res) => {
     const endOfDay = new Date(attendanceDate);
     endOfDay.setHours(23, 59, 59, 999);
 
-    const students = await Student.find({ tenant: tenantId, class: classId, status: 'ACTIVE' })
+    const students = await Student.find({ tenant: tenantId, class: resolvedClassId, status: 'ACTIVE' })
       .select('_id registrationNo firstName lastName');
 
     const studentIds = students.map((s) => s._id);
 
     const attendanceRecords = await Attendance.find({
       tenant: tenantId,
-      class: classId,
+      class: resolvedClassId,
       date: { $gte: attendanceDate, $lte: endOfDay },
       student: { $in: studentIds },
     });
@@ -103,9 +104,10 @@ const getDailyAttendance = async (req, res) => {
 const getMonthlyReport = async (req, res) => {
   try {
     const tenantId = req.tenant._id;
-    const { classId, month } = req.query;
+    const { classId, class: classAlias, month } = req.query;
 
-    if (!classId || !month) {
+    const resolvedClassId = classId || classAlias;
+    if (!resolvedClassId || !month) {
       return res.status(400).json({ success: false, message: 'classId and month are required' });
     }
 
@@ -115,12 +117,11 @@ const getMonthlyReport = async (req, res) => {
 
     const attendanceRecords = await Attendance.find({
       tenant: tenantId,
-      class: classId,
+      class: resolvedClassId,
       date: { $gte: startDate, $lte: endDate },
     });
 
     const studentStats = {};
-
     for (const record of attendanceRecords) {
       const sid = record.student.toString();
       if (!studentStats[sid]) {

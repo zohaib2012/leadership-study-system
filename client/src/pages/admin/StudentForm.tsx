@@ -178,8 +178,8 @@ export default function StudentForm() {
     setIsLoading(true)
     try {
       const payload = { ...form }
-      if (!isSchool) { payload.section = '' }
-      if (!isAcademy) { payload.academySeries = ''; payload.subjects = [] }
+      if (!isSchool) { delete payload.section }
+      if (isSchool) { delete payload.academySeries; delete payload.subjects }
       if (isEditing) {
         await api.put(`/students/${id}`, payload)
       } else {

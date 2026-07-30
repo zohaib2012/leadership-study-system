@@ -1,7 +1,18 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { Menu, X, Phone, Instagram, Facebook, Youtube, MessageCircle, ChevronUp, GraduationCap } from 'lucide-react'
+import { Menu, X, Phone, Instagram, Facebook, Youtube, MessageCircle, ChevronUp, GraduationCap, LayoutDashboard, LogOut, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useAuthStore } from '@/store/auth-store'
+
+const roleRoutes: Record<string, string> = {
+  ADMIN: '/admin/dashboard',
+  SUB_ADMIN: '/admin/dashboard',
+  ACCOUNTANT: '/admin/dashboard',
+  TEACHER: '/teacher/dashboard',
+  STUDENT: '/student/dashboard',
+  PARENT: '/parent/dashboard',
+  SUPER_ADMIN: '/super-admin/dashboard',
+}
 
 const navLinks = [
   { label: 'Home', href: '/' },
@@ -18,6 +29,8 @@ export default function PublicLayout() {
   const [scrolled, setScrolled] = useState(false)
   const [showTop, setShowTop] = useState(false)
   const location = useLocation()
+  const { user, token, logout } = useAuthStore()
+  const isLoggedIn = !!token && !!user
 
   useEffect(() => {
     const onScroll = () => {
@@ -78,32 +91,58 @@ export default function PublicLayout() {
             </div>
 
             <div className="hidden lg:flex items-center gap-3">
-                <Link to="/register/student">
-                <Button
-                  variant={scrolled || !isHome ? 'outline' : 'ghost'}
-                  size="sm"
-                  className={`rounded-lg font-medium border-2 transition-all ${
-                    scrolled || !isHome
-                      ? 'border-primary-600 text-primary-700 hover:bg-primary-600 hover:text-white'
-                      : 'border-white/60 text-white bg-white/10 backdrop-blur-sm hover:bg-white hover:text-primary-800'
-                  }`}
-                >
-                  Register Now
-                </Button>
-              </Link>
-              <Link to="/login">
-                <Button
-                  size="sm"
-                  className={`rounded-lg font-medium transition-all ${
-                    scrolled || !isHome
-                      ? 'bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 shadow-lg shadow-primary-700/25'
-                      : 'bg-white/15 backdrop-blur-sm text-white border border-white/30 hover:bg-white/25'
-                  }`}
-                >
-                  <GraduationCap className="h-4 w-4 mr-1.5" />
-                  Login
-                </Button>
-              </Link>
+              {isLoggedIn ? (
+                <>
+                  <Link to={roleRoutes[user.role] || '/admin/dashboard'}>
+                    <Button size="sm" className="rounded-lg bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 shadow-lg shadow-primary-700/25">
+                      <LayoutDashboard className="h-4 w-4 mr-1.5" />
+                      Dashboard
+                    </Button>
+                  </Link>
+                  <div className="flex items-center gap-2 pl-2 border-l border-gray-300">
+                    <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
+                      <span className="text-xs font-bold text-primary-700">
+                        {user.name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() || 'U'}
+                      </span>
+                    </div>
+                    <span className={`text-sm font-medium hidden xl:block transition-colors ${scrolled || !isHome ? 'text-gray-700' : 'text-white/80'}`}>
+                      {user.name}
+                    </span>
+                    <button onClick={logout} className={`p-1.5 rounded-lg transition-colors ${scrolled || !isHome ? 'hover:bg-gray-100 text-gray-400 hover:text-red-600' : 'hover:bg-white/10 text-white/40 hover:text-white'}`}>
+                      <LogOut className="h-4 w-4" />
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Link to="/register/student">
+                    <Button
+                      variant={scrolled || !isHome ? 'outline' : 'ghost'}
+                      size="sm"
+                      className={`rounded-lg font-medium border-2 transition-all ${
+                        scrolled || !isHome
+                          ? 'border-primary-600 text-primary-700 hover:bg-primary-600 hover:text-white'
+                          : 'border-white/60 text-white bg-white/10 backdrop-blur-sm hover:bg-white hover:text-primary-800'
+                      }`}
+                    >
+                      Register Now
+                    </Button>
+                  </Link>
+                  <Link to="/login">
+                    <Button
+                      size="sm"
+                      className={`rounded-lg font-medium transition-all ${
+                        scrolled || !isHome
+                          ? 'bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 shadow-lg shadow-primary-700/25'
+                          : 'bg-white/15 backdrop-blur-sm text-white border border-white/30 hover:bg-white/25'
+                      }`}
+                    >
+                      <GraduationCap className="h-4 w-4 mr-1.5" />
+                      Login
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
 
             <button
@@ -129,14 +168,27 @@ export default function PublicLayout() {
                   {link.label}
                 </Link>
               ))}
-              <div className="pt-3 flex gap-3">
-                <Link to="/register/student" className="flex-1">
-                  <Button variant="outline" size="sm" className="w-full rounded-xl border-primary-600 text-primary-700">Register</Button>
-                </Link>
-                <Link to="/login" className="flex-1">
-                  <Button size="sm" className="w-full rounded-xl bg-gradient-to-r from-primary-600 to-primary-700">Login</Button>
-                </Link>
-              </div>
+              {isLoggedIn ? (
+                <div className="pt-3 flex gap-3">
+                  <Link to={roleRoutes[user.role] || '/admin/dashboard'} className="flex-1">
+                    <Button size="sm" className="w-full rounded-xl bg-gradient-to-r from-primary-600 to-primary-700">
+                      <LayoutDashboard className="h-4 w-4 mr-1.5" /> Dashboard
+                    </Button>
+                  </Link>
+                  <Button variant="outline" size="sm" className="rounded-xl border-red-300 text-red-600 hover:bg-red-50" onClick={logout}>
+                    <LogOut className="h-4 w-4 mr-1.5" /> Logout
+                  </Button>
+                </div>
+              ) : (
+                <div className="pt-3 flex gap-3">
+                  <Link to="/register/student" className="flex-1">
+                    <Button variant="outline" size="sm" className="w-full rounded-xl border-primary-600 text-primary-700">Register</Button>
+                  </Link>
+                  <Link to="/login" className="flex-1">
+                    <Button size="sm" className="w-full rounded-xl bg-gradient-to-r from-primary-600 to-primary-700">Login</Button>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         )}

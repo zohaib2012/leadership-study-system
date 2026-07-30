@@ -104,7 +104,7 @@ export default function AboutPage() {
               <Button asChild size="lg" className="bg-white px-8 py-6 text-base font-semibold text-primary-800 shadow-lg hover:bg-gray-100">
                 <Link to="/courses">Explore Programs</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white/30 px-8 py-6 text-base font-semibold text-white hover:bg-white/10">
+              <Button asChild size="lg" variant="outline" className="border-white/30 bg-white/10 px-8 py-6 text-base font-semibold text-white backdrop-blur-sm hover:bg-white/20">
                 <Link to="/contact">Get in Touch</Link>
               </Button>
             </div>
@@ -314,7 +314,7 @@ export default function AboutPage() {
             <Button asChild size="lg" className="bg-white px-8 py-6 text-base font-semibold text-primary-800 shadow-lg hover:bg-gray-100">
               <Link to="/register">Register Now</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white/30 px-8 py-6 text-base font-semibold text-white hover:bg-white/10">
+            <Button asChild size="lg" variant="outline" className="border-white/30 bg-white/10 px-8 py-6 text-base font-semibold text-white backdrop-blur-sm hover:bg-white/20">
               <Link to="/contact">Contact Us</Link>
             </Button>
           </div>

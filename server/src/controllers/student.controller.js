@@ -99,7 +99,29 @@ exports.getStudent = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Student not found' });
     }
 
-    res.json({ success: true, data: student });
+    const [fees, attendanceRecords] = await Promise.all([
+      FeeChallan.find({ tenant: req.tenant._id, student: req.params.id })
+        .sort({ createdAt: -1 })
+        .lean(),
+      Attendance.find({ tenant: req.tenant._id, student: req.params.id })
+        .sort({ date: -1 })
+        .limit(60)
+        .lean(),
+    ]);
+
+    const stats = await Attendance.aggregate([
+      { $match: { tenant: new mongoose.Types.ObjectId(req.tenant._id), student: new mongoose.Types.ObjectId(req.params.id) } },
+      { $group: { _id: '$status', count: { $sum: 1 } } },
+    ]);
+
+    const attendanceSummary = { total: 0, present: 0, absent: 0, late: 0, leave: 0 };
+    for (const s of stats) {
+      const key = s._id.toLowerCase();
+      if (key in attendanceSummary) attendanceSummary[key] = s.count;
+      attendanceSummary.total += s.count;
+    }
+
+    res.json({ success: true, data: { student, fees, attendance: attendanceRecords, attendanceSummary } });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -135,14 +157,29 @@ exports.createStudent = async (req, res) => {
       image: req.body.photo,
     });
 
+    delete req.body.registrationNo;
+
     const studentData = {
       tenant,
       user: user._id,
-      registrationNo,
       ...req.body,
+      registrationNo,
     };
     delete studentData.email;
     delete studentData.password;
+
+    if (studentData.type !== 'SCHOOL' || !studentData.section) delete studentData.section;
+    if (studentData.type !== 'ACADEMY' || !studentData.academySeries) delete studentData.academySeries;
+    if (studentData.type !== 'ACADEMY' && studentData.subjects) delete studentData.subjects;
+    if (!studentData.bloodGroup) delete studentData.bloodGroup;
+    if (!studentData.previousSchool) delete studentData.previousSchool;
+    if (!studentData.medicalNotes) delete studentData.medicalNotes;
+    if (!studentData.fatherCnic) delete studentData.fatherCnic;
+    if (!studentData.fatherOccupation) delete studentData.fatherOccupation;
+    if (!studentData.motherName) delete studentData.motherName;
+    if (!studentData.motherPhone) delete studentData.motherPhone;
+    if (!studentData.city) delete studentData.city;
+    if (!studentData.bFormNo) delete studentData.bFormNo;
 
     const student = await Student.create(studentData);
 

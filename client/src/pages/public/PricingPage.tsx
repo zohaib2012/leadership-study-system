@@ -478,7 +478,7 @@ export default function PricingPage() {
               asChild
               size="lg"
               variant="outline"
-              className="border-white/30 px-8 py-6 text-base font-semibold text-white hover:bg-white/10"
+              className="border-white/30 bg-white/10 px-8 py-6 text-base font-semibold text-white backdrop-blur-sm hover:bg-white/20"
             >
               <Link to="/contact">Talk to Sales</Link>
             </Button>

@@ -158,7 +158,7 @@ export default function StudentProfile() {
             <Card className="lg:col-span-2">
               <CardHeader><CardTitle className="text-lg">Personal Information</CardTitle></CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm">
                   <div>
                     <p className="text-muted-foreground">First Name</p>
                     <p className="font-medium">{student.firstName}</p>
@@ -176,8 +176,24 @@ export default function StudentProfile() {
                     <p className="font-medium">{student.gender || '-'}</p>
                   </div>
                   <div>
+                    <p className="text-muted-foreground">Blood Group</p>
+                    <p className="font-medium">{student.bloodGroup || '-'}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">City</p>
+                    <p className="font-medium">{student.city || '-'}</p>
+                  </div>
+                  <div className="col-span-2">
                     <p className="text-muted-foreground">Address</p>
                     <p className="font-medium">{student.address || '-'}</p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-muted-foreground">Previous School</p>
+                    <p className="font-medium">{student.previousSchool || '-'}</p>
+                  </div>
+                  <div className="col-span-2">
+                    <p className="text-muted-foreground">Medical Notes</p>
+                    <p className="font-medium">{student.medicalNotes || '-'}</p>
                   </div>
                 </div>
               </CardContent>
@@ -186,19 +202,41 @@ export default function StudentProfile() {
             <Card className="lg:col-span-3">
               <CardHeader><CardTitle className="text-lg">Parent Information</CardTitle></CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-3 text-sm">
                   <div>
                     <p className="text-muted-foreground">Father Name</p>
                     <p className="font-medium">{student.fatherName || '-'}</p>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">Phone</p>
+                    <p className="text-muted-foreground">Father CNIC</p>
+                    <p className="font-medium">{student.fatherCnic || '-'}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Father Occupation</p>
+                    <p className="font-medium">{student.fatherOccupation || '-'}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Father Phone</p>
                     <p className="font-medium">{student.fatherPhone || '-'}</p>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">Email</p>
+                    <p className="text-muted-foreground">Father Email</p>
                     <p className="font-medium">{student.fatherEmail || '-'}</p>
                   </div>
+                  <div>
+                    <p className="text-muted-foreground">Mother Name</p>
+                    <p className="font-medium">{student.motherName || '-'}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground">Mother Phone</p>
+                    <p className="font-medium">{student.motherPhone || '-'}</p>
+                  </div>
+                  {student.academySeries && (
+                    <div>
+                      <p className="text-muted-foreground">Academy Series</p>
+                      <p className="font-medium">{student.academySeries === 'MAY_JUNE' ? 'May/June' : student.academySeries === 'OCT_NOV' ? 'Oct/Nov' : student.academySeries}</p>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>

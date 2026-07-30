@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { DataTable } from '@/components/ui/data-table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Plus, Search, ChevronLeft, ChevronRight, Trash2, Edit } from 'lucide-react'
+import { Plus, Search, ChevronLeft, ChevronRight, Trash2, Edit, IndianRupee } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 
 interface TeacherItem {
@@ -132,6 +132,11 @@ export default function TeacherList() {
                 <Link to={`/admin/teachers/${row._id}/edit`}>
                   <Button variant="ghost" size="icon">
                     <Edit className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link to={`/admin/payroll`}>
+                  <Button variant="ghost" size="icon" title="Generate Salary Slip">
+                    <IndianRupee className="h-4 w-4 text-primary-600" />
                   </Button>
                 </Link>
                 <Button

@@ -41,6 +41,7 @@ import FeeStructure from '@/pages/admin/FeeStructure'
 import FeeChallans from '@/pages/admin/FeeChallans'
 import FeeCollection from '@/pages/admin/FeeCollection'
 import PendingFees from '@/pages/admin/PendingFees'
+import AdminPayroll from '@/pages/admin/AdminPayroll'
 import HomeworkList from '@/pages/admin/HomeworkList'
 import HomeworkForm from '@/pages/admin/HomeworkForm'
 import ReportsPage from '@/pages/admin/ReportsPage'
@@ -171,6 +172,7 @@ export default function App() {
               <Route path="/admin/fees/challans" element={<FeeChallans />} />
               <Route path="/admin/fees/collect" element={<FeeCollection />} />
               <Route path="/admin/fees/pending" element={<PendingFees />} />
+              <Route path="/admin/payroll" element={<AdminPayroll />} />
               <Route path="/admin/homework" element={<HomeworkList />} />
               <Route path="/admin/homework/create" element={<HomeworkForm />} />
               <Route path="/admin/reports" element={<ReportsPage />} />
