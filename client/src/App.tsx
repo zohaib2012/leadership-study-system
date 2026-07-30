@@ -44,6 +44,7 @@ import PendingFees from '@/pages/admin/PendingFees'
 import AdminPayroll from '@/pages/admin/AdminPayroll'
 import HomeworkList from '@/pages/admin/HomeworkList'
 import HomeworkForm from '@/pages/admin/HomeworkForm'
+import HomeworkSubmissions from '@/pages/admin/HomeworkSubmissions'
 import ReportsPage from '@/pages/admin/ReportsPage'
 import SmsCompose from '@/pages/admin/SmsCompose'
 import Announcements from '@/pages/admin/Announcements'
@@ -175,6 +176,7 @@ export default function App() {
               <Route path="/admin/payroll" element={<AdminPayroll />} />
               <Route path="/admin/homework" element={<HomeworkList />} />
               <Route path="/admin/homework/create" element={<HomeworkForm />} />
+              <Route path="/admin/homework/:id/submissions" element={<HomeworkSubmissions />} />
               <Route path="/admin/reports" element={<ReportsPage />} />
               <Route path="/admin/communication/sms" element={<SmsCompose />} />
               <Route path="/admin/communication/announcements" element={<Announcements />} />
