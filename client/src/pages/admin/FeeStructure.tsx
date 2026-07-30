@@ -7,7 +7,8 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle,
 } from '@/components/ui/dialog'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Plus, Trash2, Edit } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { Plus, Trash2, Edit, CreditCard, Wallet, Clock, ArrowRight } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 
 interface FeeItem {
@@ -128,6 +129,57 @@ export default function FeeStructure() {
         <Button onClick={() => { resetForm(); setShowDialog(true) }}>
           <Plus className="h-4 w-4 mr-2" /> Add Fee
         </Button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Link to="/admin/fees/challans" className="group">
+          <div className="rounded-xl border border-primary-200 bg-primary-50/50 p-5 transition-all hover:border-primary-400 hover:bg-primary-50 hover:shadow-md">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center">
+                  <CreditCard className="h-5 w-5 text-primary-700" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-800">Challans</p>
+                  <p className="text-xs text-muted-foreground">Generate & manage fee challans</p>
+                </div>
+              </div>
+              <ArrowRight className="h-4 w-4 text-primary-500 transition-transform group-hover:translate-x-1" />
+            </div>
+          </div>
+        </Link>
+        <Link to="/admin/fees/collect" className="group">
+          <div className="rounded-xl border border-green-200 bg-green-50/50 p-5 transition-all hover:border-green-400 hover:bg-green-50 hover:shadow-md">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
+                  <Wallet className="h-5 w-5 text-green-700" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-800">Collection</p>
+                  <p className="text-xs text-muted-foreground">Record fee payments</p>
+                </div>
+              </div>
+              <ArrowRight className="h-4 w-4 text-green-500 transition-transform group-hover:translate-x-1" />
+            </div>
+          </div>
+        </Link>
+        <Link to="/admin/fees/pending" className="group">
+          <div className="rounded-xl border border-yellow-200 bg-yellow-50/50 p-5 transition-all hover:border-yellow-400 hover:bg-yellow-50 hover:shadow-md">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-yellow-100 flex items-center justify-center">
+                  <Clock className="h-5 w-5 text-yellow-700" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-800">Pending Fees</p>
+                  <p className="text-xs text-muted-foreground">View overdue & pending challans</p>
+                </div>
+              </div>
+              <ArrowRight className="h-4 w-4 text-yellow-500 transition-transform group-hover:translate-x-1" />
+            </div>
+          </div>
+        </Link>
       </div>
 
       <DataTable
