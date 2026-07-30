@@ -206,7 +206,7 @@ export default function StudentForm() {
 
   const filteredClasses = classes.filter(c => {
     if (isSchool) return c.type === 'SCHOOL'
-    if (isAcademy) return c.type === 'ACADEMY'
+    if (isAcademy) return ['O_LEVEL', 'AS_LEVEL', 'A_LEVEL'].includes(c.type)
     return true
   })
 
