@@ -4,7 +4,7 @@ import { useAuthStore } from '@/store/auth-store'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import { LogIn, Eye, EyeOff, Mail, Lock, Sparkles, ArrowRight, UserRound, GraduationCap, Users, ShieldCheck } from 'lucide-react'
+import { LogIn, Eye, EyeOff, Mail, Lock, Sparkles, ArrowRight } from 'lucide-react'
 
 const roleRoutes: Record<string, string> = {
   ADMIN: '/admin/dashboard',
@@ -15,13 +15,6 @@ const roleRoutes: Record<string, string> = {
   PARENT: '/parent/dashboard',
   SUPER_ADMIN: '/super-admin/dashboard',
 }
-
-const audience = [
-  { icon: ShieldCheck, label: 'Admin', color: 'from-primary-600 to-primary-800' },
-  { icon: UserRound, label: 'Teachers', color: 'from-blue-600 to-blue-800' },
-  { icon: Users, label: 'Parents', color: 'from-emerald-600 to-emerald-800' },
-  { icon: GraduationCap, label: 'Students', color: 'from-violet-600 to-violet-800' },
-]
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -84,18 +77,6 @@ export default function LoginPage() {
           <Card className="shadow-xl border-gray-200/80 overflow-hidden">
             <div className="h-1.5 bg-gradient-to-r from-primary-600 via-primary-400 to-primary-600" />
             <CardContent className="p-8">
-              <div className="grid grid-cols-4 gap-3 mb-6">
-                {audience.map((item) => (
-                  <div key={item.label} className="group text-center">
-                    <div className={`w-full aspect-square bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 transition-transform`}>
-                      <item.icon className="h-6 w-6 text-white" />
-                    </div>
-                    <p className="text-[11px] font-semibold text-gray-600 mt-2">{item.label}</p>
-                  </div>
-                ))}
-              </div>
-              <p className="text-center text-sm text-gray-400 mb-5 -mt-2">Designed for Admin, Teachers, Parents & Students</p>
-
               <form onSubmit={handleSubmit} className="space-y-5">
                 {error && (
                   <div className="rounded-lg bg-red-50 border border-red-200 px-4 py-3">

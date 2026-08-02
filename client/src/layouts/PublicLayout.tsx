@@ -62,15 +62,12 @@ export default function PublicLayout() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
-            <Link to="/" className="flex items-center gap-2.5 group">
+            <Link to="/" className="flex items-center group">
               <img
                 src="/icons/logo.jpeg"
                 alt="Leadership Study System Logo"
-                className="w-10 h-10 rounded-xl object-cover shadow-lg shadow-primary-700/20 group-hover:shadow-primary-700/40 transition-shadow"
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl object-cover shadow-lg shadow-primary-700/30 ring-2 ring-white/20 group-hover:shadow-primary-700/50 transition-shadow"
               />
-              <span className={`font-bold text-lg hidden sm:block transition-colors ${scrolled || !isHome ? 'text-primary-800' : 'text-white'}`}>
-                Leadership Study System
-              </span>
             </Link>
 
             <div className="hidden lg:flex items-center gap-1">
@@ -95,8 +92,8 @@ export default function PublicLayout() {
 
             <div className="hidden lg:flex items-center gap-3">
               <DownloadAppButton
-                variant={scrolled || !isHome ? 'outline' : 'ghost'}
-                className={scrolled || !isHome ? 'border-primary-600 text-primary-700 hover:bg-primary-600 hover:text-white border-2 rounded-lg' : 'border-white/40 text-white border-2 rounded-lg hover:bg-white/10'}
+                variant={scrolled || !isHome ? 'solid' : 'ghost'}
+                className={scrolled || !isHome ? 'bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white shadow-lg shadow-primary-700/25 rounded-lg px-4 py-2 h-auto' : 'border-white/40 text-white border-2 rounded-lg hover:bg-white/10'}
               />
               {isLoggedIn ? (
                 <>
