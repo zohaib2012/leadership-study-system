@@ -63,9 +63,11 @@ export default function PublicLayout() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary-600 to-primary-800 rounded-xl flex items-center justify-center shadow-lg shadow-primary-700/20 group-hover:shadow-primary-700/40 transition-shadow">
-                <span className="text-white font-bold text-base">LSS</span>
-              </div>
+              <img
+                src="/icons/logo.jpeg"
+                alt="Leadership Study System Logo"
+                className="w-10 h-10 rounded-xl object-cover shadow-lg shadow-primary-700/20 group-hover:shadow-primary-700/40 transition-shadow"
+              />
               <span className={`font-bold text-lg hidden sm:block transition-colors ${scrolled || !isHome ? 'text-primary-800' : 'text-white'}`}>
                 Leadership Study System
               </span>
@@ -150,12 +152,19 @@ export default function PublicLayout() {
               )}
             </div>
 
-            <button
-              className={`lg:hidden p-2 rounded-lg transition-colors ${scrolled || !isHome ? 'hover:bg-gray-100' : 'hover:bg-white/10'}`}
-              onClick={() => setMobileOpen(!mobileOpen)}
-            >
-              {mobileOpen ? <X className={`h-6 w-6 ${scrolled || !isHome ? 'text-gray-700' : 'text-white'}`} /> : <Menu className={`h-6 w-6 ${scrolled || !isHome ? 'text-gray-700' : 'text-white'}`} />}
-            </button>
+            <div className="flex items-center gap-1 lg:hidden">
+              <DownloadAppButton
+                iconOnly
+                label="Download App"
+                className={scrolled || !isHome ? '' : 'text-white hover:bg-white/10 hover:text-white'}
+              />
+              <button
+                className={`p-2 rounded-lg transition-colors ${scrolled || !isHome ? 'hover:bg-gray-100' : 'hover:bg-white/10'}`}
+                onClick={() => setMobileOpen(!mobileOpen)}
+              >
+                {mobileOpen ? <X className={`h-6 w-6 ${scrolled || !isHome ? 'text-gray-700' : 'text-white'}`} /> : <Menu className={`h-6 w-6 ${scrolled || !isHome ? 'text-gray-700' : 'text-white'}`} />}
+              </button>
+            </div>
           </div>
         </div>
 
@@ -195,7 +204,7 @@ export default function PublicLayout() {
                 </div>
               )}
               <div className="pt-3">
-                <DownloadAppButton className="w-full" />
+                <DownloadAppButton label="Download Mobile App" className="w-full h-11 rounded-xl shadow-lg shadow-primary-700/20 text-white" />
               </div>
             </div>
           </div>
@@ -215,9 +224,11 @@ export default function PublicLayout() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
             <div className="lg:col-span-1">
               <div className="flex items-center gap-2.5 mb-5">
-                <div className="w-11 h-11 bg-white rounded-xl flex items-center justify-center shadow-lg">
-                  <span className="text-primary-800 font-bold text-lg">LSS</span>
-                </div>
+                <img
+                  src="/icons/logo.jpeg"
+                  alt="Leadership Study System Logo"
+                  className="w-11 h-11 rounded-xl object-cover shadow-lg ring-2 ring-white/20"
+                />
                 <span className="font-bold text-lg">Leadership Study System</span>
               </div>
               <p className="text-gray-400 text-sm leading-relaxed mb-6">

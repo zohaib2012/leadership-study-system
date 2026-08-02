@@ -5,9 +5,10 @@ import { cn } from '@/lib/utils'
 
 interface DownloadAppButtonProps {
   variant?: 'solid' | 'outline' | 'ghost'
-  size?: 'sm' | 'default' | 'lg'
+  size?: 'sm' | 'default' | 'lg' | 'icon'
   className?: string
   label?: string
+  iconOnly?: boolean
 }
 
 export default function DownloadAppButton({
@@ -15,6 +16,7 @@ export default function DownloadAppButton({
   size = 'sm',
   className,
   label = 'Download App',
+  iconOnly = false,
 }: DownloadAppButtonProps) {
   const { canInstall, isInstalled, install } = usePWAInstall()
 
@@ -27,6 +29,24 @@ export default function DownloadAppButton({
         ? 'text-gray-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg font-medium transition-all'
         : 'rounded-lg font-medium transition-all bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 shadow-lg shadow-primary-700/25 text-white'
 
+  if (iconOnly) {
+    return (
+      <Button
+        size="icon"
+        variant="ghost"
+        title={label}
+        aria-label={label}
+        onClick={() => install()}
+        className={cn(
+          'h-9 w-9 rounded-lg text-gray-700 hover:bg-primary-50 hover:text-primary-700 transition-colors',
+          className
+        )}
+      >
+        <Download className="h-5 w-5" />
+      </Button>
+    )
+  }
+
   return (
     <Button
       size={size}
@@ -38,3 +58,4 @@ export default function DownloadAppButton({
     </Button>
   )
 }
+

@@ -19,12 +19,19 @@ import {
   Award,
   ArrowRight,
   CheckCircle2,
+  Briefcase,
+  Handshake,
+  Quote,
+  TrendingUp,
+  Globe,
+  Phone,
+  Mail,
+  MapPin,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
 const whyChooseUs = [
-  { icon: GraduationCap, title: 'Air Conditioned Classrooms', desc: 'Comfortable learning environment with fully air conditioned classrooms for year-round comfort.', color: 'from-primary-500 to-primary-600' },
   { icon: BookOpen, title: 'Comprehensive Syllabus Coverage', desc: 'Thorough coverage of Cambridge IGCSE and A Level syllabi with structured lesson plans.', color: 'from-primary-600 to-primary-700' },
   { icon: Clock, title: 'Regular Attendance Emphasis', desc: 'We maintain strict attendance records to ensure consistent academic progress.', color: 'from-primary-500 to-primary-700' },
   { icon: Users, title: 'Collaborative Group Classes', desc: 'Small group sessions that encourage peer learning and healthy academic competition.', color: 'from-primary-600 to-primary-800' },
@@ -72,7 +79,19 @@ const stats = [
   { value: '500+', label: 'Students Enrolled' },
   { value: '98%', label: 'Success Rate' },
   { value: '15+', label: 'Expert Faculty' },
-  { value: '10+', label: 'Years Excellence' },
+  { value: '20+', label: 'Years Excellence' },
+]
+
+const careerPaths = [
+  { icon: TrendingUp, title: 'Business Leadership', desc: 'Pathways in management, strategy, and entrepreneurship for future business leaders.' },
+  { icon: Globe, title: 'Global Opportunities', desc: 'Cambridge qualifications open doors to top universities and careers worldwide.' },
+  { icon: Briefcase, title: 'Career Readiness', desc: 'Industry-aligned skills, career counselling, and guidance for professional growth.' },
+]
+
+const franchiseBenefits = [
+  { icon: Building2, title: 'Proven Business Model', desc: 'Leverage a time-tested educational framework and operational blueprint.' },
+  { icon: BookOpen, title: 'Curriculum & Training', desc: 'Full curriculum support, faculty training, and ongoing academic guidance.' },
+  { icon: Users, title: 'Brand & Community', desc: 'Become part of the growing Leadership Study System family with trusted brand recognition.' },
 ]
 
 function AnimatedCounter({ value }: { value: string }) {
@@ -128,32 +147,44 @@ export default function HomePage() {
           <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-violet-500 rounded-full blur-[128px] animate-pulse animation-delay-4000" />
         </div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20 lg:py-32">
-          <div className="max-w-4xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white/80 text-sm font-medium mb-8 backdrop-blur-sm animate-fade-in">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20 lg:py-28">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="flex justify-center mb-8 animate-fade-in">
+              <div className="relative">
+                <div className="absolute -inset-2 bg-white/10 rounded-full blur-xl" />
+                <img
+                  src="/icons/logo.jpeg"
+                  alt="Leadership Study System Logo"
+                  className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-white/30 shadow-2xl shadow-primary-900/50"
+                />
+              </div>
+            </div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white/80 text-sm font-medium mb-6 backdrop-blur-sm animate-fade-in animation-delay-200">
               <Sparkles className="h-4 w-4 text-yellow-300" />
               Pakistan's Premier Business Education Institute
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-[1.1] mb-6 animate-fade-in animation-delay-200">
+            <h1 className="font-cosmic text-4xl sm:text-5xl lg:text-7xl font-bold text-white leading-[1.15] mb-6 animate-fade-in animation-delay-200">
               Welcome to{' '}
               <span className="bg-gradient-to-r from-blue-300 via-white to-blue-200 bg-clip-text text-transparent">
                 Leadership Study System
               </span>
             </h1>
-            <p className="text-lg sm:text-xl text-blue-100/80 mb-10 max-w-2xl leading-relaxed animate-fade-in animation-delay-400">
-              Empowering future leaders through world-class Cambridge IGCSE and A Level education.
-              Join Pakistan's most trusted institute for Business Studies, Commerce, and Economics.
+            <p className="text-lg sm:text-xl text-blue-100/80 mb-4 max-w-3xl mx-auto leading-relaxed animate-fade-in animation-delay-400">
+              At the Leadership Study System, we're committed to empowering the next generation of business leaders and scientists. Our innovative programs, dedicated faculty, and vibrant learning environment create a foundation for lifelong learning and real-world impact.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 animate-fade-in animation-delay-600">
+            <p className="text-base sm:text-lg text-blue-100/60 mb-10 max-w-2xl mx-auto leading-relaxed animate-fade-in animation-delay-400">
+              Education at Leadership Study System prepares students not only for examinations but for future opportunities beyond the classroom.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animation-delay-600">
               <Link to="/register/student/school">
-                <Button size="lg" className="bg-white text-primary-800 hover:bg-blue-50 font-semibold text-base px-8 py-6 h-auto rounded-xl shadow-2xl shadow-white/20 group">
-                 LSS of School (playgroup to pre-O Level)
+                <Button size="lg" className="bg-white text-primary-800 hover:bg-blue-50 font-semibold text-base px-8 py-6 h-auto rounded-xl shadow-2xl shadow-white/20 group w-full sm:w-auto">
+                  LSS School (Playgroup till Pre O-Level)
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Link to="/register/student/academy">
-                <Button size="lg" className="bg-white/10 backdrop-blur-md border-2 border-white/40 text-white hover:bg-white/20 hover:border-white/60 font-semibold text-base px-8 py-6 h-auto rounded-xl group">
-                  LSS of Academy
+                <Button size="lg" className="bg-white/10 backdrop-blur-md border-2 border-white/40 text-white hover:bg-white/20 hover:border-white/60 font-semibold text-base px-8 py-6 h-auto rounded-xl group w-full sm:w-auto">
+                  LSS Academy (O & A Levels)
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
@@ -177,6 +208,39 @@ export default function HomePage() {
           </div>
 
           <FadeInSection>
+            <div className="text-center mb-12">
+              <Badge className="mb-4 px-4 py-1.5 bg-primary-100 text-primary-700 border-primary-200" variant="secondary">
+                <Sparkles className="h-4 w-4 mr-1.5 inline" /> Welcome
+              </Badge>
+              <p className="text-xl sm:text-2xl text-gray-700 max-w-3xl mx-auto leading-relaxed">
+                Dear parents and students, join us on a journey to unlock your potential and drive meaningful change in your field.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-20">
+              <Link to="/register/student/school" className="group">
+                <div className="p-8 rounded-2xl bg-gradient-to-br from-primary-600 to-primary-800 text-white border border-primary-100 shadow-lg shadow-primary-700/20 group-hover:shadow-primary-700/40 group-hover:-translate-y-1 transition-all text-center">
+                  <GraduationCap className="h-12 w-12 mx-auto mb-4 text-white/90" />
+                  <h3 className="text-2xl font-bold mb-2">LSS School</h3>
+                  <p className="text-blue-100/80 mb-4">Playgroup till Pre O-Levels</p>
+                  <span className="inline-flex items-center gap-1 text-sm font-semibold bg-white/15 px-4 py-2 rounded-lg group-hover:bg-white group-hover:text-primary-800 transition-all">
+                    Enroll Now <ArrowRight className="h-4 w-4" />
+                  </span>
+                </div>
+              </Link>
+              <Link to="/register/student/academy" className="group">
+                <div className="p-8 rounded-2xl bg-gradient-to-br from-blue-600 to-blue-800 text-white border border-blue-100 shadow-lg shadow-blue-700/20 group-hover:shadow-blue-700/40 group-hover:-translate-y-1 transition-all text-center">
+                  <BookOpen className="h-12 w-12 mx-auto mb-4 text-white/90" />
+                  <h3 className="text-2xl font-bold mb-2">LSS Academy</h3>
+                  <p className="text-blue-100/80 mb-4">O & A Levels (Cambridge IGCSE / A Level)</p>
+                  <span className="inline-flex items-center gap-1 text-sm font-semibold bg-white/15 px-4 py-2 rounded-lg group-hover:bg-white group-hover:text-blue-800 transition-all">
+                    Enroll Now <ArrowRight className="h-4 w-4" />
+                  </span>
+                </div>
+              </Link>
+            </div>
+          </FadeInSection>
+
+          <FadeInSection>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <div className="relative group">
                 <div className="absolute -inset-1 bg-gradient-to-r from-primary-600 to-primary-800 rounded-3xl blur-lg opacity-20 group-hover:opacity-40 transition-opacity" />
@@ -184,11 +248,9 @@ export default function HomePage() {
                   <div className="w-14 h-14 bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-primary-700/20">
                     <Target className="h-7 w-7 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Mission Statement</h3>
                   <p className="text-gray-600 leading-relaxed text-base">
-                    To provide quality education that develops critical thinking, ethical values, and leadership skills
-                    in students. We are committed to nurturing confident individuals who excel academically and contribute
-                    positively to society through innovative teaching methods and a supportive learning environment.
+                    To provide quality education that empowers students to achieve their full potential, fostering academic excellence and personal growth, while ensuring accessibility at affordable fees.
                   </p>
                 </div>
               </div>
@@ -200,9 +262,7 @@ export default function HomePage() {
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
                   <p className="text-gray-600 leading-relaxed text-base">
-                    To be recognized as the leading institution for business education in Pakistan, producing
-                    future business leaders who drive economic growth and innovation. We envision a learning
-                    community where every student discovers their potential and achieves academic excellence.
+                    To be a leading educational institution dedicated to delivering exceptional learning experiences, making quality education accessible and affordable for all, and shaping future leaders equipped with knowledge and values.
                   </p>
                 </div>
               </div>
@@ -211,21 +271,83 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== WHY CHOOSE US ===== */}
+      {/* ===== CEO SECTION ===== */}
       <section className="relative py-24 bg-gray-50 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.03]">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary-500 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-500 rounded-full blur-3xl" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <FadeInSection>
+            <div className="text-center mb-16">
+              <Badge className="mb-4 px-4 py-1.5 bg-primary-100 text-primary-700 border-primary-200" variant="secondary">
+                <Quote className="h-4 w-4 mr-1.5 inline" /> A Message from the CEO
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Meet Our Chief Executive</h2>
+            </div>
+          </FadeInSection>
+
+          <FadeInSection>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              <div className="relative">
+                <div className="absolute -inset-3 bg-gradient-to-br from-primary-600 to-primary-800 rounded-3xl blur-xl opacity-20" />
+                <div className="relative rounded-3xl overflow-hidden border-4 border-white shadow-2xl shadow-primary-900/20 bg-white">
+                  <img
+                    src="/icons/ceopic.png"
+                    alt="Muzammil Ameer - Chief Executive Officer"
+                    className="w-full h-[420px] sm:h-[480px] object-cover object-top"
+                  />
+                </div>
+                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white rounded-2xl shadow-xl shadow-primary-900/10 border border-gray-100 px-6 py-4 text-center w-[calc(100%-3rem)] sm:w-auto">
+                  <p className="font-bold text-gray-900">Muzammil Ameer</p>
+                  <p className="text-sm text-primary-700 font-medium">ACMA, AFPA</p>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 border border-primary-200 text-primary-800 text-sm font-semibold">
+                  <GraduationCap className="h-4 w-4" /> Educationist, Author, Trainer, Cambridge Examiner
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">
+                  A Visionary Committed to Academic Excellence
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Qualified Cost and Management Accountant with more than 20 years' experience teaching national and international curricula in Pakistan and abroad.
+                </p>
+                <div className="bg-white rounded-2xl border border-gray-100 shadow-md p-6 sm:p-8 relative">
+                  <Quote className="h-8 w-8 text-primary-300 absolute -top-3 left-6 bg-white px-1" />
+                  <p className="text-gray-600 leading-relaxed text-[15px]">
+                    At Leadership Study System, I am committed to creating an environment where every student is inspired to achieve academic excellence while developing creativity, resilience, confidence, and strong values. I believe that every learner deserves personalised guidance, encouragement, and opportunities to grow in a supportive and caring atmosphere.
+                  </p>
+                  <p className="text-gray-600 leading-relaxed text-[15px] mt-4">
+                    Together with our dedicated team of educators, I strive to ensure that every student feels respected, challenged, and empowered to reach their full potential. My vision is to provide an educational experience that goes beyond outstanding examination results by equipping students with the knowledge, critical thinking, leadership, and life skills needed to succeed in higher education, their careers, and an ever-changing world.
+                  </p>
+                  <p className="text-gray-600 leading-relaxed text-[15px] mt-4">
+                    Thank you for your trust and partnership. I look forward to working together to nurture future leaders and help every student build a successful and meaningful future.
+                  </p>
+                </div>
+                <p className="text-gray-700 font-medium italic">I invite you to visit and experience our vibrant team.</p>
+              </div>
+            </div>
+          </FadeInSection>
+        </div>
+      </section>
+
+      {/* ===== WHY CHOOSE US ===== */}
+      <section className="relative py-24 bg-white overflow-hidden">
         <div className="absolute inset-0 opacity-[0.03]">
           <div className="absolute top-0 left-0 w-96 h-96 bg-primary-500 rounded-full blur-3xl" />
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-500 rounded-full blur-3xl" />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <FadeInSection>
-            <div className="text-center mb-16">
+            <div className="text-center mb-12">
               <Badge className="mb-4 px-4 py-1.5 text-sm bg-primary-100 text-primary-700 border-primary-200" variant="secondary">
-                <Award className="h-4 w-4 mr-1.5 inline" /> Why Choose Us
+                <Award className="h-4 w-4 mr-1.5 inline" /> Why Choose Us !
               </Badge>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">What Makes Us Different</h2>
-              <p className="text-gray-500 max-w-2xl mx-auto text-lg">
-                We provide an unparalleled educational experience with facilities and teaching methods designed for the modern student.
+              <p className="text-gray-600 max-w-3xl mx-auto text-lg leading-relaxed">
+                Students choose Leadership Study System for a world-class education that combines theory with real-world application. Our expert faculty, modern facilities, and industry-aligned programs equip students to excel in today's dynamic landscape. With a focus on personalized learning, hands-on experiences, and career support, LSS creates an environment where students thrive.
               </p>
             </div>
           </FadeInSection>
@@ -248,7 +370,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== SERVICES ===== */}
-      <section className="relative py-24 bg-white">
+      <section className="relative py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeInSection>
             <div className="text-center mb-16">
@@ -327,8 +449,83 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== OUR LEADERSHIP ===== */}
+      {/* ===== CAREER ===== */}
       <section className="relative py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeInSection>
+            <div className="text-center mb-16">
+              <Badge className="mb-4 px-4 py-1.5 bg-primary-100 text-primary-700 border-primary-200" variant="secondary">
+                <Briefcase className="h-4 w-4 mr-1.5 inline" /> Career Pathways
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Build a Future Beyond the Classroom</h2>
+              <p className="text-gray-500 max-w-2xl mx-auto text-lg">Our programs prepare students for higher education and rewarding careers across the globe.</p>
+            </div>
+          </FadeInSection>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {careerPaths.map((path, i) => (
+              <FadeInSection key={path.title}>
+                <div className="group h-full" style={{ animationDelay: `${i * 150}ms` }}>
+                  <div className="h-full p-8 rounded-2xl bg-white border border-gray-100 shadow-md hover:shadow-xl transition-all group text-center overflow-hidden hover:border-primary-100">
+                    <div className="w-16 h-16 bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                      <path.icon className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">{path.title}</h3>
+                    <p className="text-gray-500 leading-relaxed">{path.desc}</p>
+                  </div>
+                </div>
+              </FadeInSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== BECOME A PARTNER ===== */}
+      <section className="relative py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-primary-950 to-gray-900" />
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-primary-500 rounded-full blur-[128px]" />
+          <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-blue-500 rounded-full blur-[128px]" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <FadeInSection>
+            <div className="text-center mb-16">
+              <Badge className="mb-4 px-4 py-1.5 bg-white/15 text-white border-white/20">
+                <Handshake className="h-4 w-4 mr-1.5 inline" /> Become a Partner
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">Grow With Us as a Franchise Partner</h2>
+              <p className="text-blue-100/70 max-w-2xl mx-auto text-lg">Join the Leadership Study System family and bring world-class education to your community.</p>
+            </div>
+          </FadeInSection>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {franchiseBenefits.map((benefit, i) => (
+              <FadeInSection key={benefit.title}>
+                <div className="group h-full" style={{ animationDelay: `${i * 150}ms` }}>
+                  <div className="h-full p-8 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/15 hover:border-white/25 transition-all text-center">
+                    <div className="w-16 h-16 bg-white/15 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                      <benefit.icon className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3">{benefit.title}</h3>
+                    <p className="text-blue-100/70 leading-relaxed">{benefit.desc}</p>
+                  </div>
+                </div>
+              </FadeInSection>
+            ))}
+          </div>
+          <FadeInSection>
+            <div className="text-center">
+              <Link to="/contact">
+                <Button size="lg" className="bg-white text-primary-800 hover:bg-blue-50 font-semibold px-10 py-6 h-auto text-base rounded-xl shadow-2xl shadow-white/20 group">
+                  Become a Partner
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
+          </FadeInSection>
+        </div>
+      </section>
+
+      {/* ===== OUR LEADERSHIP ===== */}
+      <section className="relative py-24 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeInSection>
             <div className="text-center mb-16">
@@ -384,7 +581,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== TESTIMONIALS ===== */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeInSection>
             <div className="text-center mb-14">
@@ -425,7 +622,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== PARTNERS ===== */}
-      <section className="relative py-20 bg-white">
+      <section className="relative py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeInSection>
             <div className="text-center mb-12">
@@ -450,6 +647,31 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== CONTACT ===== */}
+      <section className="relative py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeInSection>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[
+                { icon: Phone, title: 'Call Us', value: '(+92) 305 9079079', href: 'tel:+923059079079' },
+                { icon: Mail, title: 'Email', value: 'info@leadershipstudysystem.pk', href: 'mailto:info@leadershipstudysystem.pk' },
+                { icon: MapPin, title: 'Address', value: 'Street No.14, Sector F-8/3, Islamabad', href: 'https://maps.app.goo.gl/BWYvSWrhcRquFY1D6' },
+              ].map((item) => (
+                <a key={item.title} href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="group">
+                  <div className="p-8 rounded-2xl bg-gradient-to-b from-gray-50 to-white border border-gray-100 shadow-sm hover:shadow-lg hover:border-primary-100 transition-all text-center h-full">
+                    <div className="w-14 h-14 bg-gradient-to-br from-primary-600 to-primary-800 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-lg group-hover:scale-110 transition-transform">
+                      <item.icon className="h-7 w-7 text-white" />
+                    </div>
+                    <h3 className="font-bold text-gray-900 mb-1">{item.title}</h3>
+                    <p className="text-gray-500 text-sm break-all">{item.value}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </FadeInSection>
+        </div>
+      </section>
+
       {/* ===== CTA ===== */}
       <section className="relative py-24 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-primary-950 to-gray-900" />
@@ -464,7 +686,7 @@ export default function HomePage() {
             </Badge>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
               Start Your Journey to Success with{' '}
-              <span className="bg-gradient-to-r from-blue-300 to-white bg-clip-text text-transparent">Leadership Study System</span>
+              <span className="bg-gradient-to-r from-blue-300 to-white bg-clip-text text-transparent">LSS</span>
             </h2>
             <p className="text-blue-100/70 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
               Join thousands of students who have achieved academic excellence through Leadership Study System.
