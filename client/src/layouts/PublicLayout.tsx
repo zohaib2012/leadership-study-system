@@ -2,6 +2,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { Menu, X, Phone, Instagram, Facebook, Youtube, MessageCircle, ChevronUp, GraduationCap, LayoutDashboard, LogOut, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import DownloadAppButton from '@/components/DownloadAppButton'
 import { useAuthStore } from '@/store/auth-store'
 
 const roleRoutes: Record<string, string> = {
@@ -91,6 +92,10 @@ export default function PublicLayout() {
             </div>
 
             <div className="hidden lg:flex items-center gap-3">
+              <DownloadAppButton
+                variant={scrolled || !isHome ? 'outline' : 'ghost'}
+                className={scrolled || !isHome ? 'border-primary-600 text-primary-700 hover:bg-primary-600 hover:text-white border-2 rounded-lg' : 'border-white/40 text-white border-2 rounded-lg hover:bg-white/10'}
+              />
               {isLoggedIn ? (
                 <>
                   <Link to={roleRoutes[user.role] || '/admin/dashboard'}>
@@ -189,6 +194,9 @@ export default function PublicLayout() {
                   </Link>
                 </div>
               )}
+              <div className="pt-3">
+                <DownloadAppButton className="w-full" />
+              </div>
             </div>
           </div>
         )}
@@ -225,6 +233,9 @@ export default function PublicLayout() {
                 <a href="https://www.youtube.com/@Mibsinstitute" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-white/20 hover:text-red-400 transition-all">
                   <Youtube className="h-4 w-4" />
                 </a>
+              </div>
+              <div className="mt-6">
+                <DownloadAppButton label="Download Mobile App" size="lg" className="bg-white text-primary-800 hover:bg-primary-50 shadow-lg shadow-black/10" />
               </div>
             </div>
 

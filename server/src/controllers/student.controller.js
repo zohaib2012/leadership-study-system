@@ -94,7 +94,8 @@ exports.getStudent = async (req, res) => {
       .populate('class')
       .populate('section')
       .populate('subjects')
-      .populate('parents.parent');
+      .populate('parents.parent')
+      .populate('user', 'name email');
 
     if (!student) {
       return res.status(404).json({ success: false, message: 'Student not found' });

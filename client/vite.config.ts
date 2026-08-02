@@ -8,7 +8,10 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icons/icon-192.png', 'icons/icon-512.png'],
+      devOptions: {
+        enabled: true,
+      },
+      includeAssets: ['icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-512-maskable.png', 'icons/icon-192.svg', 'icons/icon-512.svg'],
       manifest: {
         name: 'Leadership Study System',
         short_name: 'LSS ERP',

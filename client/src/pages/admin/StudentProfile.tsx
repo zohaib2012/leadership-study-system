@@ -134,7 +134,7 @@ export default function StudentProfile() {
                 <Badge variant={statusVariants[student.status] || 'secondary'} className="mb-4">
                   {student.status?.replace(/_/g, ' ')}
                 </Badge>
-                <div className="w-full space-y-2 text-sm">
+                  <div className="w-full space-y-2 text-sm">
                   {student.type === 'ACADEMY' ? (
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Program Level:</span>
@@ -146,6 +146,10 @@ export default function StudentProfile() {
                       <span className="font-medium">{student.class?.name || '-'}</span>
                     </div>
                   )}
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Email:</span>
+                    <span className="font-medium">{student.user?.email || '-'}</span>
+                  </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Section:</span>
                     <span className="font-medium">{student.section?.name || '-'}</span>
