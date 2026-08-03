@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { StrengthSection, LeadershipTeamSection, StaffFacultySection, GallerySection, SocialMediaSection, ContactSection, CareerSection } from '@/components/registration/EngagementSections'
 
 interface SchoolFormData {
   firstName: string
@@ -126,12 +127,15 @@ export default function StudentSchoolRegister() {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-24 pb-16">
         <div className="max-w-4xl mx-auto px-4">
           <div className={`text-center mb-10 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 border border-primary-200 text-primary-700 text-sm font-medium mb-4">
-              <School className="w-4 h-4" /> School Admission 2026
+            <div className="flex justify-center mb-5">
+              <img src="/icons/logo.jpeg" alt="LSS School Logo" className="w-20 h-20 rounded-2xl object-cover border-4 border-white shadow-xl shadow-primary-900/20" />
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-3">School Registration Form</h1>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 border border-primary-200 text-primary-700 text-sm font-medium mb-4">
+              <School className="w-4 h-4" /> LSS School — Admission 2026
+            </div>
+            <h1 className="text-4xl font-bold text-gray-900 mb-3">LSS School Registration</h1>
             <p className="text-gray-500 text-lg max-w-2xl mx-auto">
-              Playgroup to Pre-O Level — Fill in the details below to enroll your child
+              Playgroup to Pre-O Level — Join our family and give your child the best start
             </p>
             <div className="flex items-center justify-center gap-2 mt-6">
               {[1, 2, 3, 4].map(s => (
@@ -214,6 +218,8 @@ export default function StudentSchoolRegister() {
                         </Select>
                       </div>
                     </div>
+                    <StrengthSection type="SCHOOL" />
+                    <LeadershipTeamSection type="SCHOOL" />
                   </div>
                 )}
 
@@ -272,6 +278,7 @@ export default function StudentSchoolRegister() {
                         </div>
                       </div>
                     </div>
+                    <StaffFacultySection type="SCHOOL" />
                   </div>
                 )}
 
@@ -332,6 +339,8 @@ export default function StudentSchoolRegister() {
                         </div>
                       </div>
                     </div>
+                    <GallerySection type="SCHOOL" />
+                    <SocialMediaSection />
                   </div>
                 )}
 
@@ -379,6 +388,8 @@ export default function StudentSchoolRegister() {
                         <Link to="/terms" className="text-primary-600 hover:text-primary-700 font-medium underline underline-offset-2">Terms & Conditions</Link>
                       </span>
                     </label>
+                    <ContactSection />
+                    <CareerSection />
                   </div>
                 )}
 
