@@ -123,16 +123,31 @@ export default function StudentAcademyRegister() {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 pt-24 pb-16">
         <div className="max-w-4xl mx-auto px-4">
           <div className={`text-center mb-10 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <div className="flex justify-center mb-5">
-              <img src="/icons/logo.jpeg" alt="LSS Academy Logo" className="w-20 h-20 rounded-2xl object-cover border-4 border-white shadow-xl shadow-primary-900/20" />
+            <div className="relative mb-8 overflow-hidden rounded-3xl">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-primary-900 to-primary-700" />
+              <div className="absolute inset-0 opacity-25">
+                <div className="absolute top-5 left-10 w-32 h-32 bg-blue-400 rounded-full blur-3xl" />
+                <div className="absolute bottom-5 right-10 w-40 h-40 bg-violet-400 rounded-full blur-3xl" />
+              </div>
+              <div className="relative px-6 py-10 sm:px-10 sm:py-12">
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-sm border border-white/30 text-white text-sm font-medium mb-4">
+                  <GraduationCap className="w-4 h-4" /> LSS Academy — Admission 2026
+                </div>
+                <h1 className="text-3xl sm:text-5xl font-bold text-white mb-3 leading-tight">
+                  Unlock Your Cambridge Journey 🚀
+                </h1>
+                <p className="text-blue-100/80 text-base sm:text-lg max-w-2xl mx-auto">
+                  Cambridge IGCSE, AS & A Level — World-class education, expert faculty, and a clear path to top universities and global careers.
+                </p>
+                <div className="flex flex-wrap justify-center gap-2 mt-6">
+                  {['Cambridge Curriculum', 'Expert Faculty', 'A* Results', 'University Pathways'].map(t => (
+                    <span key={t} className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 border border-primary-200 text-primary-700 text-sm font-medium mb-4">
-              <GraduationCap className="w-4 h-4" /> LSS Academy — Admission 2026
-            </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-3">LSS Academy Registration</h1>
-            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
-              Cambridge IGCSE, AS & A Level — Take the next step towards a brighter future
-            </p>
             <div className="flex items-center justify-center gap-2 mt-6">
               {[1, 2, 3, 4].map(s => (
                 <div key={s} className={`flex items-center ${s < 4 ? 'gap-2' : ''}`}>
@@ -156,8 +171,8 @@ export default function StudentAcademyRegister() {
                 {step === 1 && (
                   <div className="transition-all duration-300">
                     <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
-                      <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
-                        <User className="w-5 h-5 text-primary-700" />
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center shadow-lg shadow-primary-200">
+                        <User className="w-5 h-5 text-white" />
                       </div>
                       <div>
                         <h2 className="text-lg font-semibold text-gray-900">Student Information</h2>
@@ -195,30 +210,111 @@ export default function StudentAcademyRegister() {
                         <label className="text-sm font-medium text-gray-700">Password <span className="text-red-500">*</span></label>
                         <Input type="password" value={formData.password} onChange={handleChange('password')} required placeholder="Create a password" className="h-11" />
                       </div>
-                      <div className="space-y-1.5">
-                        <label className="text-sm font-medium text-gray-700">Program Level <span className="text-red-500">*</span></label>
-                        <Select value={formData.programLevel} onValueChange={handleChange('programLevel')}>
-                          <SelectTrigger className="h-11"><SelectValue placeholder="Select program" /></SelectTrigger>
-                          <SelectContent>
-                            {programLevels.map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
-                          </SelectContent>
-                        </Select>
+                    </div>
+
+                    <div className="mt-6 pt-6 border-t border-gray-100">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center shadow-lg shadow-primary-200">
+                          <BookOpen className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <h2 className="text-lg font-semibold text-gray-900">Subjects Interested In 📚</h2>
+                          <p className="text-sm text-gray-500">Separate multiple subjects with commas</p>
+                        </div>
                       </div>
                       <div className="space-y-1.5">
-                        <label className="text-sm font-medium text-gray-700">Exam Series <span className="text-red-500">*</span></label>
-                        <Select value={formData.academySeries} onValueChange={handleChange('academySeries')}>
-                          <SelectTrigger className="h-11"><SelectValue placeholder="Select series" /></SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="MAY_JUNE">May / June</SelectItem>
-                            <SelectItem value="OCT_NOV">October / November</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <Input value={formData.subjects} onChange={handleChange('subjects')} required placeholder="e.g. Business Studies, Economics, Accounting" className="h-11" />
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          {['Business Studies', 'Economics', 'Accounting', 'Commerce'].map(subj => (
+                            <button
+                              type="button"
+                              key={subj}
+                              onClick={() => {
+                                const current = formData.subjects.split(',').map(s => s.trim()).filter(Boolean)
+                                const next = current.includes(subj) ? current.filter(s => s !== subj) : [...current, subj]
+                                handleChange('subjects')(next.join(', '))
+                              }}
+                              className={`px-3 py-1.5 rounded-full text-sm font-medium border transition-all ${
+                                formData.subjects.split(',').map(s => s.trim()).includes(subj)
+                                  ? 'border-primary-700 bg-primary-50 text-primary-700'
+                                  : 'border-gray-200 bg-white text-gray-500 hover:border-primary-300 hover:text-primary-700'
+                              }`}
+                            >
+                              {subj}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                    <div className="mt-5 space-y-1.5">
-                      <label className="text-sm font-medium text-gray-700">Subjects Interested In <span className="text-red-500">*</span></label>
-                      <Input value={formData.subjects} onChange={handleChange('subjects')} required placeholder="e.g. Business Studies, Economics, Accounting" className="h-11" />
-                      <p className="text-xs text-gray-400">Separate multiple subjects with commas</p>
+
+                    <div className="mt-8 pt-6 border-t border-gray-100">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center shadow-lg shadow-primary-200">
+                          <Layers className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <h2 className="text-lg font-semibold text-gray-900">Choose Your Program 🎯</h2>
+                          <p className="text-sm text-gray-500">Select the level you're applying for</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        {programLevels.map(p => (
+                          <button
+                            type="button"
+                            key={p}
+                            onClick={() => handleChange('programLevel')(p)}
+                            className={`p-5 rounded-2xl border-2 text-left transition-all group ${
+                              formData.programLevel === p
+                                ? 'border-primary-700 bg-primary-50 shadow-lg shadow-primary-100 scale-[1.02]'
+                                : 'border-gray-200 bg-white hover:border-primary-300 hover:bg-primary-50/40'
+                            }`}
+                          >
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${
+                              formData.programLevel === p ? 'bg-gradient-to-br from-primary-600 to-primary-800 text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-primary-100 group-hover:text-primary-700'
+                            }`}>
+                              {formData.programLevel === p ? <CheckCircle className="w-5 h-5" /> : <GraduationCap className="w-5 h-5" />}
+                            </div>
+                            <p className={`font-semibold ${formData.programLevel === p ? 'text-primary-800' : 'text-gray-700'}`}>{p}</p>
+                            <p className="text-xs text-gray-400 mt-1">{p === 'IGCSE O Level' ? 'Foundation for AS/A Levels' : p === 'AS Level' ? 'First year of advanced study' : 'Final advanced qualification'}</p>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mt-6">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center shadow-lg shadow-primary-200">
+                          <Calendar className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <h2 className="text-lg font-semibold text-gray-900">Exam Series 📅</h2>
+                          <p className="text-sm text-gray-500">When do you plan to sit your exams?</p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {[{ v: 'MAY_JUNE', label: 'May / June', desc: 'Exams held in spring' }, { v: 'OCT_NOV', label: 'October / November', desc: 'Exams held in autumn' }].map(s => (
+                          <button
+                            type="button"
+                            key={s.v}
+                            onClick={() => handleChange('academySeries')(s.v)}
+                            className={`p-4 rounded-2xl border-2 flex items-center gap-4 transition-all ${
+                              formData.academySeries === s.v
+                                ? 'border-primary-700 bg-primary-50 shadow-lg shadow-primary-100'
+                                : 'border-gray-200 bg-white hover:border-primary-300 hover:bg-primary-50/40'
+                            }`}
+                          >
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                              formData.academySeries === s.v ? 'bg-gradient-to-br from-primary-600 to-primary-800 text-white' : 'bg-gray-100 text-gray-500'
+                            }`}>
+                              {formData.academySeries === s.v ? <CheckCircle className="w-5 h-5" /> : <Calendar className="w-5 h-5" />}
+                            </div>
+                            <div>
+                              <p className={`font-semibold ${formData.academySeries === s.v ? 'text-primary-800' : 'text-gray-700'}`}>{s.label}</p>
+                              <p className="text-xs text-gray-400">{s.desc}</p>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
                     </div>
                     <StrengthSection type="ACADEMY" />
                     <LeadershipTeamSection type="ACADEMY" />
@@ -228,12 +324,12 @@ export default function StudentAcademyRegister() {
                 {step === 2 && (
                   <div className="transition-all duration-300">
                     <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
-                      <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
-                        <UserCheck className="w-5 h-5 text-primary-700" />
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center shadow-lg shadow-primary-200">
+                        <UserCheck className="w-5 h-5 text-white" />
                       </div>
                       <div>
-                        <h2 className="text-lg font-semibold text-gray-900">Father's Information</h2>
-                        <p className="text-sm text-gray-500">Parent/guardian contact details</p>
+                        <h2 className="text-lg font-semibold text-gray-900">Parent / Guardian Details</h2>
+                        <p className="text-sm text-gray-500">Contact details of your guardian</p>
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -261,8 +357,8 @@ export default function StudentAcademyRegister() {
 
                     <div className="mt-8 pt-6 border-t border-gray-100">
                       <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-10 rounded-lg bg-rose-50 flex items-center justify-center">
-                          <Heart className="w-5 h-5 text-rose-500" />
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center shadow-lg shadow-primary-200">
+                          <Heart className="w-5 h-5 text-white" />
                         </div>
                         <div>
                           <h2 className="text-lg font-semibold text-gray-900">Mother's Information</h2>
@@ -287,8 +383,8 @@ export default function StudentAcademyRegister() {
                 {step === 3 && (
                   <div className="transition-all duration-300">
                     <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
-                      <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
-                        <MapPin className="w-5 h-5 text-primary-700" />
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center shadow-lg shadow-primary-200">
+                        <MapPin className="w-5 h-5 text-white" />
                       </div>
                       <div>
                         <h2 className="text-lg font-semibold text-gray-900">Address & Location</h2>
@@ -308,8 +404,8 @@ export default function StudentAcademyRegister() {
 
                     <div className="mt-8 pt-6 border-t border-gray-100">
                       <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center">
-                          <BookOpen className="w-5 h-5 text-amber-600" />
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center shadow-lg shadow-primary-200">
+                          <BookOpen className="w-5 h-5 text-white" />
                         </div>
                         <div>
                           <h2 className="text-lg font-semibold text-gray-900">Academic History</h2>
@@ -331,8 +427,8 @@ export default function StudentAcademyRegister() {
                 {step === 4 && (
                   <div className="transition-all duration-300">
                     <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
-                      <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center">
-                        <FileText className="w-5 h-5 text-primary-700" />
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center shadow-lg shadow-primary-200">
+                        <FileText className="w-5 h-5 text-white" />
                       </div>
                       <div>
                         <h2 className="text-lg font-semibold text-gray-900">Review & Submit</h2>
@@ -392,11 +488,11 @@ export default function StudentAcademyRegister() {
                   </div>
                   <div>
                     {step < 4 ? (
-                      <Button type="button" onClick={nextStep} className="bg-primary-700 hover:bg-primary-800 gap-2 min-w-[140px]">
+                      <Button type="button" onClick={nextStep} className="bg-gradient-to-r from-primary-600 to-primary-800 hover:from-primary-700 hover:to-primary-900 shadow-lg shadow-primary-200 gap-2 min-w-[140px]">
                         Next Step <ChevronRight className="w-4 h-4" />
                       </Button>
                     ) : (
-                      <Button type="submit" disabled={isSubmitting || !formData.agreeTerms} className="bg-primary-700 hover:bg-primary-800 gap-2 min-w-[160px]">
+                      <Button type="submit" disabled={isSubmitting || !formData.agreeTerms} className="bg-gradient-to-r from-primary-600 to-primary-800 hover:from-primary-700 hover:to-primary-900 shadow-lg shadow-primary-200 gap-2 min-w-[160px]">
                         {isSubmitting ? (
                           <span className="flex items-center gap-2">
                             <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
