@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { DataTable } from '@/components/ui/data-table'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Plus, Search, ChevronLeft, ChevronRight, Trash2, Edit, IndianRupee } from 'lucide-react'
+import { Plus, Search, ChevronLeft, ChevronRight, Trash2, Edit, IndianRupee, School, GraduationCap } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 
 interface TeacherItem {
@@ -20,10 +20,11 @@ interface TeacherItem {
     class: { _id: string; name: string }
     subject: { _id: string; name: string }
   }[]
+  type?: string
   status: string
 }
 
-export default function TeacherList() {
+export default function TeacherList({ defaultType }: { defaultType?: 'SCHOOL' | 'ACADEMY' }) {
   const [teachers, setTeachers] = useState<TeacherItem[]>([])
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(1)
@@ -33,7 +34,9 @@ export default function TeacherList() {
   const fetchTeachers = useCallback(async () => {
     setIsLoading(true)
     try {
-      const { data } = await api.get('/teachers', { params: { page, limit: 10, search } })
+      const params: any = { page, limit: 10, search }
+      if (defaultType) params.type = defaultType
+      const { data } = await api.get('/teachers', { params })
       if (data.success) {
         setTeachers(data.data.teachers || data.data || [])
         setTotalPages(data.data.totalPages || 1)
@@ -43,7 +46,7 @@ export default function TeacherList() {
     } finally {
       setIsLoading(false)
     }
-  }, [page, search])
+  }, [page, search, defaultType])
 
   useEffect(() => {
     fetchTeachers()
@@ -52,7 +55,9 @@ export default function TeacherList() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Teachers</h1>
+        <h1 className="text-2xl font-bold">
+          {defaultType === 'ACADEMY' ? 'Academy Teachers' : defaultType === 'SCHOOL' ? 'School Teachers' : 'Teachers'}
+        </h1>
         <Link to="/admin/teachers/add">
           <Button>
             <Plus className="h-4 w-4 mr-2" /> Add Teacher
@@ -113,6 +118,16 @@ export default function TeacherList() {
                 <span title={classNames.join(', ')}>{classIds.size || 0}</span>
               )
             },
+          },
+          {
+            key: 'type',
+            header: 'Type',
+            render: (row: TeacherItem) => (
+              <Badge variant={row.type === 'ACADEMY' ? 'outline' : 'secondary'} className="gap-1 whitespace-nowrap">
+                {row.type === 'ACADEMY' ? <GraduationCap className="h-3 w-3" /> : <School className="h-3 w-3" />}
+                {row.type === 'ACADEMY' ? 'Academy' : 'School'}
+              </Badge>
+            ),
           },
           {
             key: 'salary',

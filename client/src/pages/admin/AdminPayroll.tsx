@@ -158,6 +158,7 @@ export default function AdminPayroll() {
   }
 
   const handlePrint = (slip: SlipItem) => {
+    const logoUrl = `${window.location.origin}/icons/logo.jpeg`
     const w = window.open('', '_blank')
     if (!w) return
     w.document.write(`
@@ -165,6 +166,8 @@ export default function AdminPayroll() {
       <style>
         body { font-family: Arial, sans-serif; padding: 40px; max-width: 700px; margin: auto; }
         .header { text-align: center; border-bottom: 2px solid #1e3a5f; padding-bottom: 15px; margin-bottom: 20px; }
+        .header .brand { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 6px; }
+        .header .brand img { width: 56px; height: 56px; border-radius: 12px; object-fit: cover; }
         .header h1 { color: #1e3a5f; margin: 0; font-size: 22px; }
         .header p { color: #666; margin: 5px 0 0 0; font-size: 13px; }
         .slip-no { text-align: right; font-size: 14px; color: #1e3a5f; font-weight: bold; margin-bottom: 15px; }
@@ -180,8 +183,13 @@ export default function AdminPayroll() {
         @media print { body { padding: 20px; } }
       </style></head><body>
         <div class="header">
-          <h1>Leadership Study System</h1>
-          <p>Salary Slip</p>
+          <div class="brand">
+            <img src="${logoUrl}" alt="Leadership Study System Logo" />
+            <div>
+              <h1>Leadership Study System</h1>
+              <p>Salary Slip</p>
+            </div>
+          </div>
         </div>
         <div class="slip-no">Slip #: ${slip.slipNo}</div>
         <table>

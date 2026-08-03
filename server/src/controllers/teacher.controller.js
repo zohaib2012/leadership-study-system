@@ -17,12 +17,16 @@ exports.getTeachers = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Tenant context required' });
     }
 
-    const { page = 1, limit = 10, search, status } = req.query;
+    const { page = 1, limit = 10, search, status, type } = req.query;
     const tenantId = req.tenant._id;
     const teacherFilter = { tenant: tenantId };
 
     if (status) {
       teacherFilter.status = status;
+    }
+
+    if (type) {
+      teacherFilter.type = type;
     }
 
     if (search) {
@@ -106,6 +110,7 @@ exports.createTeacher = async (req, res) => {
       cnic,
       address,
       assignedClasses,
+      type,
     } = req.body;
 
     const tenantId = req.tenant._id;
@@ -136,6 +141,7 @@ exports.createTeacher = async (req, res) => {
       cnic,
       address,
       assignedClasses: assignedClasses || [],
+      type: type || 'SCHOOL',
     });
 
     const populated = await Teacher.findById(teacher._id)
@@ -193,6 +199,7 @@ exports.updateTeacher = async (req, res) => {
       'photo',
       'assignedClasses',
       'documents',
+      'type',
     ];
 
     teacherFields.forEach((field) => {

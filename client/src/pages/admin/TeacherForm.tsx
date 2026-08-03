@@ -35,6 +35,7 @@ export default function TeacherForm() {
     experience: '',
     salary: '',
     contractType: 'PERMANENT',
+    type: 'SCHOOL',
     password: '',
   })
   const [subjectSelections, setSubjectSelections] = useState<Record<string, string[]>>({})
@@ -70,6 +71,7 @@ export default function TeacherForm() {
           experience: t.experience?.toString() || '',
           salary: t.salary?.toString() || '',
           contractType: t.contractType || 'PERMANENT',
+          type: t.type || 'SCHOOL',
           password: '',
         })
         const selections: Record<string, string[]> = {}
@@ -125,6 +127,7 @@ export default function TeacherForm() {
         experience: Number(form.experience) || 0,
         salary: Number(form.salary) || 0,
         contractType: form.contractType,
+        type: form.type,
         password: form.password || undefined,
         assignedClasses,
       }
@@ -133,7 +136,7 @@ export default function TeacherForm() {
       } else {
         await api.post('/teachers', payload)
       }
-      navigate('/admin/teachers')
+      navigate(`/admin/teachers/${form.type.toLowerCase()}`)
     } catch (err: any) {
       setError(err?.response?.data?.message || 'Failed to save teacher')
     } finally {
@@ -144,7 +147,7 @@ export default function TeacherForm() {
   return (
     <div className="space-y-4 max-w-3xl">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate('/admin/teachers')}>
+        <Button variant="ghost" size="icon" onClick={() => navigate(`/admin/teachers/${form.type.toLowerCase()}`)}>
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <h1 className="text-2xl font-bold">{isEditing ? 'Edit Teacher' : 'Add Teacher'}</h1>
@@ -174,6 +177,16 @@ export default function TeacherForm() {
               <div>
                 <label className="block text-sm font-medium mb-1">Qualification</label>
                 <Input value={form.qualification} onChange={(e) => setForm((f) => ({ ...f, qualification: e.target.value }))} placeholder="e.g. M.Sc, B.Ed" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Type</label>
+                <Select value={form.type} onValueChange={(v) => setForm((f) => ({ ...f, type: v }))}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="SCHOOL">School</SelectItem>
+                    <SelectItem value="ACADEMY">Academy</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Experience (years)</label>
@@ -279,7 +292,7 @@ export default function TeacherForm() {
               <Save className="h-4 w-4 mr-2" />
               {isLoading ? 'Saving...' : 'Save Teacher'}
             </Button>
-            <Button type="button" variant="outline" onClick={() => navigate('/admin/teachers')}>Cancel</Button>
+            <Button type="button" variant="outline" onClick={() => navigate(`/admin/teachers/${form.type.toLowerCase()}`)}>Cancel</Button>
           </div>
         </div>
       </form>

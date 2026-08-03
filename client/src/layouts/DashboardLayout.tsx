@@ -34,11 +34,13 @@ const superAdminMenu = [
 
 const adminMenu = [
   { label: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
-  { label: 'Students', href: '/admin/students', icon: Users },
-  { label: 'Teachers', href: '/admin/teachers', icon: UserCheck },
+  { label: 'School Students', href: '/admin/students/school', icon: Users },
+  { label: 'Academy Students', href: '/admin/students/academy', icon: GraduationCap },
+  { label: 'School Teachers', href: '/admin/teachers/school', icon: UserCheck },
+  { label: 'Academy Teachers', href: '/admin/teachers/academy', icon: UserCheck },
   { label: 'Classes', href: '/admin/classes', icon: School },
   { label: 'Subjects', href: '/admin/subjects', icon: BookOpen },
-  // { label: 'Timetable', href: '/admin/timetable', icon: Calendar },
+  { label: 'Timetable', href: '/admin/timetable', icon: Calendar },
   { label: 'Attendance', href: '/admin/attendance', icon: ClipboardCheck },
   { label: 'Fees', href: '/admin/fees/structure', icon: IndianRupee },
   { label: 'Payroll', href: '/admin/payroll', icon: IndianRupee },
@@ -99,9 +101,7 @@ export default function DashboardLayout({ role = 'admin' }: Props) {
             <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-white rounded-full blur-3xl" />
           </div>
           <div className="relative flex items-center gap-3 h-16 px-4 border-b border-white/10">
-            <div className="w-9 h-9 bg-white rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
-              <span className="text-primary-800 font-bold">LSS</span>
-            </div>
+            <img src="/icons/logo.jpeg" alt="Leadership Study System Logo" className="w-9 h-9 rounded-xl object-cover flex-shrink-0 shadow-lg" />
             <div className="overflow-hidden flex-1">
               <p className="font-semibold text-sm truncate">{user?.tenant?.name || 'Leadership Study System'}</p>
               <p className="text-xs text-blue-300/70 capitalize">{role} Portal</p>

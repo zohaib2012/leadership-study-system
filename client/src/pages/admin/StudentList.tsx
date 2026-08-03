@@ -39,13 +39,13 @@ const statusVariants: Record<string, 'success' | 'destructive' | 'warning' | 'se
 
 const statusOptions = ['ACTIVE', 'INACTIVE', 'PENDING', 'PASSED_OUT', 'TRANSFERRED']
 
-export default function StudentList() {
+export default function StudentList({ defaultType }: { defaultType?: 'SCHOOL' | 'ACADEMY' }) {
   const [students, setStudents] = useState<StudentItem[]>([])
   const [classes, setClasses] = useState<ClassOption[]>([])
   const [search, setSearch] = useState('')
   const [classFilter, setClassFilter] = useState('all')
   const [statusFilter, setStatusFilter] = useState('all')
-  const [typeFilter, setTypeFilter] = useState('all')
+  const [typeFilter, setTypeFilter] = useState(defaultType || 'all')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
@@ -115,7 +115,9 @@ export default function StudentList() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Students</h1>
+        <h1 className="text-2xl font-bold">
+          {defaultType === 'ACADEMY' ? 'Academy Students' : defaultType === 'SCHOOL' ? 'School Students' : 'Students'}
+        </h1>
         <Link to="/admin/students/add">
           <Button>
             <Plus className="h-4 w-4 mr-2" /> Add Student
@@ -155,16 +157,18 @@ export default function StudentList() {
             ))}
           </SelectContent>
         </Select>
-        <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setPage(1) }}>
-          <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="All Types" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            <SelectItem value="SCHOOL">School</SelectItem>
-            <SelectItem value="ACADEMY">Academy</SelectItem>
-          </SelectContent>
-        </Select>
+        {!defaultType && (
+          <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setPage(1) }}>
+            <SelectTrigger className="w-[140px]">
+              <SelectValue placeholder="All Types" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Types</SelectItem>
+              <SelectItem value="SCHOOL">School</SelectItem>
+              <SelectItem value="ACADEMY">Academy</SelectItem>
+            </SelectContent>
+          </Select>
+        )}
       </div>
 
       <DataTable

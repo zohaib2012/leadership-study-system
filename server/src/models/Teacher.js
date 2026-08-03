@@ -21,6 +21,7 @@ const teacherSchema = new mongoose.Schema({
     type: { type: String },
     fileUrl: String,
   }],
+  type: { type: String, enum: ['SCHOOL', 'ACADEMY'], default: 'SCHOOL' },
   status: { type: String, enum: ['ACTIVE', 'INACTIVE'], default: 'ACTIVE' },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
