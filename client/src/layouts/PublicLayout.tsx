@@ -23,7 +23,7 @@ const navLinks = [
   { label: 'Careers', href: '/careers' },
   { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },
-  { label: 'Pricing', href: '/pricing' },
+                  { label: 'Become a Partner', href: '/pricing' },
 ]
 
 export default function PublicLayout() {
@@ -259,7 +259,7 @@ export default function PublicLayout() {
                   { label: 'Careers', href: '/careers' },
                   { label: 'Contact Us', href: '/contact' },
                   { label: 'Registration', href: '/register/student' },
-                  { label: 'Pricing', href: '/pricing' },
+  { label: 'Become a Partner', href: '/pricing' },
                 ].map((l) => (
                   <Link key={l.href} to={l.href} className="block text-gray-400 hover:text-white transition-colors">
                     {l.label}
