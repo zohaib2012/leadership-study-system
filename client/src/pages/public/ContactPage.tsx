@@ -224,29 +224,31 @@ const ContactPage = () => {
               ))}
 
               {/* Maps */}
-              {campusInfo.map((item) => (
-                <FadeInSection key={`map-${item.name}`}>
-                  <Card className="overflow-hidden border border-gray-200 shadow-sm">
-                    <div className="flex items-center justify-center gap-2 border-b border-gray-100 bg-gray-50/80 px-4 py-2.5">
-                      <MapPin className="h-4 w-4 text-primary-500" />
-                      <span className="text-sm font-semibold text-gray-700">{item.name} Location</span>
-                    </div>
-                    <div className="aspect-[4/3] w-full bg-gray-100">
-                      <iframe
-                        title={`${item.name} Location`}
-                        src={item.mapSrc}
-                        width="100%" height="100%" style={{ border: 0 }}
-                        allowFullScreen loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                      />
-                    </div>
-                    <div className="flex items-center justify-center gap-1.5 border-t border-gray-100 px-4 py-2.5">
-                      <MapPin className="h-3.5 w-3.5 text-primary-500" />
-                      <span className="text-xs font-medium text-gray-500">{item.address}</span>
-                    </div>
-                  </Card>
-                </FadeInSection>
-              ))}
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                {campusInfo.map((item) => (
+                  <FadeInSection key={`map-${item.name}`}>
+                    <Card className="overflow-hidden border border-gray-200 shadow-sm h-full">
+                      <div className="flex items-center justify-center gap-2 border-b border-gray-100 bg-gray-50/80 px-4 py-2.5">
+                        <MapPin className="h-4 w-4 text-primary-500" />
+                        <span className="text-sm font-semibold text-gray-700">{item.name} Location</span>
+                      </div>
+                      <div className="aspect-[4/3] w-full bg-gray-100">
+                        <iframe
+                          title={`${item.name} Location`}
+                          src={item.mapSrc}
+                          width="100%" height="100%" style={{ border: 0 }}
+                          allowFullScreen loading="lazy"
+                          referrerPolicy="no-referrer-when-downgrade"
+                        />
+                      </div>
+                      <div className="flex items-center justify-center gap-1.5 border-t border-gray-100 px-4 py-2.5">
+                        <MapPin className="h-3.5 w-3.5 text-primary-500" />
+                        <span className="text-xs font-medium text-gray-500">{item.address}</span>
+                      </div>
+                    </Card>
+                  </FadeInSection>
+                ))}
+              </div>
 
               {/* Quick Contact */}
               <FadeInSection>
