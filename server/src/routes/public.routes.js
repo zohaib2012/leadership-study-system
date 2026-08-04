@@ -159,7 +159,10 @@ router.post('/careers/apply', uploadDocument.single('cv'), async (req, res) => {
     let cvName;
     if (req.file) {
       const folder = req.tenant ? `tenant_${req.tenant._id}` : 'lss/careers';
-      const result = await uploadToCloudinary(req.file.buffer, folder, 'raw');
+      const result = await uploadToCloudinary(req.file.buffer, folder, 'raw', {
+        use_filename: true,
+        unique_filename: true,
+      });
       cvUrl = result.secure_url;
       cvPublicId = result.public_id;
       cvName = req.file.originalname;

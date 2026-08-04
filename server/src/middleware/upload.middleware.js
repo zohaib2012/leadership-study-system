@@ -20,10 +20,10 @@ const uploadDocument = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
 });
 
-const uploadToCloudinary = (buffer, folder = 'lss/uploads', resourceType = 'image') => {
+const uploadToCloudinary = (buffer, folder = 'lss/uploads', resourceType = 'image', options = {}) => {
   return new Promise((resolve, reject) => {
     const uploadStream = cloudinary.uploader.upload_stream(
-      { folder, resource_type: resourceType },
+      { folder, resource_type: resourceType, ...options },
       (error, result) => {
         if (error) reject(error);
         else resolve(result);

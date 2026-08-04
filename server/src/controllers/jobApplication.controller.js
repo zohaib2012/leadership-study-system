@@ -1,4 +1,5 @@
 const JobApplication = require('../models/JobApplication');
+const { Readable } = require('stream');
 
 exports.getJobApplications = async (req, res) => {
   try {
@@ -54,6 +55,41 @@ exports.getJobApplication = async (req, res) => {
     }
 
     res.json({ success: true, data: application });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.downloadCv = async (req, res) => {
+  try {
+    const application = await JobApplication.findOne({
+      _id: req.params.id,
+      tenant: req.tenant._id,
+    }).lean();
+
+    if (!application) {
+      return res.status(404).json({ success: false, message: 'Application not found' });
+    }
+    if (!application.cvUrl) {
+      return res.status(404).json({ success: false, message: 'No CV uploaded for this application' });
+    }
+
+    const response = await fetch(application.cvUrl);
+    if (!response.ok || !response.body) {
+      return res.status(502).json({ success: false, message: 'Failed to retrieve CV file' });
+    }
+
+    const originalName = application.cvName || `cv.${application.cvUrl.split('.').pop() || 'pdf'}`;
+    const asciiName = originalName.replace(/[^\x20-\x7E]/g, '_').replace(/"/g, "'").replace(/[\\/]/g, '_');
+    const contentType = response.headers.get('content-type') || 'application/octet-stream';
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="${asciiName}"; filename*=UTF-8''${encodeURIComponent(originalName)}`
+    );
+
+    Readable.fromWeb(response.body).pipe(res);
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

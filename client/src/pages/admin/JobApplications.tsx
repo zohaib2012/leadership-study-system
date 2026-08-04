@@ -101,6 +101,22 @@ export default function JobApplications() {
 
   const formatDate = (d: string) => new Date(d).toLocaleDateString()
 
+  const downloadCv = async (app: JobApplication) => {
+    try {
+      const res = await api.get(`/job-applications/${app._id}/cv`, { responseType: 'blob' })
+      const url = URL.createObjectURL(res.data)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = app.cvName || 'cv.pdf'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error('Failed to download CV:', err)
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -174,12 +190,10 @@ export default function JobApplications() {
                 <Button
                   variant="outline"
                   size="sm"
-                  asChild
+                  onClick={() => downloadCv(row)}
                   className="text-primary-700 border-primary-200 hover:bg-primary-50"
                 >
-                  <a href={row.cvUrl} target="_blank" rel="noopener noreferrer">
-                    <Download className="h-3.5 w-3.5 mr-1" /> CV
-                  </a>
+                  <Download className="h-3.5 w-3.5 mr-1" /> CV
                 </Button>
               ) : (
                 <span className="text-xs text-muted-foreground">No CV</span>
@@ -310,10 +324,8 @@ export default function JobApplications() {
                 )}
                 <div className="flex flex-wrap items-center gap-3">
                   {viewApp.cvUrl && (
-                    <Button asChild className="bg-primary-600 hover:bg-primary-700">
-                      <a href={viewApp.cvUrl} target="_blank" rel="noopener noreferrer">
-                        <Download className="h-4 w-4 mr-2" /> Download CV {viewApp.cvName ? `(${viewApp.cvName})` : ''}
-                      </a>
+                    <Button onClick={() => downloadCv(viewApp)} className="bg-primary-600 hover:bg-primary-700">
+                      <Download className="h-4 w-4 mr-2" /> Download CV {viewApp.cvName ? `(${viewApp.cvName})` : ''}
                     </Button>
                   )}
                   <div className="flex items-center gap-2">

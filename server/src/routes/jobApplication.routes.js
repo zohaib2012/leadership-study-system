@@ -8,6 +8,7 @@ router.use(authorize('ADMIN', 'SUB_ADMIN'));
 
 router.get('/', jobApplicationController.getJobApplications);
 router.get('/:id', jobApplicationController.getJobApplication);
+router.get('/:id/cv', jobApplicationController.downloadCv);
 router.put('/:id/status', jobApplicationController.updateApplicationStatus);
 router.delete('/:id', jobApplicationController.deleteJobApplication);
 
