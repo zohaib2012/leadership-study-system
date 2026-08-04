@@ -53,6 +53,7 @@ import Announcements from '@/pages/admin/Announcements'
 import LeaveRequests from '@/pages/admin/LeaveRequests'
 import SettingsPage from '@/pages/admin/SettingsPage'
 import ActivityLogs from '@/pages/admin/ActivityLogs'
+import JobApplications from '@/pages/admin/JobApplications'
 
 import TeacherDashboard from '@/pages/teacher/TeacherDashboard'
 import TeacherClasses from '@/pages/teacher/TeacherClasses'
@@ -189,6 +190,7 @@ export default function App() {
               <Route path="/admin/communication/sms" element={<SmsCompose />} />
               <Route path="/admin/communication/announcements" element={<Announcements />} />
               <Route path="/admin/leaves" element={<LeaveRequests />} />
+              <Route path="/admin/job-applications" element={<JobApplications />} />
               <Route path="/admin/settings" element={<SettingsPage />} />
               <Route path="/admin/logs" element={<ActivityLogs />} />
             </Route>

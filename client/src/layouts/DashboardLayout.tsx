@@ -9,7 +9,7 @@ import {
   LayoutDashboard, Users, UserCheck, GraduationCap, BookOpen, Calendar, ClipboardCheck,
   IndianRupee, Clock, FileText, Megaphone, Settings, LogOut, Menu, X,
   Bell, Shield, School, BarChart3, ChevronLeft, Home, ChevronDown, Search,
-  Building2, Activity,
+  Building2, Activity, Briefcase,
 } from 'lucide-react'
 
 interface Props { role?: 'admin' | 'teacher' | 'student' | 'parent' | 'super-admin' }
@@ -44,6 +44,7 @@ const adminMenu = [
   { label: 'Attendance', href: '/admin/attendance', icon: ClipboardCheck },
   { label: 'Fees', href: '/admin/fees/structure', icon: IndianRupee },
   { label: 'Payroll', href: '/admin/payroll', icon: IndianRupee },
+  { label: 'Job Applications', href: '/admin/job-applications', icon: Briefcase },
   { label: 'Homework', href: '/admin/homework', icon: FileText },
   // { label: 'Communication', href: '/admin/communication/sms', icon: MessageSquare },
   { label: 'Announcements', href: '/admin/communication/announcements', icon: Megaphone },

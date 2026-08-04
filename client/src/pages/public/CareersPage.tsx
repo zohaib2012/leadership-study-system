@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async'
 import { useState, useEffect, FormEvent } from 'react'
 import {
   Briefcase, Send, Users, School, GraduationCap, Sparkles, Mail, Phone, MapPin,
-  ArrowRight, CheckCircle2, Clock, BadgeCheck,
+  ArrowRight, CheckCircle2, Clock, BadgeCheck, Upload, X,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -54,6 +54,7 @@ export default function CareersPage() {
     qualification: '',
     experience: '',
     coverLetter: '',
+    cv: null as File | null,
   })
 
   useEffect(() => {
@@ -71,10 +72,22 @@ export default function CareersPage() {
     setIsSubmitting(true)
     setMessage('')
     try {
-      const { data } = await api.post('/public/careers/apply', form)
+      const fd = new FormData()
+      fd.append('name', form.name)
+      fd.append('email', form.email)
+      fd.append('phone', form.phone)
+      fd.append('academyType', form.academyType)
+      fd.append('position', form.position)
+      fd.append('qualification', form.qualification)
+      fd.append('experience', form.experience)
+      fd.append('coverLetter', form.coverLetter)
+      if (form.cv) fd.append('cv', form.cv)
+      const { data } = await api.post('/public/careers/apply', fd, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      })
       if (data.success) {
         setSubmitted(true)
-        setForm({ name: '', email: '', phone: '', academyType: 'SCHOOL', position: '', qualification: '', experience: '', coverLetter: '' })
+        setForm({ name: '', email: '', phone: '', academyType: 'SCHOOL', position: '', qualification: '', experience: '', coverLetter: '', cv: null })
         setTimeout(() => setSubmitted(false), 5000)
       }
     } catch (err: any) {
@@ -338,6 +351,42 @@ export default function CareersPage() {
                     placeholder="Tell us about your teaching experience, achievements and why you'd like to join us..."
                     className="w-full resize-none rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:border-primary-500 focus:ring-1 focus:ring-primary-500/30"
                   />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-gray-700">Upload CV (PDF, DOC, DOCX) *</label>
+                  <div className="relative">
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={(e) => setForm((f) => ({ ...f, cv: e.target.files?.[0] || null }))}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <div className={`flex items-center gap-3 rounded-lg border-2 border-dashed px-4 py-3 transition-all ${form.cv ? 'border-emerald-400 bg-emerald-50' : 'border-gray-300 bg-gray-50 hover:border-primary-400'}`}>
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${form.cv ? 'bg-emerald-100 text-emerald-600' : 'bg-primary-100 text-primary-700'}`}>
+                        {form.cv ? <CheckCircle2 className="h-5 w-5" /> : <Upload className="h-5 w-5" />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        {form.cv ? (
+                          <p className="text-sm font-medium text-emerald-700 truncate">{form.cv.name}</p>
+                        ) : (
+                          <>
+                            <p className="text-sm font-medium text-gray-700">Click to choose your CV</p>
+                            <p className="text-xs text-gray-400">PDF, DOC or DOCX up to 10MB</p>
+                          </>
+                        )}
+                      </div>
+                      {form.cv && (
+                        <button
+                          type="button"
+                          onClick={() => setForm((f) => ({ ...f, cv: null }))}
+                          className="p-1.5 rounded-full text-emerald-600 hover:bg-emerald-100 transition-colors"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
                 <Button type="submit" disabled={isSubmitting} className="h-12 w-full rounded-xl bg-gradient-to-r from-primary-600 to-primary-800 hover:from-primary-700 hover:to-primary-900 text-white font-semibold shadow-lg shadow-primary-700/30">

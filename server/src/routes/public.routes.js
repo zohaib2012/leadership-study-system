@@ -3,6 +3,7 @@ const router = express.Router();
 const SubscriptionPlan = require('../models/SubscriptionPlan');
 const Tenant = require('../models/Tenant');
 const { registerTenant } = require('../controllers/auth.controller');
+const { uploadDocument, uploadToCloudinary } = require('../middleware/upload.middleware');
 
 router.get('/plans', async (req, res) => {
   const plans = await SubscriptionPlan.find({ isActive: true });
@@ -147,12 +148,22 @@ router.get('/careers/positions', async (req, res) => {
   res.json({ success: true, data: positions });
 });
 
-router.post('/careers/apply', async (req, res) => {
+router.post('/careers/apply', uploadDocument.single('cv'), async (req, res) => {
   const { name, email, phone, academyType, position, qualification, experience, coverLetter } = req.body;
   if (!name || !email || !phone || !academyType || !position) {
     return res.status(400).json({ success: false, message: 'Name, email, phone, institution type and position are required' });
   }
   try {
+    let cvUrl;
+    let cvPublicId;
+    let cvName;
+    if (req.file) {
+      const folder = req.tenant ? `tenant_${req.tenant._id}` : 'lss/careers';
+      const result = await uploadToCloudinary(req.file.buffer, folder, 'raw');
+      cvUrl = result.secure_url;
+      cvPublicId = result.public_id;
+      cvName = req.file.originalname;
+    }
     const Tenant = require('../models/Tenant');
     const tenant = await Tenant.findOne({ subdomain: 'demo' }).select('_id').lean();
     const application = await JobApplication.create({
@@ -165,6 +176,9 @@ router.post('/careers/apply', async (req, res) => {
       qualification: qualification || '',
       experience: experience || '',
       coverLetter: coverLetter || '',
+      cvUrl,
+      cvPublicId,
+      cvName,
     });
     res.status(201).json({ success: true, message: 'Application submitted successfully. We will review your application and contact you soon.', data: { id: application._id } });
   } catch (error) {

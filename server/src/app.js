@@ -33,6 +33,7 @@ app.use('/api/settings', require('./routes/settings.routes'));
 app.use('/api/dashboard', require('./routes/dashboard.routes'));
 app.use('/api/super-admin', require('./routes/super-admin.routes'));
 app.use('/api/upload', require('./routes/upload.routes'));
+app.use('/api/job-applications', require('./routes/jobApplication.routes'));
 
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'LSS API is running', timestamp: new Date().toISOString() });
