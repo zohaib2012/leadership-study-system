@@ -262,6 +262,9 @@ export default function StudentSchoolRegister() {
                     </div>
                     <StrengthSection type="SCHOOL" />
                     <LeadershipTeamSection type="SCHOOL" />
+                    <StaffFacultySection type="SCHOOL" />
+                    <GallerySection type="SCHOOL" />
+                    <SocialMediaSection />
                   </div>
                 )}
 
@@ -320,7 +323,6 @@ export default function StudentSchoolRegister() {
                         </div>
                       </div>
                     </div>
-                    <StaffFacultySection type="SCHOOL" />
                   </div>
                 )}
 
@@ -381,8 +383,6 @@ export default function StudentSchoolRegister() {
                         </div>
                       </div>
                     </div>
-                    <GallerySection type="SCHOOL" />
-                    <SocialMediaSection />
                   </div>
                 )}
 

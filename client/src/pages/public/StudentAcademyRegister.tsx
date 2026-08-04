@@ -321,6 +321,9 @@ export default function StudentAcademyRegister() {
                     </div>
                     <StrengthSection type="ACADEMY" />
                     <LeadershipTeamSection type="ACADEMY" />
+                    <StaffFacultySection type="ACADEMY" />
+                    <GallerySection type="ACADEMY" />
+                    <SocialMediaSection />
                   </div>
                 )}
 
@@ -379,7 +382,6 @@ export default function StudentAcademyRegister() {
                         </div>
                       </div>
                     </div>
-                    <StaffFacultySection type="ACADEMY" />
                   </div>
                 )}
 
@@ -422,8 +424,6 @@ export default function StudentAcademyRegister() {
                         </div>
                       </div>
                     </div>
-                    <GallerySection type="ACADEMY" />
-                    <SocialMediaSection />
                   </div>
                 )}
 
