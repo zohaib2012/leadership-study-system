@@ -128,7 +128,10 @@ export default function StudentSchoolRegister() {
         <div className="max-w-4xl mx-auto px-4">
           <div className={`text-center mb-10 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="relative mb-8 overflow-hidden rounded-3xl">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-400 via-orange-400 to-rose-400" />
+              <div className="absolute inset-0">
+                <img src="/images/school-kids.jpg" alt="LSS School students" className="w-full h-full object-cover" />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-amber-400/90 via-orange-400/85 to-rose-400/85" />
               <div className="absolute inset-0 opacity-20">
                 <div className="absolute top-5 left-10 w-24 h-24 bg-white rounded-full blur-2xl" />
                 <div className="absolute bottom-5 right-10 w-32 h-32 bg-yellow-300 rounded-full blur-2xl" />

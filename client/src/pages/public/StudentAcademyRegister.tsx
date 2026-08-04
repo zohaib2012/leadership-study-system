@@ -124,7 +124,10 @@ export default function StudentAcademyRegister() {
         <div className="max-w-4xl mx-auto px-4">
           <div className={`text-center mb-10 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <div className="relative mb-8 overflow-hidden rounded-3xl">
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-primary-900 to-primary-700" />
+              <div className="absolute inset-0">
+                <img src="/images/academy-students.jpg" alt="LSS Academy students" className="w-full h-full object-cover" />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-primary-900/85 to-primary-700/80" />
               <div className="absolute inset-0 opacity-25">
                 <div className="absolute top-5 left-10 w-32 h-32 bg-blue-400 rounded-full blur-3xl" />
                 <div className="absolute bottom-5 right-10 w-40 h-40 bg-violet-400 rounded-full blur-3xl" />

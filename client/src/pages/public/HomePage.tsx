@@ -31,6 +31,7 @@ import {
   Send,
   Rocket,
   Lightbulb,
+  Camera,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -192,7 +193,10 @@ export default function HomePage() {
 
       {/* ===== HERO ===== */}
       <section className="relative min-h-screen flex items-center overflow-hidden pt-16 lg:pt-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-primary-950 to-primary-800" />
+        <div className="absolute inset-0">
+          <img src="/images/classroom.jpg" alt="Modern classroom at Leadership Study System Islamabad" className="h-full w-full object-cover" />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/95 via-primary-950/90 to-primary-800/85" />
         <div className="absolute inset-0 opacity-40">
           <div className="absolute top-16 left-10 w-96 h-96 bg-primary-500 rounded-full blur-[130px] animate-pulse" />
           <div className="absolute bottom-10 right-10 w-[520px] h-[520px] bg-blue-500 rounded-full blur-[130px] animate-pulse animation-delay-2000" />
@@ -239,7 +243,19 @@ export default function HomePage() {
             <div className="hidden lg:block relative animate-fade-in animation-delay-400">
               <div className="absolute -inset-4 bg-gradient-to-br from-amber-400/30 via-white/10 to-blue-500/30 rounded-[2.5rem] blur-2xl opacity-70" />
               <div className="relative rounded-[2.5rem] overflow-hidden border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl">
-                <div className="p-8">
+                <div className="grid grid-cols-2 gap-2 p-2">
+                  <div className="relative h-40 rounded-[2rem] overflow-hidden">
+                    <img src="/images/school-kids.jpg" alt="LSS School students learning together" className="w-full h-full object-cover transition-transform duration-700 hover:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
+                    <span className="absolute bottom-3 left-3 text-xs font-semibold text-white bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">School Students</span>
+                  </div>
+                  <div className="relative h-40 rounded-[2rem] overflow-hidden">
+                    <img src="/images/academy-students.jpg" alt="LSS Academy students in class" className="w-full h-full object-cover transition-transform duration-700 hover:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
+                    <span className="absolute bottom-3 left-3 text-xs font-semibold text-white bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">Academy Students</span>
+                  </div>
+                </div>
+                <div className="p-8 pt-5">
                   <div className="flex items-center gap-4 mb-8">
                     <div className="relative">
                       <div className="absolute -inset-2 bg-white/20 rounded-full blur-xl" />
@@ -315,41 +331,53 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <FadeInSection>
               <Link to="/register/student/school" className="group block h-full">
-                <div className="relative p-8 rounded-3xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-xl shadow-amber-600/25 group-hover:shadow-amber-600/40 group-hover:-translate-y-1.5 transition-all h-full overflow-hidden">
-                  <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-                  <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-5">
-                    <GraduationCap className="h-7 w-7 text-white" />
+                <div className="relative rounded-3xl bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-xl shadow-amber-600/25 group-hover:shadow-amber-600/40 group-hover:-translate-y-1.5 transition-all h-full overflow-hidden">
+                  <div className="relative h-56 overflow-hidden">
+                    <img src="/images/school-kids.jpg" alt="LSS School students" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-amber-700/60 via-amber-600/10 to-transparent" />
+                    <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-2">LSS School</h3>
-                  <p className="text-white/85 mb-6">Playgroup till Pre O-Levels — building strong foundations with care and creativity.</p>
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {['Playgroup', 'Nursery', 'Primary', 'Middle'].map((c) => (
-                      <span key={c} className="px-3 py-1 rounded-full bg-white/20 text-white text-xs font-medium">{c}</span>
-                    ))}
+                  <div className="relative p-8">
+                    <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-5">
+                      <GraduationCap className="h-7 w-7 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">LSS School</h3>
+                    <p className="text-white/85 mb-6">Playgroup till Pre O-Levels — building strong foundations with care and creativity.</p>
+                    <div className="flex flex-wrap gap-2 mb-8">
+                      {['Playgroup', 'Nursery', 'Primary', 'Middle'].map((c) => (
+                        <span key={c} className="px-3 py-1 rounded-full bg-white/20 text-white text-xs font-medium">{c}</span>
+                      ))}
+                    </div>
+                    <span className="inline-flex items-center gap-2 text-sm font-semibold bg-white text-orange-700 px-5 py-2.5 rounded-xl shadow-lg group-hover:gap-3 transition-all">
+                      Enroll Now <ArrowRight className="h-4 w-4" />
+                    </span>
                   </div>
-                  <span className="inline-flex items-center gap-2 text-sm font-semibold bg-white text-orange-700 px-5 py-2.5 rounded-xl shadow-lg group-hover:gap-3 transition-all">
-                    Enroll Now <ArrowRight className="h-4 w-4" />
-                  </span>
                 </div>
               </Link>
             </FadeInSection>
             <FadeInSection>
               <Link to="/register/student/academy" className="group block h-full">
-                <div className="relative p-8 rounded-3xl bg-gradient-to-br from-blue-600 to-primary-800 text-white shadow-xl shadow-blue-700/25 group-hover:shadow-blue-700/40 group-hover:-translate-y-1.5 transition-all h-full overflow-hidden">
-                  <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
-                  <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-5">
-                    <BookOpen className="h-7 w-7 text-white" />
+                <div className="relative rounded-3xl bg-gradient-to-br from-blue-600 to-primary-800 text-white shadow-xl shadow-blue-700/25 group-hover:shadow-blue-700/40 group-hover:-translate-y-1.5 transition-all h-full overflow-hidden">
+                  <div className="relative h-56 overflow-hidden">
+                    <img src="/images/academy-students.jpg" alt="LSS Academy students" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary-800/70 via-blue-800/10 to-transparent" />
+                    <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-2">LSS Academy</h3>
-                  <p className="text-white/85 mb-6">O & A Levels (Cambridge IGCSE / A Level) — your gateway to global universities.</p>
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {['IGCSE O Level', 'AS Level', 'A Level'].map((c) => (
-                      <span key={c} className="px-3 py-1 rounded-full bg-white/20 text-white text-xs font-medium">{c}</span>
-                    ))}
+                  <div className="relative p-8">
+                    <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-5">
+                      <BookOpen className="h-7 w-7 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2">LSS Academy</h3>
+                    <p className="text-white/85 mb-6">O & A Levels (Cambridge IGCSE / A Level) — your gateway to global universities.</p>
+                    <div className="flex flex-wrap gap-2 mb-8">
+                      {['IGCSE O Level', 'AS Level', 'A Level'].map((c) => (
+                        <span key={c} className="px-3 py-1 rounded-full bg-white/20 text-white text-xs font-medium">{c}</span>
+                      ))}
+                    </div>
+                    <span className="inline-flex items-center gap-2 text-sm font-semibold bg-white text-primary-800 px-5 py-2.5 rounded-xl shadow-lg group-hover:gap-3 transition-all">
+                      Enroll Now <ArrowRight className="h-4 w-4" />
+                    </span>
                   </div>
-                  <span className="inline-flex items-center gap-2 text-sm font-semibold bg-white text-primary-800 px-5 py-2.5 rounded-xl shadow-lg group-hover:gap-3 transition-all">
-                    Enroll Now <ArrowRight className="h-4 w-4" />
-                  </span>
                 </div>
               </Link>
             </FadeInSection>
@@ -829,6 +857,48 @@ export default function HomePage() {
               ))}
             </div>
           </FadeInSection>
+        </div>
+      </section>
+
+      {/* ===== STUDENT LIFE GALLERY ===== */}
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-primary-950 to-primary-800" />
+        <div className="absolute inset-0 opacity-25">
+          <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-primary-500 rounded-full blur-[128px]" />
+          <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-amber-400 rounded-full blur-[120px]" />
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <FadeInSection>
+            <div className="text-center mb-14">
+              <Badge className="mb-4 px-4 py-1.5 bg-white/10 text-white border-white/25 backdrop-blur-sm">
+                <Camera className="h-4 w-4 mr-1.5 inline" /> Campus Life
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">Life at <span className="bg-gradient-to-r from-amber-300 to-blue-300 bg-clip-text text-transparent">Leadership Study System</span></h2>
+              <p className="text-blue-100/70 max-w-2xl mx-auto text-lg">A glimpse into our vibrant classrooms, dedicated faculty, and the student journey from Playgroup to A Levels.</p>
+            </div>
+          </FadeInSection>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { src: '/images/teacher-class.jpg', label: 'Interactive Classrooms', sub: 'Learning with experienced faculty' },
+              { src: '/images/students-group.jpg', label: 'Collaborative Learning', sub: 'Peer discussions and group work' },
+              { src: '/images/primary-classroom.jpg', label: 'Early Years', sub: 'A caring start for our youngest learners' },
+              { src: '/images/graduation.jpg', label: 'Graduation Day', sub: 'Celebrating our achievers' },
+            ].map((g, i) => (
+              <FadeInSection key={g.label}>
+                <div className="group relative h-72 rounded-3xl overflow-hidden shadow-xl shadow-black/30" style={{ animationDelay: `${i * 120}ms` }}>
+                  <img src={g.src} alt={g.label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-900/20 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-5">
+                    <p className="text-white font-bold text-lg mb-0.5">{g.label}</p>
+                    <p className="text-blue-100/70 text-sm">{g.sub}</p>
+                  </div>
+                  <div className="absolute top-4 right-4 w-10 h-10 bg-white/15 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Camera className="h-5 w-5 text-white" />
+                  </div>
+                </div>
+              </FadeInSection>
+            ))}
+          </div>
         </div>
       </section>
 
