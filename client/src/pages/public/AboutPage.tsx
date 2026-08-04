@@ -167,7 +167,7 @@ export default function AboutPage() {
               <div className="relative">
                 <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary-500/20 to-amber-500/20 blur-xl" />
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                  <img src="/images/school-kids.jpg" alt="LSS School students learning together" className="h-72 w-full object-cover sm:h-80" />
+                  <img src="/icons/gallery/gallery-1.jpeg" alt="LSS School students learning together" className="h-72 w-full object-cover sm:h-80" />
                 </div>
                 <div className="absolute -bottom-5 -left-3 sm:left-6 rounded-2xl bg-white px-5 py-3 shadow-xl">
                   <p className="text-2xl font-bold text-primary-700">500+</p>
@@ -209,7 +209,7 @@ export default function AboutPage() {
               <div className="relative">
                 <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary-600/20 to-primary-800/20 blur-xl" />
                 <div className="relative rounded-3xl overflow-hidden shadow-2xl">
-                  <img src="/images/academy-students.jpg" alt="LSS Academy students preparing for Cambridge exams" className="h-72 w-full object-cover sm:h-80" />
+                  <img src="/icons/gallery/gallery-2.jpeg" alt="LSS Academy students preparing for Cambridge exams" className="h-72 w-full object-cover sm:h-80" />
                 </div>
                 <div className="absolute -bottom-5 -right-3 sm:right-6 rounded-2xl bg-white px-5 py-3 shadow-xl">
                   <p className="text-2xl font-bold text-primary-700">1000+</p>
@@ -233,10 +233,10 @@ export default function AboutPage() {
           </FadeInSection>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {[
-              { src: '/images/teacher-class.jpg', label: 'Dedicated Faculty' },
-              { src: '/images/students-study-group.jpg', label: 'Group Learning' },
-              { src: '/images/university-lecture.jpg', label: 'Lecture Halls' },
-              { src: '/images/graduation-celebration.jpg', label: 'Our Achievers' },
+              { src: '/icons/gallery/gallery-3.jpeg', label: 'Dedicated Faculty' },
+              { src: '/icons/gallery/gallery-4.jpeg', label: 'Group Learning' },
+              { src: '/icons/gallery/gallery-5.jpeg', label: 'Lecture Halls' },
+              { src: '/icons/gallery/gallery-6.jpeg', label: 'Our Achievers' },
             ].map((img, i) => (
               <FadeInSection key={img.label}>
                 <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-md">
