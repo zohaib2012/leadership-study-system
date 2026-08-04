@@ -44,7 +44,6 @@ const campusInfo = [
 ];
 
 const contactInfo: ContactInfo[] = [
-  { icon: Mail, label: 'Email', value: 'info@leadershipstudysystem.pk', detail: 'We reply within 24 hours' },
   { icon: Clock, label: 'Working Hours', value: 'Monday - Friday', detail: '9:00 AM - 6:00 PM' },
 ];
 
@@ -85,7 +84,7 @@ const ContactPage = () => {
     <>
       <Helmet>
         <title>Contact Us | Leadership Study System</title>
-        <meta name="description" content="Get in touch with Leadership Study System. Visit us at Street No.14, Sector F-8/3, Islamabad, Pakistan. Call +92 305 9079079 or email info@leadershipstudysystem.pk." />
+        <meta name="description" content="Get in touch with Leadership Study System. Visit us at Street No.14, Sector F-8/3, Islamabad, Pakistan or House F-767, Block F, Satellite Town, Rawalpindi." />
       </Helmet>
 
       {/* Hero */}
