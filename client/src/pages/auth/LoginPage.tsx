@@ -4,7 +4,7 @@ import { useAuthStore } from '@/store/auth-store'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import { LogIn, Eye, EyeOff, Mail, Lock, Sparkles, ArrowRight } from 'lucide-react'
+import { LogIn, Eye, EyeOff, Mail, Lock, Sparkles, ArrowRight, ShieldCheck, Presentation, HeartHandshake, GraduationCap } from 'lucide-react'
 
 const roleRoutes: Record<string, string> = {
   ADMIN: '/admin/dashboard',
@@ -72,6 +72,30 @@ export default function LoginPage() {
             </div>
             <h1 className="text-4xl font-bold text-gray-900 mb-2">Sign In</h1>
             <p className="text-gray-500 text-lg">Access your account to continue</p>
+          </div>
+
+          <div className="mb-8">
+            <p className="text-center text-xs font-medium uppercase tracking-wider text-gray-400 mb-4">
+              One portal for everyone
+            </p>
+            <div className="grid grid-cols-4 gap-3">
+              {[
+                { icon: ShieldCheck, label: 'Admin', color: 'from-primary-600 to-blue-700' },
+                { icon: Presentation, label: 'Teacher', color: 'from-violet-500 to-purple-700' },
+                { icon: HeartHandshake, label: 'Parent', color: 'from-emerald-500 to-teal-600' },
+                { icon: GraduationCap, label: 'Student', color: 'from-amber-500 to-orange-600' },
+              ].map((r) => (
+                <div
+                  key={r.label}
+                  className="group flex flex-col items-center gap-2 rounded-2xl border border-gray-200 bg-white/70 backdrop-blur-sm px-2 py-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-primary-200"
+                >
+                  <div className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${r.color} shadow-md group-hover:scale-110 transition-transform`}>
+                    <r.icon className="h-5 w-5 text-white" />
+                  </div>
+                  <span className="text-xs font-semibold text-gray-700">{r.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
           <Card className="shadow-xl border-gray-200/80 overflow-hidden">
