@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import {
-  Target,
-  Eye,
   Users,
   BookOpen,
   Award,
@@ -166,12 +164,14 @@ export default function AboutPage() {
               </div>
             </FadeInSection>
             <FadeInSection>
-              <div className="flex justify-center">
-                <div className="relative">
-                  <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary-500/20 to-primary-700/20 blur-xl" />
-                  <div className="relative flex h-64 w-64 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 shadow-xl">
-                    <Target className="h-28 w-28 text-white" />
-                  </div>
+              <div className="relative">
+                <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary-500/20 to-amber-500/20 blur-xl" />
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                  <img src="/images/school-kids.jpg" alt="LSS School students learning together" className="h-72 w-full object-cover sm:h-80" />
+                </div>
+                <div className="absolute -bottom-5 -left-3 sm:left-6 rounded-2xl bg-white px-5 py-3 shadow-xl">
+                  <p className="text-2xl font-bold text-primary-700">500+</p>
+                  <p className="text-xs text-gray-500">Happy Learners</p>
                 </div>
               </div>
             </FadeInSection>
@@ -206,15 +206,46 @@ export default function AboutPage() {
               </div>
             </FadeInSection>
             <FadeInSection className="lg:order-1">
-              <div className="flex justify-center">
-                <div className="relative">
-                  <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary-600/20 to-primary-800/20 blur-xl" />
-                  <div className="relative flex h-64 w-64 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-600 to-primary-800 shadow-xl">
-                    <Eye className="h-28 w-28 text-white" />
-                  </div>
+              <div className="relative">
+                <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary-600/20 to-primary-800/20 blur-xl" />
+                <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                  <img src="/images/academy-students.jpg" alt="LSS Academy students preparing for Cambridge exams" className="h-72 w-full object-cover sm:h-80" />
+                </div>
+                <div className="absolute -bottom-5 -right-3 sm:right-6 rounded-2xl bg-white px-5 py-3 shadow-xl">
+                  <p className="text-2xl font-bold text-primary-700">1000+</p>
+                  <p className="text-xs text-gray-500">Alumni Worldwide</p>
                 </div>
               </div>
             </FadeInSection>
+          </div>
+        </div>
+      </section>
+
+      {/* Campus Gallery */}
+      <section className="bg-gray-50 px-4 py-16">
+        <div className="mx-auto max-w-6xl">
+          <FadeInSection>
+            <div className="text-center mb-10">
+              <Badge className="mb-4 border-primary-200 bg-primary-50 text-primary-700">Our Campus</Badge>
+              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Inside Our Classrooms</h2>
+              <p className="mt-2 text-gray-500 max-w-lg mx-auto">A glimpse into the learning environment that makes LSS special.</p>
+            </div>
+          </FadeInSection>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {[
+              { src: '/images/teacher-class.jpg', label: 'Dedicated Faculty' },
+              { src: '/images/students-study-group.jpg', label: 'Group Learning' },
+              { src: '/images/university-lecture.jpg', label: 'Lecture Halls' },
+              { src: '/images/graduation-celebration.jpg', label: 'Our Achievers' },
+            ].map((img, i) => (
+              <FadeInSection key={img.label}>
+                <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl shadow-md">
+                  <img src={img.src} alt={img.label} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-950/80 via-transparent to-transparent" />
+                  <p className="absolute bottom-3 left-3 text-sm font-semibold text-white">{img.label}</p>
+                </div>
+              </FadeInSection>
+            ))}
           </div>
         </div>
       </section>

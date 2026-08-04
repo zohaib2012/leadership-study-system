@@ -73,6 +73,14 @@ const ContactPage = () => {
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-primary-950 to-gray-900 px-4 pb-16 pt-28 lg:pt-36">
+        <div className="absolute inset-0 opacity-25">
+          <img
+            src="/images/students-campus.jpg"
+            alt="Leadership Study System campus in Islamabad"
+            loading="lazy"
+            className="h-full w-full object-cover"
+          />
+        </div>
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute -left-32 -top-32 h-[500px] w-[500px] animate-pulse rounded-full bg-primary-500/10 blur-3xl" />
           <div className="absolute -bottom-40 -right-32 h-[600px] w-[600px] animate-pulse rounded-full bg-primary-700/10 blur-3xl" />

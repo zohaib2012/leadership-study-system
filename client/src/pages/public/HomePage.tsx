@@ -49,9 +49,9 @@ const whyChooseUs = [
 ]
 
 const services = [
-  { icon: Users, title: 'Face to Face Classes', desc: 'Interactive in-person classes at our F-8/3 campus with experienced faculty.', color: 'from-primary-600 to-blue-700' },
-  { icon: Laptop, title: 'Online Tuitions', desc: 'Live interactive online sessions accessible from anywhere with flexible scheduling.', color: 'from-violet-500 to-purple-700' },
-  { icon: BookOpen, title: 'Books & Study Materials', desc: 'Comprehensive curated study resources including notes, past papers, and practice tests.', color: 'from-amber-500 to-orange-600' },
+  { icon: Users, title: 'Face to Face Classes', desc: 'Interactive in-person classes at our F-8/3 campus with experienced faculty.', color: 'from-primary-600 to-blue-700', image: '/images/students-discussion.jpg' },
+  { icon: Laptop, title: 'Online Tuitions', desc: 'Live interactive online sessions accessible from anywhere with flexible scheduling.', color: 'from-violet-500 to-purple-700', image: '/images/student-laptop.jpg' },
+  { icon: BookOpen, title: 'Books & Study Materials', desc: 'Comprehensive curated study resources including notes, past papers, and practice tests.', color: 'from-amber-500 to-orange-600', image: '/images/school-desk.jpg' },
 ]
 
 const courses = [
@@ -102,9 +102,9 @@ const franchiseBenefits = [
 ]
 
 const blogPosts = [
-  { slug: 'why-choose-igcse-for-your-child', title: 'Why Choose IGCSE for Your Child?', excerpt: 'Discover the benefits of the Cambridge IGCSE curriculum and why it is the preferred choice for parents seeking a globally recognized qualification.', date: 'June 15, 2025', author: 'Mr. Muzammil Ameer', readTime: '5 min read', category: 'Education', gradient: 'from-primary-500 to-blue-700' },
-  { slug: 'a-level-preparation-tips', title: 'A-Level Preparation Tips for Success', excerpt: 'Expert tips and strategies to help you excel in your Cambridge A Level examinations — from study schedules to past paper practice.', date: 'May 28, 2025', author: 'Mr. Saeed Khan', readTime: '7 min read', category: 'Exam Tips', gradient: 'from-amber-500 to-orange-600' },
-  { slug: 'business-studies-career-paths', title: 'Career Paths with Business Studies', excerpt: 'Explore the diverse career opportunities available to students who pursue Business Studies at IGCSE and A Level.', date: 'April 22, 2025', author: 'Mr. Muzammil Ameer', readTime: '8 min read', category: 'Career', gradient: 'from-emerald-500 to-emerald-700' },
+  { slug: 'why-choose-igcse-for-your-child', title: 'Why Choose IGCSE for Your Child?', excerpt: 'Discover the benefits of the Cambridge IGCSE curriculum and why it is the preferred choice for parents seeking a globally recognized qualification.', date: 'June 15, 2025', author: 'Mr. Muzammil Ameer', readTime: '5 min read', category: 'Education', gradient: 'from-primary-500 to-blue-700', image: '/images/child-study.jpg' },
+  { slug: 'a-level-preparation-tips', title: 'A-Level Preparation Tips for Success', excerpt: 'Expert tips and strategies to help you excel in your Cambridge A Level examinations — from study schedules to past paper practice.', date: 'May 28, 2025', author: 'Mr. Saeed Khan', readTime: '7 min read', category: 'Exam Tips', gradient: 'from-amber-500 to-orange-600', image: '/images/student-writing.jpg' },
+  { slug: 'business-studies-career-paths', title: 'Career Paths with Business Studies', excerpt: 'Explore the diverse career opportunities available to students who pursue Business Studies at IGCSE and A Level.', date: 'April 22, 2025', author: 'Mr. Muzammil Ameer', readTime: '8 min read', category: 'Career', gradient: 'from-emerald-500 to-emerald-700', image: '/images/students-study-group.jpg' },
 ]
 
 const openPositions = [
@@ -491,20 +491,45 @@ export default function HomePage() {
               subtitle="Students choose Leadership Study System for a world-class education that combines theory with real-world application. Our expert faculty, modern facilities, and industry-aligned programs equip students to excel in today's dynamic landscape."
             />
           </FadeInSection>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {whyChooseUs.map((item, i) => (
-              <FadeInSection key={item.title}>
-                <div className="group h-full" style={{ animationDelay: `${i * 100}ms` }}>
-                  <div className="h-full p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary-100 hover:-translate-y-1 transition-all duration-300">
-                    <div className={`w-12 h-12 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
-                      <item.icon className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
-                    <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            <FadeInSection className="lg:col-span-5">
+              <div className="relative">
+                <div className="absolute -inset-3 bg-gradient-to-br from-primary-600 to-amber-500 rounded-[2.5rem] blur-xl opacity-20" />
+                <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl shadow-primary-900/20">
+                  <img src="/images/kids-raising-hands.jpg" alt="Students learning at Leadership Study System" className="w-full h-[420px] object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 to-transparent" />
+                </div>
+                <div className="absolute -bottom-6 -right-3 sm:right-6 w-40 sm:w-48 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+                  <img src="/images/academy-students.jpg" alt="Academy students" className="w-full h-28 object-cover" />
+                </div>
+                <div className="absolute -top-5 left-4 bg-white rounded-2xl shadow-xl px-5 py-3 flex items-center gap-3">
+                  <div className="w-11 h-11 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center">
+                    <Award className="h-5 w-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold text-gray-900 leading-none">98%</p>
+                    <p className="text-xs text-gray-500">Success Rate</p>
                   </div>
                 </div>
-              </FadeInSection>
-            ))}
+              </div>
+            </FadeInSection>
+            <div className="lg:col-span-7">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {whyChooseUs.map((item, i) => (
+                  <FadeInSection key={item.title}>
+                    <div className="group h-full" style={{ animationDelay: `${i * 80}ms` }}>
+                      <div className="h-full p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary-100 hover:-translate-y-1 transition-all duration-300">
+                        <div className={`w-12 h-12 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+                          <item.icon className="h-6 w-6 text-white" />
+                        </div>
+                        <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
+                        <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                      </div>
+                    </div>
+                  </FadeInSection>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -524,12 +549,18 @@ export default function HomePage() {
             {services.map((service, i) => (
               <FadeInSection key={service.title}>
                 <div className="group h-full" style={{ animationDelay: `${i * 150}ms` }}>
-                  <div className="h-full p-8 rounded-2xl bg-white border border-gray-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all text-center overflow-hidden hover:border-primary-100">
-                    <div className={`w-16 h-16 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
-                      <service.icon className="h-8 w-8 text-white" />
+                  <div className="h-full rounded-2xl bg-white border border-gray-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all overflow-hidden hover:border-primary-100">
+                    <div className="relative h-48 overflow-hidden">
+                      <img src={service.image} alt={service.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-950/50 to-transparent" />
+                      <div className={`absolute bottom-4 left-4 w-14 h-14 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+                        <service.icon className="h-7 w-7 text-white" />
+                      </div>
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
-                    <p className="text-gray-500 leading-relaxed">{service.desc}</p>
+                    <div className="p-6 text-center">
+                      <h3 className="text-xl font-bold text-gray-900 mb-3">{service.title}</h3>
+                      <p className="text-gray-500 leading-relaxed">{service.desc}</p>
+                    </div>
                   </div>
                 </div>
               </FadeInSection>
@@ -585,6 +616,39 @@ export default function HomePage() {
                 </div>
               </FadeInSection>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===== CAMPUS PHOTO BANNER ===== */}
+      <section className="relative h-[420px] sm:h-[480px] overflow-hidden">
+        <img src="/images/students-campus.jpg" alt="Leadership Study System campus and students" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-950/90 via-primary-900/70 to-primary-950/40" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+          <div className="max-w-2xl">
+            <Badge className="mb-4 px-4 py-1.5 bg-amber-400/90 text-gray-900 border-transparent font-semibold">
+              <Sparkles className="h-4 w-4 mr-1.5 inline" /> Join Our Community
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+              500+ Students Growing into <span className="bg-gradient-to-r from-amber-300 to-blue-300 bg-clip-text text-transparent">Confident Leaders</span>
+            </h2>
+            <p className="text-blue-100/80 text-lg mb-8 max-w-xl leading-relaxed">
+              From eager school children to ambitious Cambridge A Level students — every learner at Leadership Study System is on a journey of discovery and excellence.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link to="/register/student">
+                <Button size="lg" className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold px-8 py-6 h-auto text-base rounded-xl shadow-2xl shadow-amber-600/30 group">
+                  Apply for Admission
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+              <Link to="/about">
+                <Button size="lg" className="bg-white/10 backdrop-blur-md border-2 border-white/40 text-white hover:bg-white/20 font-semibold px-8 py-6 h-auto text-base rounded-xl group">
+                  About Our Institution
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -726,11 +790,9 @@ export default function HomePage() {
               <FadeInSection key={post.slug}>
                 <Link to={`/blog/${post.slug}`} className="group block h-full">
                   <div className="h-full rounded-2xl bg-white border border-gray-100 shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 overflow-hidden flex flex-col">
-                    <div className={`h-48 bg-gradient-to-br ${post.gradient} flex items-center justify-center relative overflow-hidden`}>
-                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500" />
-                      <div className="relative transform group-hover:scale-110 transition-transform duration-500">
-                        <BookOpen className="h-14 w-14 text-white/40" />
-                      </div>
+                    <div className="relative h-48 overflow-hidden">
+                      <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-950/40 to-transparent" />
                       <Badge className="absolute top-4 left-4 bg-white/90 text-gray-800 hover:bg-white shadow-lg">{post.category}</Badge>
                     </div>
                     <div className="p-6 flex flex-col flex-1">
@@ -879,10 +941,14 @@ export default function HomePage() {
           </FadeInSection>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
-              { src: '/images/teacher-class.jpg', label: 'Interactive Classrooms', sub: 'Learning with experienced faculty' },
-              { src: '/images/students-group.jpg', label: 'Collaborative Learning', sub: 'Peer discussions and group work' },
-              { src: '/images/primary-classroom.jpg', label: 'Early Years', sub: 'A caring start for our youngest learners' },
-              { src: '/images/graduation.jpg', label: 'Graduation Day', sub: 'Celebrating our achievers' },
+              { src: '/images/students-discussion.jpg', label: 'Interactive Classrooms', sub: 'Learning with experienced faculty' },
+              { src: '/images/students-study-group.jpg', label: 'Collaborative Learning', sub: 'Peer discussions and group work' },
+              { src: '/images/kids-raising-hands.jpg', label: 'Early Years', sub: 'A caring start for our youngest learners' },
+              { src: '/images/graduation-celebration.jpg', label: 'Graduation Day', sub: 'Celebrating our achievers' },
+              { src: '/images/university-lecture.jpg', label: 'Lecture Halls', sub: 'Cambridge-style learning spaces' },
+              { src: '/images/students-campus.jpg', label: 'Campus Life', sub: 'A vibrant student community' },
+              { src: '/images/school-classroom-activity.jpg', label: 'Activity-Based Learning', sub: 'Fun, hands-on lessons' },
+              { src: '/images/students-group.jpg', label: 'Mentorship & Support', sub: 'Guidance at every step' },
             ].map((g, i) => (
               <FadeInSection key={g.label}>
                 <div className="group relative h-72 rounded-3xl overflow-hidden shadow-xl shadow-black/30" style={{ animationDelay: `${i * 120}ms` }}>

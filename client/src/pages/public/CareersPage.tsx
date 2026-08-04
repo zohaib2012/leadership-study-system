@@ -176,6 +176,33 @@ export default function CareersPage() {
         </div>
       </section>
 
+      {/* PHOTO BANNER */}
+      <section className="relative overflow-hidden">
+        <img
+          src="/images/teacher-class.jpg"
+          alt="Our teachers inspiring students at Leadership Study System"
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-950/90 via-primary-900/80 to-primary-800/60" />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 text-center">
+          <FadeInSection>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+              Teach the Leaders of Tomorrow
+            </h2>
+            <p className="text-lg sm:text-xl text-blue-100/80 max-w-2xl mx-auto mb-8">
+              Join a team of dedicated educators shaping bright futures at our School and Academy in F-8/3, Islamabad.
+            </p>
+            <a href="#openings">
+              <Button size="lg" className="bg-amber-400 text-primary-900 hover:bg-amber-300 font-semibold px-8 py-6 h-auto text-base rounded-xl shadow-2xl shadow-black/30">
+                Explore Open Roles
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </a>
+          </FadeInSection>
+        </div>
+      </section>
+
       {/* OPEN POSITIONS */}
       <section id="openings" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -142,7 +142,11 @@ export default function ServicesPage() {
       </Helmet>
 
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-primary-950 to-gray-900 px-4 pb-16 pt-28 lg:pt-36">
+      <section className="relative overflow-hidden px-4 pb-16 pt-28 lg:pt-36">
+        <div className="absolute inset-0">
+          <img src="/images/classroom.jpg" alt="Classroom at Leadership Study System" className="h-full w-full object-cover" />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/95 via-primary-950/90 to-gray-900/85" />
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute -left-32 -top-32 h-[500px] w-[500px] animate-pulse rounded-full bg-primary-500/10 blur-3xl" />
           <div className="absolute -bottom-40 -right-32 h-[600px] w-[600px] animate-pulse rounded-full bg-primary-700/10 blur-3xl" />
@@ -204,6 +208,20 @@ export default function ServicesPage() {
                 </FadeInSection>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      {/* Photo Banner */}
+      <section className="relative h-[380px] overflow-hidden">
+        <img src="/images/students-study-group.jpg" alt="Students collaborating at Leadership Study System" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-950/90 via-primary-900/70 to-primary-950/30" />
+        <div className="relative z-10 mx-auto flex h-full max-w-6xl items-center px-4">
+          <div className="max-w-xl">
+            <h2 className="mb-3 text-3xl font-bold text-white sm:text-4xl">Every Student Gets <span className="text-amber-300">Personal Attention</span></h2>
+            <p className="text-blue-100/80 leading-relaxed">
+              Small classes, one-on-one support, and a caring faculty ensure that no learner is left behind — from our youngest school students to ambitious A Level candidates.
+            </p>
           </div>
         </div>
       </section>

@@ -29,6 +29,15 @@ export default function StudentRegisterSelect() {
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <Link to="/register/student/school" className="group block">
               <div className="relative h-full rounded-2xl bg-white border-2 border-gray-100 hover:border-primary-200 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
+                  <img
+                    src="/images/school-kids.jpg"
+                    alt="LSS School students learning together"
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                </div>
                 <div className="h-2 bg-gradient-to-r from-primary-600 to-primary-400" />
                 <div className="p-8">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
@@ -61,6 +70,15 @@ export default function StudentRegisterSelect() {
             </Link>
             <Link to="/register/student/academy" className="group block">
               <div className="relative h-full rounded-2xl bg-white border-2 border-gray-100 hover:border-primary-200 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
+                  <img
+                    src="/images/academy-students.jpg"
+                    alt="LSS Academy students preparing for Cambridge exams"
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                </div>
                 <div className="h-2 bg-gradient-to-r from-primary-600 to-primary-400" />
                 <div className="p-8">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">

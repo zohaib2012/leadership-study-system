@@ -15,7 +15,7 @@ const posts = [
     author: 'Mr. Muzammil Ameer',
     readTime: '5 min read',
     category: 'Education',
-    gradient: 'from-primary-500 to-primary-700',
+    image: '/images/child-study.jpg',
   },
   {
     slug: 'a-level-preparation-tips',
@@ -25,7 +25,7 @@ const posts = [
     author: 'Mr. Saeed Khan',
     readTime: '7 min read',
     category: 'Exam Tips',
-    gradient: 'from-primary-600 to-primary-800',
+    image: '/images/student-writing.jpg',
   },
   {
     slug: 'online-vs-in-person-learning',
@@ -35,7 +35,7 @@ const posts = [
     author: 'Ms. Sana Muzammil',
     readTime: '6 min read',
     category: 'Learning',
-    gradient: 'from-primary-700 to-primary-900',
+    image: '/images/student-laptop.jpg',
   },
   {
     slug: 'business-studies-career-paths',
@@ -45,7 +45,7 @@ const posts = [
     author: 'Mr. Muzammil Ameer',
     readTime: '8 min read',
     category: 'Career',
-    gradient: 'from-primary-600 to-primary-800',
+    image: '/images/students-study-group.jpg',
   },
   {
     slug: 'tips-for-parents',
@@ -55,7 +55,7 @@ const posts = [
     author: 'Ms. Sana Muzammil',
     readTime: '6 min read',
     category: 'Parents',
-    gradient: 'from-primary-500 to-primary-700',
+    image: '/images/school-classroom-activity.jpg',
   },
   {
     slug: 'importance-of-extra-curricular',
@@ -65,7 +65,7 @@ const posts = [
     author: 'Mr. Muhammad Ajmal Pervaiz',
     readTime: '5 min read',
     category: 'Development',
-    gradient: 'from-primary-500 to-primary-700',
+    image: '/images/students-campus.jpg',
   },
 ]
 
@@ -157,12 +157,14 @@ export default function BlogPage() {
               <FadeInSection key={post.slug}>
                 <Card className="border-0 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden group h-full flex flex-col">
                   <Link to={`/blog/${post.slug}`} className="block">
-                    <div className={`h-48 bg-gradient-to-br ${post.gradient} flex items-center justify-center relative overflow-hidden`}>
-                      <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors duration-500" />
-                      <div className="absolute -inset-1 bg-white/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                      <div className="relative transform group-hover:scale-105 transition-transform duration-500">
-                        <BookOpen className="h-14 w-14 text-white/30" />
-                      </div>
+                    <div className="h-48 relative overflow-hidden bg-gray-200">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        loading="lazy"
+                        className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-500" />
                       <Badge className="absolute top-4 left-4 bg-white/90 text-gray-800 hover:bg-white shadow-lg">
                         {post.category}
                       </Badge>

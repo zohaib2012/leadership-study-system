@@ -77,6 +77,14 @@ export default function FacultyPage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-primary-950 to-gray-900 px-4 pb-16 pt-28 lg:pt-36">
+        <div className="absolute inset-0 opacity-25">
+          <img
+            src="/images/university-lecture.jpg"
+            alt="Students in a lecture at Leadership Study System"
+            loading="lazy"
+            className="h-full w-full object-cover"
+          />
+        </div>
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute -left-32 -top-32 h-[500px] w-[500px] animate-pulse rounded-full bg-primary-500/10 blur-3xl" />
           <div className="absolute -bottom-40 -right-32 h-[600px] w-[600px] animate-pulse rounded-full bg-primary-700/10 blur-3xl" />
@@ -120,6 +128,27 @@ export default function FacultyPage() {
       {/* Faculty Cards */}
       <section className="bg-white px-4 py-12">
         <div className="mx-auto max-w-5xl">
+          <FadeInSection>
+            <div className="mb-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+              {[
+                { src: '/images/teacher-class.jpg', label: 'Classroom Teaching' },
+                { src: '/images/students-discussion.jpg', label: 'Mentorship' },
+                { src: '/images/students-study-group.jpg', label: 'Collaboration' },
+                { src: '/images/graduation-celebration.jpg', label: 'Student Success' },
+              ].map((img) => (
+                <div key={img.label} className="group relative overflow-hidden rounded-2xl">
+                  <img
+                    src={img.src}
+                    alt={img.label}
+                    loading="lazy"
+                    className="h-40 w-full object-cover transition-transform duration-500 group-hover:scale-110 md:h-52"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <span className="absolute bottom-3 left-3 text-xs font-semibold text-white md:text-sm">{img.label}</span>
+                </div>
+              ))}
+            </div>
+          </FadeInSection>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {facultyData.map((member) => (
               <FadeInSection key={member.id}>
