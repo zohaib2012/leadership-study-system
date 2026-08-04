@@ -121,7 +121,55 @@ router.post('/students/register', async (req, res) => {
 
 router.post('/contact', async (req, res) => {
   const { name, email, phone, message } = req.body;
-  res.json({ success: true, message: 'Message received. We will contact you soon.' });
+  if (!name || !email || !message) {
+    return res.status(400).json({ success: false, message: 'Name, email and message are required' });
+  }
+  try {
+    const ContactMessage = require('../models/ContactMessage');
+    await ContactMessage.create({ name, email, phone: phone || '', message });
+    res.json({ success: true, message: 'Message received. We will contact you soon.' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+const JobApplication = require('../models/JobApplication');
+
+router.get('/careers/positions', async (req, res) => {
+  const positions = [
+    { title: 'Cambridge IGCSE / O Level Teacher', type: 'ACADEMY', subjects: ['Business Studies', 'Economics', 'Accounting'] },
+    { title: 'AS / A Level Teacher', type: 'ACADEMY', subjects: ['Business Studies', 'Economics', 'Accounting', 'Commerce'] },
+    { title: 'Primary School Teacher (Playgroup - Class 5)', type: 'SCHOOL', subjects: ['English', 'Maths', 'Science'] },
+    { title: 'Middle School Teacher (Class 6 - Pre O-Level)', type: 'SCHOOL', subjects: ['English', 'Maths', 'Science', 'Computer'] },
+    { title: 'School Administrator', type: 'SCHOOL', subjects: [] },
+    { title: 'Academy Coordinator', type: 'ACADEMY', subjects: [] },
+  ];
+  res.json({ success: true, data: positions });
+});
+
+router.post('/careers/apply', async (req, res) => {
+  const { name, email, phone, academyType, position, qualification, experience, coverLetter } = req.body;
+  if (!name || !email || !phone || !academyType || !position) {
+    return res.status(400).json({ success: false, message: 'Name, email, phone, institution type and position are required' });
+  }
+  try {
+    const Tenant = require('../models/Tenant');
+    const tenant = await Tenant.findOne({ subdomain: 'demo' }).select('_id').lean();
+    const application = await JobApplication.create({
+      tenant: tenant ? tenant._id : undefined,
+      name,
+      email,
+      phone,
+      academyType,
+      position,
+      qualification: qualification || '',
+      experience: experience || '',
+      coverLetter: coverLetter || '',
+    });
+    res.status(201).json({ success: true, message: 'Application submitted successfully. We will review your application and contact you soon.', data: { id: application._id } });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
 });
 
 router.get('/blog', async (req, res) => {

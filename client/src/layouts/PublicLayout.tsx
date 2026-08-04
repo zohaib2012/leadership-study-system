@@ -20,9 +20,10 @@ const navLinks = [
   { label: 'Our Services', href: '/services' },
   { label: 'Faculty', href: '/faculty' },
   { label: 'About Us', href: '/about' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '/contact' },
   { label: 'Pricing', href: '/pricing' },
-  { label: 'Blog', href: '/blog' },
 ]
 
 export default function PublicLayout() {
@@ -255,6 +256,7 @@ export default function PublicLayout() {
                   { label: 'About Us', href: '/about' },
                   { label: 'Our Services', href: '/services' },
                   { label: 'Faculty', href: '/faculty' },
+                  { label: 'Careers', href: '/careers' },
                   { label: 'Contact Us', href: '/contact' },
                   { label: 'Registration', href: '/register/student' },
                   { label: 'Pricing', href: '/pricing' },

@@ -16,6 +16,7 @@ import ContactPage from '@/pages/public/ContactPage'
 import PricingPage from '@/pages/public/PricingPage'
 import BlogPage from '@/pages/public/BlogPage'
 import BlogPostPage from '@/pages/public/BlogPostPage'
+import CareersPage from '@/pages/public/CareersPage'
 import RegisterPage from '@/pages/public/RegisterPage'
 import StudentSchoolRegister from '@/pages/public/StudentSchoolRegister'
 import StudentAcademyRegister from '@/pages/public/StudentAcademyRegister'
@@ -118,6 +119,7 @@ export default function App() {
             <Route path="/faculty" element={<FacultyPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/pricing" element={<PricingPage />} />
+            <Route path="/careers" element={<CareersPage />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogPostPage />} />
             <Route path="/register" element={<RegisterPage />} />
