@@ -293,19 +293,40 @@ export default function PublicLayout() {
       {showTop && (
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-24 right-6 z-50 w-11 h-11 bg-primary-700 rounded-full flex items-center justify-center shadow-lg shadow-primary-700/30 hover:bg-primary-800 transition-all hover:scale-110"
+          className="fixed bottom-44 right-6 z-50 w-11 h-11 bg-primary-700 rounded-full flex items-center justify-center shadow-lg shadow-primary-700/30 hover:bg-primary-800 transition-all hover:scale-110"
         >
           <ChevronUp className="h-5 w-5 text-white" />
         </button>
       )}
 
       <a
+        href="https://wa.me/923345430644"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="WhatsApp LSS School"
+        className="fixed bottom-24 right-6 z-50 flex items-center gap-2 group"
+      >
+        <span className="bg-white text-gray-800 text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          LSS School
+        </span>
+        <span className="w-14 h-14 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-xl shadow-green-500/30 hover:shadow-green-500/50 group-hover:scale-110 transition-all">
+          <MessageCircle className="h-7 w-7 text-white" />
+        </span>
+      </a>
+
+      <a
         href="https://wa.me/923059079079"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-xl shadow-green-500/30 hover:shadow-green-500/50 hover:scale-110 transition-all"
+        title="WhatsApp LSS Academy"
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 group"
       >
-        <MessageCircle className="h-7 w-7 text-white" />
+        <span className="bg-white text-gray-800 text-xs font-semibold px-3 py-1.5 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          LSS Academy
+        </span>
+        <span className="w-14 h-14 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-xl shadow-green-500/30 hover:shadow-green-500/50 group-hover:scale-110 transition-all">
+          <MessageCircle className="h-7 w-7 text-white" />
+        </span>
       </a>
     </div>
   )
