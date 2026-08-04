@@ -254,8 +254,8 @@ export default function CareersPage() {
           <FadeInSection>
             <div className="text-center bg-white rounded-2xl border border-dashed border-gray-300 p-8">
               <p className="text-gray-600 mb-3">Don't see a position that fits? We're always open to talent.</p>
-              <a href="mailto:careers@leadershipstudysystem.pk" className="inline-flex items-center gap-2 text-primary-700 font-semibold hover:text-primary-800">
-                <Mail className="h-5 w-5" /> Send us your CV at careers@leadershipstudysystem.pk
+              <a href="mailto:meetceo@lsseducation.com" className="inline-flex items-center gap-2 text-primary-700 font-semibold hover:text-primary-800">
+                <Mail className="h-5 w-5" /> Send us your CV at meetceo@lsseducation.com
               </a>
             </div>
           </FadeInSection>
@@ -434,7 +434,7 @@ export default function CareersPage() {
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
               {[
                 { icon: Phone, label: 'Call HR', value: '+92 305 9079079', href: 'tel:+923059079079' },
-                { icon: Mail, label: 'Email', value: 'careers@leadershipstudysystem.pk', href: 'mailto:careers@leadershipstudysystem.pk' },
+                { icon: Mail, label: 'Email', value: 'meetceo@lsseducation.com', href: 'mailto:meetceo@lsseducation.com' },
                 { icon: MapPin, label: 'Campus', value: 'F-8/3, Islamabad', href: 'https://maps.app.goo.gl/BWYvSWrhcRquFY1D6' },
               ].map((c) => (
                 <a key={c.label} href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="group">
