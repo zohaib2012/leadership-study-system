@@ -229,10 +229,6 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20 lg:py-28">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/25 text-white/85 text-sm font-medium mb-6 backdrop-blur-sm animate-fade-in">
-                <Sparkles className="h-4 w-4 text-amber-300" />
-                Pakistan's Premier Business Education Institute
-              </div>
               <h1 className="font-cosmic text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.15] mb-6 animate-fade-in animation-delay-200">
                 Welcome to{' '}
                 <span className="bg-gradient-to-r from-amber-300 via-white to-blue-300 bg-clip-text text-transparent">
