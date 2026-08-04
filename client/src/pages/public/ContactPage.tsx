@@ -24,9 +24,24 @@ interface ContactInfo {
   detail?: string;
 }
 
+const campusInfo = [
+  {
+    icon: Building2,
+    name: 'LSS School',
+    address: 'House F-767, Block F, Satellite Town, Rawalpindi',
+    phone: '0334 5430644',
+    phoneHref: 'tel:+923345430644',
+  },
+  {
+    icon: GraduationCap,
+    name: 'LSS Academy',
+    address: 'Street No.14, Sector F-8/3, Islamabad, Pakistan',
+    phone: '+92 305 9079079',
+    phoneHref: 'tel:+923059079079',
+  },
+];
+
 const contactInfo: ContactInfo[] = [
-  { icon: MapPin, label: 'Address', value: 'Street No.14, Sector F-8/3', detail: 'Islamabad, Pakistan' },
-  { icon: Phone, label: 'Phone', value: '+92 305 9079079', detail: 'Mon-Fri 9am-6pm' },
   { icon: Mail, label: 'Email', value: 'info@leadershipstudysystem.pk', detail: 'We reply within 24 hours' },
   { icon: Clock, label: 'Working Hours', value: 'Monday - Friday', detail: '9:00 AM - 6:00 PM' },
 ];
@@ -152,6 +167,36 @@ const ContactPage = () => {
 
             {/* Info + Map */}
             <div className="space-y-5 lg:col-span-2">
+              {campusInfo.map((item, index) => (
+                <FadeInSection key={item.name}>
+                  <Card className="group border border-gray-200 shadow-sm transition-all duration-200 hover:border-primary-200 hover:shadow-md">
+                    <CardContent className="p-5">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary-50 to-primary-100">
+                          <item.icon className="h-5 w-5 text-primary-700" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-bold text-gray-900">{item.name}</p>
+                          <p className="text-xs text-gray-400">Visit Us</p>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <div className="flex items-start gap-2.5">
+                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary-500" />
+                          <p className="text-sm text-gray-700">{item.address}</p>
+                        </div>
+                        <div className="flex items-center gap-2.5">
+                          <Phone className="h-4 w-4 shrink-0 text-primary-500" />
+                          <a href={item.phoneHref} className="text-sm font-medium text-gray-900 hover:text-primary-700 transition-colors">
+                            {item.phone}
+                          </a>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </FadeInSection>
+              ))}
+
               {contactInfo.map((item, index) => (
                 <FadeInSection key={item.label}>
                   <Card className="group border border-gray-200 shadow-sm transition-all duration-200 hover:border-primary-200 hover:shadow-md">
