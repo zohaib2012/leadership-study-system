@@ -31,6 +31,7 @@ const campusInfo = [
     address: 'House F-767, Block F, Satellite Town, Rawalpindi',
     phone: '0334 5430644',
     phoneHref: 'tel:+923345430644',
+    email: 'meetceo@lsseducation.com',
   },
   {
     icon: GraduationCap,
@@ -38,6 +39,7 @@ const campusInfo = [
     address: 'Street No.14, Sector F-8/3, Islamabad, Pakistan',
     phone: '+92 305 9079079',
     phoneHref: 'tel:+923059079079',
+    email: 'meetceo@lsseducation.com',
   },
 ];
 
@@ -189,6 +191,12 @@ const ContactPage = () => {
                           <Phone className="h-4 w-4 shrink-0 text-primary-500" />
                           <a href={item.phoneHref} className="text-sm font-medium text-gray-900 hover:text-primary-700 transition-colors">
                             {item.phone}
+                          </a>
+                        </div>
+                        <div className="flex items-center gap-2.5">
+                          <Mail className="h-4 w-4 shrink-0 text-primary-500" />
+                          <a href={`mailto:${item.email}`} className="text-sm font-medium text-gray-900 hover:text-primary-700 transition-colors break-all">
+                            {item.email}
                           </a>
                         </div>
                       </div>
