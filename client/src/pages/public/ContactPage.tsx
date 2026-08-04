@@ -32,6 +32,7 @@ const campusInfo = [
     phone: '0334 5430644',
     phoneHref: 'tel:+923345430644',
     email: 'meetceo@lsseducation.com',
+    mapSrc: 'https://www.openstreetmap.org/export/embed.html?bbox=73.0440%2C33.5890%2C73.0540%2C33.5990&amp;layer=mapnik&amp;marker=33.5940%2C73.0490',
   },
   {
     icon: GraduationCap,
@@ -40,6 +41,7 @@ const campusInfo = [
     phone: '+92 305 9079079',
     phoneHref: 'tel:+923059079079',
     email: 'meetceo@lsseducation.com',
+    mapSrc: 'https://www.openstreetmap.org/export/embed.html?bbox=73.0280%2C33.6940%2C73.0380%2C33.7040&amp;layer=mapnik&amp;marker=33.6990%2C73.0330',
   },
 ];
 
@@ -221,24 +223,30 @@ const ContactPage = () => {
                 </FadeInSection>
               ))}
 
-              {/* Map */}
-              <FadeInSection>
-                <Card className="overflow-hidden border border-gray-200 shadow-sm">
-                  <div className="aspect-[4/3] w-full bg-gray-100">
-                    <iframe
-                      title="Leadership Study System Location"
-                      src="https://www.openstreetmap.org/export/embed.html?bbox=73.0375%2C33.7150%2C73.0475%2C33.7250&amp;layer=mapnik&amp;marker=33.7200%2C73.0425"
-                      width="100%" height="100%" style={{ border: 0 }}
-                      allowFullScreen loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                    />
-                  </div>
-                  <div className="flex items-center justify-center gap-1.5 border-t border-gray-100 px-4 py-2.5">
-                    <MapPin className="h-3.5 w-3.5 text-primary-500" />
-                    <span className="text-xs font-medium text-gray-500">Street No.14, Sector F-8/3, Islamabad, Pakistan</span>
-                  </div>
-                </Card>
-              </FadeInSection>
+              {/* Maps */}
+              {campusInfo.map((item) => (
+                <FadeInSection key={`map-${item.name}`}>
+                  <Card className="overflow-hidden border border-gray-200 shadow-sm">
+                    <div className="flex items-center justify-center gap-2 border-b border-gray-100 bg-gray-50/80 px-4 py-2.5">
+                      <MapPin className="h-4 w-4 text-primary-500" />
+                      <span className="text-sm font-semibold text-gray-700">{item.name} Location</span>
+                    </div>
+                    <div className="aspect-[4/3] w-full bg-gray-100">
+                      <iframe
+                        title={`${item.name} Location`}
+                        src={item.mapSrc}
+                        width="100%" height="100%" style={{ border: 0 }}
+                        allowFullScreen loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                      />
+                    </div>
+                    <div className="flex items-center justify-center gap-1.5 border-t border-gray-100 px-4 py-2.5">
+                      <MapPin className="h-3.5 w-3.5 text-primary-500" />
+                      <span className="text-xs font-medium text-gray-500">{item.address}</span>
+                    </div>
+                  </Card>
+                </FadeInSection>
+              ))}
 
               {/* Quick Contact */}
               <FadeInSection>
