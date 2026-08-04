@@ -56,8 +56,8 @@ const pricingPlans: PricingPlan[] = [
   {
     name: 'Standard',
     subtitle: 'For growing institutions',
-    monthlyPrice: 'Rs 15,000',
-    yearlyPrice: 'Rs 170,000',
+    monthlyPrice: 'Rs 10,000',
+    yearlyPrice: 'Rs 110,000',
     students: 'Up to 200 students',
     description: 'Advanced tools to manage your growing institution effectively.',
     popular: true,
@@ -79,8 +79,8 @@ const pricingPlans: PricingPlan[] = [
   {
     name: 'Professional',
     subtitle: 'For large schools & chains',
-    monthlyPrice: 'Rs 30,000',
-    yearlyPrice: 'Rs 340,000',
+    monthlyPrice: 'Rs 15,000',
+    yearlyPrice: 'Rs 165,000',
     students: 'Up to 500 students',
     description: 'Complete solution with premium features and priority support.',
     features: [
