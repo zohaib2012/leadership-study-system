@@ -216,7 +216,7 @@ export function SocialMediaSection() {
 export function ContactSection() {
   const contacts = [
     { icon: Phone, label: 'Call Us', value: '+92 305 9079079', href: 'tel:+923059079079' },
-    { icon: Mail, label: 'Email', value: 'info@leadershipstudysystem.pk', href: 'mailto:info@leadershipstudysystem.pk' },
+    { icon: Mail, label: 'Email', value: 'meetceo@lsseducation.com', href: 'mailto:meetceo@lsseducation.com' },
     { icon: MapPin, label: 'Address', value: 'Street No.14, Sector F-8/3, Islamabad', href: 'https://maps.app.goo.gl/BWYvSWrhcRquFY1D6' },
   ]
   return (

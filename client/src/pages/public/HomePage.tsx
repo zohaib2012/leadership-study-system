@@ -1023,7 +1023,7 @@ export default function HomePage() {
               <div className="space-y-4">
                 {[
                   { icon: Phone, title: 'Call Us', value: '(+92) 305 9079079', detail: 'Mon-Fri 9am-6pm', href: 'tel:+923059079079' },
-                  { icon: Mail, title: 'Email', value: 'info@leadershipstudysystem.pk', detail: 'We reply within 24 hours', href: 'mailto:info@leadershipstudysystem.pk' },
+                  { icon: Mail, title: 'Email', value: 'meetceo@lsseducation.com', detail: 'We reply within 24 hours', href: 'mailto:meetceo@lsseducation.com' },
                   { icon: MapPin, title: 'Address', value: 'Street No.14, Sector F-8/3', detail: 'Islamabad, Pakistan', href: 'https://maps.app.goo.gl/BWYvSWrhcRquFY1D6' },
                 ].map((item) => (
                   <a key={item.title} href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="group block">
