@@ -1,6 +1,6 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { Menu, X, Phone, Instagram, Facebook, Youtube, MessageCircle, ChevronUp, GraduationCap, LayoutDashboard, LogOut, User } from 'lucide-react'
+import { Menu, X, Instagram, Facebook, Youtube, MessageCircle, ChevronUp, GraduationCap, LayoutDashboard, LogOut, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import DownloadAppButton from '@/components/DownloadAppButton'
 import { useAuthStore } from '@/store/auth-store'
@@ -219,7 +219,7 @@ export default function PublicLayout() {
           <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-400 rounded-full blur-3xl" />
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             <div className="lg:col-span-1">
               <div className="flex items-center gap-2.5 mb-5">
                 <img
@@ -276,33 +276,6 @@ export default function PublicLayout() {
                 <p>Cambridge IGCSE</p>
                 <p>Cambridge A Levels</p>
                 <p>Online Tuition Programs</p>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-base mb-5 text-white/90">Contact Info</h4>
-              <div className="space-y-4 text-sm">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Phone className="h-4 w-4" />
-                  </div>
-                  <div>
-                    <p className="text-gray-400">Street No.14, Sector F-8/3</p>
-                    <p className="text-gray-400">Islamabad, Pakistan</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Phone className="h-4 w-4" />
-                  </div>
-                  <a href="tel:+923059079079" className="text-gray-400 hover:text-white transition-colors">+92 305 9079079</a>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Phone className="h-4 w-4 rotate-45" />
-                  </div>
-                  <a href="mailto:info@leadershipstudysystem.pk" className="text-gray-400 hover:text-white transition-colors break-all">info@leadershipstudysystem.pk</a>
-                </div>
               </div>
             </div>
           </div>
