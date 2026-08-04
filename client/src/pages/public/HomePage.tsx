@@ -162,6 +162,28 @@ function SectionHeader({ badge, icon: Icon, title, subtitle }: { badge: string; 
   )
 }
 
+const campusGallery = [
+  { name: 'WhatsApp Image 2026-08-01 at 22.15.49.jpeg', label: 'Student Life', sub: 'Inside our classrooms' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.15.53.jpeg', label: 'Learning in Action', sub: 'Engaged and focused' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.15.56 (1).jpeg', label: 'Campus Moments', sub: 'Our day at LSS' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.15.56.jpeg', label: 'Classroom Time', sub: 'With our faculty' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.15.59.jpeg', label: 'School Days', sub: 'Making memories' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.16.04 (1).jpeg', label: 'Academy Class', sub: 'Preparing for exams' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.15.46.jpeg', label: 'At Our Campus', sub: 'F-8/3, Islamabad' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.15.49 (1).jpeg', label: 'Student Spotlight', sub: 'Our proud learners' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.15.57 (1).jpeg', label: 'Interactive Class', sub: 'Hands-on learning' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.15.57 (2).jpeg', label: 'Group Activity', sub: 'Learning together' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.16.01 (1).jpeg', label: 'Mentorship', sub: 'Personal attention' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.16.01 (2).jpeg', label: 'Exam Prep', sub: 'Cambridge preparation' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.16.02 (1).jpeg', label: 'Our Students', sub: 'Future leaders' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.16.03 (3).jpeg', label: 'Campus Life', sub: 'A vibrant community' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.16.05 (3).jpeg', label: 'Academic Excellence', sub: 'Striving for A*' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.16.05 (4).jpeg', label: 'Classroom Engagement', sub: 'Every student matters' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.16.06 (2).jpeg', label: 'Teacher Guidance', sub: 'Support at every step' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.16.06 (3).jpeg', label: 'Study Session', sub: 'Focused on success' },
+  { name: 'WhatsApp Image 2026-08-01 at 22.16.07 (2).jpeg', label: 'Achievements', sub: 'Celebrating success' },
+].map((g) => ({ id: g.name, src: `/homepage/${encodeURI(g.name)}`, label: g.label, sub: g.sub }))
+
 export default function HomePage() {
   const [contactForm, setContactForm] = useState({ name: '', email: '', phone: '', message: '' })
   const [contactStatus, setContactStatus] = useState<'' | 'success' | 'error'>('')
@@ -940,19 +962,10 @@ export default function HomePage() {
             </div>
           </FadeInSection>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              { src: '/images/students-discussion.jpg', label: 'Interactive Classrooms', sub: 'Learning with experienced faculty' },
-              { src: '/images/students-study-group.jpg', label: 'Collaborative Learning', sub: 'Peer discussions and group work' },
-              { src: '/images/kids-raising-hands.jpg', label: 'Early Years', sub: 'A caring start for our youngest learners' },
-              { src: '/images/graduation-celebration.jpg', label: 'Graduation Day', sub: 'Celebrating our achievers' },
-              { src: '/images/university-lecture.jpg', label: 'Lecture Halls', sub: 'Cambridge-style learning spaces' },
-              { src: '/images/students-campus.jpg', label: 'Campus Life', sub: 'A vibrant student community' },
-              { src: '/images/school-classroom-activity.jpg', label: 'Activity-Based Learning', sub: 'Fun, hands-on lessons' },
-              { src: '/images/students-group.jpg', label: 'Mentorship & Support', sub: 'Guidance at every step' },
-            ].map((g, i) => (
-              <FadeInSection key={g.label}>
+            {campusGallery.map((g, i) => (
+              <FadeInSection key={g.id}>
                 <div className="group relative h-72 rounded-3xl overflow-hidden shadow-xl shadow-black/30" style={{ animationDelay: `${i * 120}ms` }}>
-                  <img src={g.src} alt={g.label} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <img src={g.src} alt={g.label} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-950/90 via-gray-900/20 to-transparent" />
                   <div className="absolute inset-x-0 bottom-0 p-5">
                     <p className="text-white font-bold text-lg mb-0.5">{g.label}</p>
