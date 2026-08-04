@@ -215,11 +215,11 @@ export default function ServicesPage() {
       {/* Photo Banner */}
       <section className="relative h-[380px] overflow-hidden">
         <img src="/images/students-study-group.jpg" alt="Students collaborating at Leadership Study System" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-950/90 via-primary-900/70 to-primary-950/30" />
+        <div className="absolute inset-0 bg-black/60" />
         <div className="relative z-10 mx-auto flex h-full max-w-6xl items-center px-4">
-          <div className="max-w-xl">
-            <h2 className="mb-3 text-3xl font-bold text-white sm:text-4xl">Every Student Gets <span className="text-amber-300">Personal Attention</span></h2>
-            <p className="text-blue-100/80 leading-relaxed">
+          <div className="max-w-xl rounded-2xl bg-white p-8 shadow-2xl">
+            <h2 className="mb-3 text-3xl font-bold text-gray-900 sm:text-4xl">Every Student Gets <span className="text-primary-700">Personal Attention</span></h2>
+            <p className="text-gray-600 leading-relaxed">
               Small classes, one-on-one support, and a caring faculty ensure that no learner is left behind — from our youngest school students to ambitious A Level candidates.
             </p>
           </div>
