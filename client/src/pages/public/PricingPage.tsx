@@ -2,8 +2,6 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import {
-  CheckCircle,
-  XCircle,
   ChevronRight,
   Star,
   Shield,
@@ -120,21 +118,6 @@ const pricingPlans: PricingPlan[] = [
       { name: 'Analytics & Reports', included: true },
     ],
   },
-];
-
-const allFeatures = [
-  'Student Management',
-  'Attendance Tracking',
-  'Fee Management',
-  'Homework System',
-  'Exam Management',
-  'SMS/Email Notifications',
-  'Parent Portal',
-  'Mobile App Access',
-  'Custom Branding',
-  'Dedicated Support',
-  'API Access',
-  'Analytics & Reports',
 ];
 
 const faqs = [
@@ -308,73 +291,12 @@ export default function PricingPage() {
                         <ChevronRight className="ml-1 h-4 w-4" />
                       </Link>
                     </Button>
-
-                    <ul className="space-y-3">
-                      {plan.features.map((f) => (
-                        <li key={f.name} className="flex items-center gap-2 text-sm">
-                          {f.included ? (
-                            <CheckCircle className="h-4 w-4 shrink-0 text-emerald-500" />
-                          ) : (
-                            <XCircle className="h-4 w-4 shrink-0 text-gray-300 dark:text-gray-600" />
-                          )}
-                          <span className={f.included ? 'text-gray-700 dark:text-gray-200' : 'text-gray-400 dark:text-gray-500'}>
-                            {f.name}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
                   </CardContent>
                 </Card>
               </div>
             </FadeInSection>
           ))}
         </div>
-      </section>
-
-      {/* Feature Comparison */}
-      <section className="bg-white px-4 py-20 dark:bg-gray-900">
-        <FadeInSection>
-          <h2 className="mb-2 text-center text-3xl font-bold text-gray-900 dark:text-white">
-            Compare Plans Side by Side
-          </h2>
-          <p className="mx-auto mb-10 max-w-lg text-center text-gray-500 dark:text-gray-400">
-            Find the perfect fit for your institution's needs.
-          </p>
-
-          <div className="mx-auto max-w-5xl overflow-x-auto">
-            <table className="w-full min-w-[640px] border-collapse overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
-              <thead>
-                <tr className="bg-gray-50 dark:bg-gray-800">
-                  <th className="p-4 text-left text-sm font-semibold text-gray-600 dark:text-gray-300">Feature</th>
-                  {pricingPlans.map((p) => (
-                    <th key={p.name} className={`p-4 text-center text-sm font-bold ${p.popular ? 'text-primary-700 dark:text-primary-400' : 'text-gray-700 dark:text-gray-200'}`}>
-                      {p.name}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {allFeatures.map((feature, i) => (
-                  <tr key={feature} className={`border-t border-gray-100 dark:border-gray-700 ${i % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-gray-50/50 dark:bg-gray-800/50'}`}>
-                    <td className="p-4 text-sm text-gray-600 dark:text-gray-300">{feature}</td>
-                    {pricingPlans.map((p) => {
-                      const f = p.features.find((ff) => ff.name === feature);
-                      return (
-                        <td key={p.name} className="p-4 text-center">
-                          {f?.included ? (
-                            <CheckCircle className="mx-auto h-5 w-5 text-emerald-500" />
-                          ) : (
-                            <XCircle className="mx-auto h-5 w-5 text-gray-300 dark:text-gray-600" />
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </FadeInSection>
       </section>
 
       {/* Features Grid */}
