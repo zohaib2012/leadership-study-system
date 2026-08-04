@@ -249,14 +249,22 @@ exports.deleteTeacher = async (req, res) => {
       return res.status(400).json({ success: false, message: 'Tenant context required' });
     }
 
-    const teacher = await Teacher.findOneAndUpdate(
-      { _id: req.params.id, tenant: req.tenant._id },
-      { status: 'INACTIVE', updatedAt: new Date() },
-      { new: true }
-    );
+    const teacher = await Teacher.findOneAndDelete({
+      _id: req.params.id,
+      tenant: req.tenant._id,
+    });
 
     if (!teacher) {
       return res.status(404).json({ success: false, message: 'Teacher not found' });
+    }
+
+    await SalarySlip.deleteMany({ teacher: teacher._id, tenant: teacher.tenant });
+
+    if (teacher.user) {
+      await User.findByIdAndUpdate(teacher.user, {
+        status: 'INACTIVE',
+        updatedAt: new Date(),
+      });
     }
 
     res.json({ success: true, data: teacher });

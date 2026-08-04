@@ -289,30 +289,20 @@ exports.updateStudent = async (req, res) => {
 
 exports.deleteStudent = async (req, res) => {
   try {
-    const newStatus = req.body.status || 'INACTIVE';
-
-    if (!['INACTIVE', 'TRANSFERRED'].includes(newStatus)) {
-      return res.status(400).json({
-        success: false,
-        message: 'Status must be INACTIVE or TRANSFERRED',
-      });
-    }
-
-    const student = await Student.findOneAndUpdate(
-      { _id: req.params.id, tenant: req.tenant._id },
-      {
-        $set: {
-          status: newStatus,
-          leavingDate: newStatus === 'TRANSFERRED' ? new Date() : undefined,
-          updatedAt: new Date(),
-        },
-      },
-      { new: true }
-    );
+    const student = await Student.findOneAndDelete({
+      _id: req.params.id,
+      tenant: req.tenant._id,
+    });
 
     if (!student) {
       return res.status(404).json({ success: false, message: 'Student not found' });
     }
+
+    await Promise.all([
+      FeeChallan.deleteMany({ student: student._id, tenant: student.tenant }),
+      FeePayment.deleteMany({ student: student._id, tenant: student.tenant }),
+      Attendance.deleteMany({ student: student._id, tenant: student.tenant }),
+    ]);
 
     if (student.user) {
       await User.findByIdAndUpdate(student.user, {

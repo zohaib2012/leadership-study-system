@@ -91,6 +91,15 @@ export default function DashboardLayout({ role = 'admin' }: Props) {
   const menuMap: Record<string, typeof adminMenu> = { admin: adminMenu, teacher: teacherMenu, student: studentMenu, parent: parentMenu, 'super-admin': superAdminMenu }
   const menu = menuMap[role] || adminMenu
 
+  const profileRoutes: Record<string, string> = {
+    admin: '/admin/settings',
+    teacher: '/teacher/profile',
+    student: '/student/profile',
+    parent: '/parent/dashboard',
+    'super-admin': '/super-admin/settings',
+  }
+  const profilePath = profileRoutes[role] || `/${role}/dashboard`
+
   const pageTitle = menu.find(m => m.href === location.pathname)?.label || 'Dashboard'
 
   return (
@@ -160,7 +169,7 @@ export default function DashboardLayout({ role = 'admin' }: Props) {
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full" />
             </button>
 
-            <div className="flex items-center gap-2 cursor-pointer pl-2 pr-3 py-1.5 rounded-xl hover:bg-gray-100 transition-colors" onClick={() => navigate(`/${role}/profile`)}>
+            <div className="flex items-center gap-2 cursor-pointer pl-2 pr-3 py-1.5 rounded-xl hover:bg-gray-100 transition-colors" onClick={() => navigate(profilePath)}>
               <Avatar className="h-8 w-8 ring-2 ring-primary-100">
                 <AvatarFallback className="bg-gradient-to-br from-primary-600 to-primary-700 text-white text-xs font-medium">
                   {getInitials(user?.name || 'U')}

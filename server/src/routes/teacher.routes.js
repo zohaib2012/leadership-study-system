@@ -5,7 +5,7 @@ const teacherController = require('../controllers/teacher.controller');
 
 router.use(protect);
 
-router.get('/', authorize('ADMIN', 'SUB_ADMIN'), teacherController.getTeachers);
+router.get('/', authorize('ADMIN', 'SUB_ADMIN', 'ACCOUNTANT'), teacherController.getTeachers);
 router.post('/', authorize('ADMIN', 'SUB_ADMIN'), teacherController.createTeacher);
 router.get('/me/salary', authorize('TEACHER'), teacherController.getMySalary);
 router.get('/my-slips', authorize('TEACHER'), teacherController.getMySlips);
@@ -17,7 +17,7 @@ router.patch('/salary/bulk-pay', authorize('ADMIN', 'SUB_ADMIN'), teacherControl
 router.post('/salary/generate', authorize('ADMIN', 'SUB_ADMIN'), teacherController.generateSalarySlip);
 router.post('/salary/bulk-generate', authorize('ADMIN', 'SUB_ADMIN'), teacherController.bulkGenerateSlips);
 router.get('/my-classes', authorize('TEACHER'), teacherController.getMyClasses);
-router.get('/:id', authorize('ADMIN', 'SUB_ADMIN', 'TEACHER'), teacherController.getTeacher);
+router.get('/:id', authorize('ADMIN', 'SUB_ADMIN', 'ACCOUNTANT', 'TEACHER'), teacherController.getTeacher);
 router.put('/:id', authorize('ADMIN', 'SUB_ADMIN'), teacherController.updateTeacher);
 router.delete('/:id', authorize('ADMIN', 'SUB_ADMIN'), teacherController.deleteTeacher);
 router.get('/:id/salary', authorize('ADMIN', 'SUB_ADMIN', 'TEACHER'), teacherController.getTeacherSalary);

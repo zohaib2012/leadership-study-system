@@ -163,14 +163,14 @@ export default function App() {
             <Route element={<DashboardLayout role="admin" />}>
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/students" element={<StudentList />} />
-              <Route path="/admin/students/school" element={<StudentList defaultType="SCHOOL" />} />
-              <Route path="/admin/students/academy" element={<StudentList defaultType="ACADEMY" />} />
+              <Route path="/admin/students/school" element={<StudentList key="students-school" defaultType="SCHOOL" />} />
+              <Route path="/admin/students/academy" element={<StudentList key="students-academy" defaultType="ACADEMY" />} />
               <Route path="/admin/students/add" element={<StudentForm />} />
               <Route path="/admin/students/:id" element={<AdminStudentProfile />} />
               <Route path="/admin/students/:id/edit" element={<StudentForm />} />
               <Route path="/admin/teachers" element={<TeacherList />} />
-              <Route path="/admin/teachers/school" element={<TeacherList defaultType="SCHOOL" />} />
-              <Route path="/admin/teachers/academy" element={<TeacherList defaultType="ACADEMY" />} />
+              <Route path="/admin/teachers/school" element={<TeacherList key="teachers-school" defaultType="SCHOOL" />} />
+              <Route path="/admin/teachers/academy" element={<TeacherList key="teachers-academy" defaultType="ACADEMY" />} />
               <Route path="/admin/teachers/add" element={<TeacherForm />} />
               <Route path="/admin/teachers/:id/edit" element={<TeacherForm />} />
               <Route path="/admin/classes" element={<ClassList />} />
