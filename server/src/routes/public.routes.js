@@ -1,13 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const SubscriptionPlan = require('../models/SubscriptionPlan');
 const Tenant = require('../models/Tenant');
 const { registerTenant } = require('../controllers/auth.controller');
 const { uploadDocument, uploadToCloudinary } = require('../middleware/upload.middleware');
 
-router.get('/plans', async (req, res) => {
-  const plans = await SubscriptionPlan.find({ isActive: true });
-  res.json({ success: true, data: plans });
+const HARDCODED_PLANS = [
+  { name: 'Basic', price: 5000, studentLimit: 50, features: ['students', 'attendance', 'fees', 'timetable', 'homework'] },
+  { name: 'Standard', price: 10000, studentLimit: 200, features: ['students', 'attendance', 'fees', 'timetable', 'homework', 'reports', 'communication'] },
+  { name: 'Professional', price: 15000, studentLimit: 500, features: ['students', 'attendance', 'fees', 'timetable', 'homework', 'reports', 'communication', 'leave'] },
+  { name: 'Enterprise', price: 25000, studentLimit: 99999, features: ['students', 'attendance', 'fees', 'timetable', 'homework', 'reports', 'communication', 'leave', 'settings', 'roles', 'backup'] },
+];
+
+router.get('/plans', (req, res) => {
+  res.json({ success: true, data: HARDCODED_PLANS });
 });
 
 router.post('/tenants/register', registerTenant);

@@ -1,6 +1,13 @@
 const Tenant = require('../models/Tenant');
 const SubscriptionPlan = require('../models/SubscriptionPlan');
 const TenantSubscription = require('../models/TenantSubscription');
+
+const HARDCODED_PLANS = [
+  { name: 'Basic', price: 5000, studentLimit: 50, features: ['students', 'attendance', 'fees', 'timetable', 'homework'] },
+  { name: 'Standard', price: 10000, studentLimit: 200, features: ['students', 'attendance', 'fees', 'timetable', 'homework', 'reports', 'communication'] },
+  { name: 'Professional', price: 15000, studentLimit: 500, features: ['students', 'attendance', 'fees', 'timetable', 'homework', 'reports', 'communication', 'leave'] },
+  { name: 'Enterprise', price: 25000, studentLimit: 99999, features: ['students', 'attendance', 'fees', 'timetable', 'homework', 'reports', 'communication', 'leave', 'settings', 'roles', 'backup'] },
+];
 const User = require('../models/User');
 const Student = require('../models/Student');
 const ActivityLog = require('../models/ActivityLog');
@@ -118,10 +125,11 @@ const superAdminController = {
 
   getPlans: async (req, res) => {
     try {
-      const plans = await SubscriptionPlan.find({ isActive: true });
+      const dbPlans = await SubscriptionPlan.find({ isActive: true });
+      const plans = dbPlans.length > 0 ? dbPlans : HARDCODED_PLANS;
       res.json({ success: true, data: plans });
     } catch (error) {
-      res.status(500).json({ success: false, message: error.message });
+      res.json({ success: true, data: HARDCODED_PLANS });
     }
   },
 
