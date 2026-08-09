@@ -11,11 +11,26 @@ api.interceptors.request.use((config) => {
   return config
 })
 
+const isTokenExpired = (token: string): boolean => {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]))
+    return payload.exp ? payload.exp * 1000 < Date.now() : false
+  } catch {
+    return false
+  }
+}
+
 api.interceptors.response.use(
   (res) => res,
   (error) => {
-    if (error.response?.status === 401) {
+    const status = error.response?.status
+    const url = error.config?.url || ''
+    const isSessionCheck = url.includes('/auth/me')
+    const token = localStorage.getItem('auth-token')
+    const sessionExpired = status === 401 && (isSessionCheck || (token ? isTokenExpired(token) : false))
+    if (sessionExpired) {
       localStorage.removeItem('auth-token')
+      localStorage.removeItem('auth-user')
       if (!window.location.pathname.includes('/login')) {
         window.location.href = '/login'
       }

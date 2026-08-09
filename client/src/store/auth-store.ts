@@ -28,8 +28,19 @@ interface AuthState {
   initialize: () => Promise<void>
 }
 
+const USER_KEY = 'auth-user'
+
+const readStoredUser = (): User | null => {
+  try {
+    const raw = localStorage.getItem(USER_KEY)
+    return raw ? JSON.parse(raw) : null
+  } catch {
+    return null
+  }
+}
+
 export const useAuthStore = create<AuthState>((set, get) => ({
-  user: null,
+  user: readStoredUser(),
   token: localStorage.getItem('auth-token'),
   isLoading: false,
   isInitialized: false,
@@ -40,6 +51,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       const { data } = await api.post('/auth/login', { email, password })
       if (data.success) {
         localStorage.setItem('auth-token', data.data.token)
+        localStorage.setItem(USER_KEY, JSON.stringify(data.data.user))
         set({ user: data.data.user, token: data.data.token, isLoading: false })
       } else {
         throw new Error(data.message)
@@ -52,18 +64,24 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   logout: () => {
     localStorage.removeItem('auth-token')
+    localStorage.removeItem(USER_KEY)
     set({ user: null, token: null, isInitialized: true })
     window.location.href = '/login'
   },
 
   loadUser: async () => {
     try {
-      set({ isLoading: true })
       const { data } = await api.get('/auth/me')
+      localStorage.setItem(USER_KEY, JSON.stringify(data.data))
       set({ user: data.data, isLoading: false })
-    } catch {
-      localStorage.removeItem('auth-token')
-      set({ user: null, token: null, isLoading: false })
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        localStorage.removeItem('auth-token')
+        localStorage.removeItem(USER_KEY)
+        set({ user: null, token: null, isLoading: false })
+      } else {
+        set({ isLoading: false })
+      }
     }
   },
 
@@ -71,6 +89,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const token = get().token
     if (token && !get().user) {
       await get().loadUser()
+    } else if (token && get().user) {
+      get().loadUser()
     }
     set({ isInitialized: true })
   },
