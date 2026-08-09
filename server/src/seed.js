@@ -37,7 +37,7 @@ const seed = async () => {
       phone: '+92 300 1234567',
       status: 'ACTIVE',
     });
-    console.log('Super admin created: admin@leadershipstudysystem.pk / admin123');
+    console.log('Super Admin: admin@leadershipstudysystem.pk / admin123');
 
     const tenantAdmin = await User.create({
       tenant: tenant._id,
@@ -48,11 +48,65 @@ const seed = async () => {
       phone: '+92 305 9079079',
       status: 'ACTIVE',
     });
-    console.log('Tenant admin created: admin@demo.com / admin123');
+    console.log('Admin: admin@demo.com / admin123');
 
-    console.log('\n--- Production Seed Complete ---');
+    const teacher = await User.create({
+      tenant: tenant._id,
+      name: 'Mr. Muzammil Ameer',
+      email: 'teacher@demo.com',
+      password: 'teacher123',
+      role: 'TEACHER',
+      phone: '+92 305 9079079',
+      status: 'ACTIVE',
+    });
+
+    const Teacher = require('./models/Teacher');
+    await Teacher.create({
+      tenant: tenant._id,
+      user: teacher._id,
+      qualification: 'MBA, Cambridge Certified',
+      experience: 10,
+      specialization: 'Business Studies',
+      contractType: 'PERMANENT',
+      type: 'SCHOOL',
+      status: 'ACTIVE',
+    });
+    console.log('Teacher: teacher@demo.com / teacher123');
+
+    const student = await User.create({
+      tenant: tenant._id,
+      name: 'Ahmed Khan',
+      email: 'student@demo.com',
+      password: 'student123',
+      role: 'STUDENT',
+      phone: '+92 333 1234567',
+      status: 'ACTIVE',
+    });
+
+    const Student = require('./models/Student');
+    await Student.create({
+      tenant: tenant._id,
+      user: student._id,
+      registrationNo: 'LSS-AC-1001',
+      firstName: 'Ahmed',
+      lastName: 'Khan',
+      dob: new Date('2008-05-15'),
+      gender: 'MALE',
+      fatherName: 'Rehman Khan',
+      fatherPhone: '+92 333 1234567',
+      address: 'F-8, Islamabad',
+      city: 'Islamabad',
+      type: 'ACADEMY',
+      status: 'ACTIVE',
+    });
+    console.log('Student: student@demo.com / student123');
+
+    console.log('\n--- Seed Complete ---');
+    console.log('Credentials:');
     console.log('  Super Admin: admin@leadershipstudysystem.pk / admin123');
-    console.log('  Tenant Admin: admin@demo.com / admin123');
+    console.log('  Admin:       admin@demo.com / admin123');
+    console.log('  Teacher:     teacher@demo.com / teacher123');
+    console.log('  Student:     student@demo.com / student123');
 
     process.exit(0);
   } catch (error) {
