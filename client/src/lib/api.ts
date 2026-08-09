@@ -13,7 +13,9 @@ api.interceptors.request.use((config) => {
 
 const isTokenExpired = (token: string): boolean => {
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]))
+    const base64Url = token.split('.')[1]
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+    const payload = JSON.parse(atob(base64))
     return payload.exp ? payload.exp * 1000 < Date.now() : false
   } catch {
     return false
