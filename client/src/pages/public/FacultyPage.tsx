@@ -1,38 +1,58 @@
 import { Helmet } from 'react-helmet-async';
 import { useState, useEffect, useRef } from 'react';
-import { Users, Quote, GraduationCap, Award, Sparkles, BookOpen } from 'lucide-react';
+import { Sparkles, School, GraduationCap, Users, BookOpen, CheckCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
-const facultyData = [
+const campuses = [
   {
-    id: 1,
-    name: 'Mr. Muhammad Ajmal Pervaiz',
-    role: 'Executive Director',
-    bio: 'Visionary leader with decades of experience in educational administration and strategic institutional development.',
-    stats: { experience: '25+ Years', courses: '500+', students: '10,000+' },
+    icon: School,
+    title: 'LSS School',
+    accent: 'from-amber-500 to-orange-600',
+    sections: [
+      {
+        heading: 'Leadership',
+        members: [
+          { name: 'Mr. Muzammil Ameer', role: 'Chief Executive Officer' },
+          { name: 'Mr. Muhammad Ajmal Pervaiz', role: 'Executive Director' },
+          { name: 'Ms. Sana Muzammil', role: 'Executive Director' },
+        ],
+      },
+      {
+        heading: 'Teachers',
+        members: [
+          { name: 'Ms. Ayesha Malik', role: 'Senior Teacher (Primary)', exp: '10+ Years Experience', qual: 'M.Ed' },
+          { name: 'Mr. Usman Tariq', role: 'Teacher (Playgroup-KG)', exp: '6+ Years Experience', qual: 'B.Ed' },
+          { name: 'Ms. Hira Shah', role: 'Teacher (Middle Section)', exp: '8+ Years Experience', qual: 'MA English' },
+          { name: 'Ms. Rabia Noor', role: 'Teacher (Pre-O Level)', exp: '7+ Years Experience', qual: 'M.Sc Mathematics' },
+        ],
+      },
+    ],
   },
   {
-    id: 2,
-    name: 'Mr. Muzammil Ameer',
-    role: 'Chief Executive Officer',
-    bio: 'Dynamic CEO driving innovation in leadership education with a passion for empowering the next generation of leaders.',
-    stats: { experience: '20+ Years', courses: '400+', students: '8,000+' },
+    icon: GraduationCap,
+    title: 'LSS Academy',
+    accent: 'from-blue-500 to-primary-700',
+    sections: [
+      {
+        heading: 'Leadership',
+        members: [
+          { name: 'Mr. Muzammil Ameer', role: 'Chief Executive Officer' },
+          { name: 'Mr. Muhammad Ajmal Pervaiz', role: 'Executive Director' },
+          { name: 'Ms. Sana Muzammil', role: 'Executive Director' },
+        ],
+      },
+      {
+        heading: 'Academy Faculty',
+        members: [
+          { name: 'Muzammil Ameer', role: 'Cambridge Examiner & Senior Faculty', exp: '20+ Years Experience', qual: 'ACMA, AFPA, M.A.' },
+          { name: 'Saeed Khan', role: 'Commerce & Business Faculty', exp: '15+ Years Experience', qual: 'MBA (Finance)' },
+          { name: 'Sana Muzammil', role: 'Economics Faculty', exp: '12+ Years Experience', qual: 'M.Phil Economics' },
+          { name: 'Muhammad Ajmal Pervaiz', role: 'Business Studies Faculty', exp: '18+ Years Experience', qual: 'ACCA' },
+        ],
+      },
+    ],
   },
-  {
-    id: 3,
-    name: 'Ms. Sana Muzammil',
-    role: 'Executive Director',
-    bio: 'Dedicated executive director focused on curriculum excellence and fostering inclusive learning environments.',
-    stats: { experience: '15+ Years', courses: '300+', students: '6,000+' },
-  },
-];
-
-const statsData = [
-  { icon: Users, value: '24,000+', label: 'Students Taught' },
-  { icon: GraduationCap, value: '1,200+', label: 'Courses Delivered' },
-  { icon: Award, value: '60+', label: 'Years Combined Experience' },
-  { icon: BookOpen, value: '50+', label: 'Programs Offered' },
 ];
 
 function FadeInSection({ children }: { children: React.ReactNode }) {
@@ -71,140 +91,84 @@ export default function FacultyPage() {
   return (
     <>
       <Helmet>
-        <title>Our Faculty | Leadership Study System</title>
-        <meta name="description" content="Meet our distinguished faculty members at Leadership Study System." />
+        <title>Meet Our Leadership | Leadership Study System</title>
+        <meta name="description" content="Meet the leadership and teaching teams of LSS School and LSS Academy at Leadership Study System." />
       </Helmet>
 
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-primary-950 to-gray-900 px-4 pb-16 pt-28 lg:pt-36">
-        <div className="absolute inset-0 opacity-25">
-          <img
-            src="/images/university-lecture.jpg"
-            alt="Students in a lecture at Leadership Study System"
-            loading="lazy"
-            className="h-full w-full object-cover"
-          />
-        </div>
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute -left-32 -top-32 h-[500px] w-[500px] animate-pulse rounded-full bg-primary-500/10 blur-3xl" />
           <div className="absolute -bottom-40 -right-32 h-[600px] w-[600px] animate-pulse rounded-full bg-primary-700/10 blur-3xl" />
         </div>
         <div className="relative z-10 mx-auto max-w-3xl text-center">
-          <Badge className="mb-6 border-primary-400/30 bg-primary-500/10 px-4 py-1.5 text-primary-200 backdrop-blur-sm">
-            <Sparkles className="mr-2 h-3.5 w-3.5" />
-            Our Expert Team
-          </Badge>
-          <h1 className="mb-6 bg-gradient-to-r from-white via-primary-100 to-primary-200 bg-clip-text text-4xl font-bold leading-tight text-transparent md:text-5xl lg:text-6xl">
-            Meet Our Faculty
-          </h1>
-          <p className="mx-auto max-w-2xl text-lg leading-relaxed text-primary-200/80">
-            World-class educators and industry leaders dedicated to shaping the leaders of tomorrow
-            through innovative teaching and mentorship.
-          </p>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="bg-white px-4 pb-4 pt-12">
-        <div className="mx-auto max-w-5xl">
           <FadeInSection>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              {statsData.map((stat, idx) => (
-                <Card key={idx} className="border border-gray-200 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-                  <CardContent className="flex flex-col items-center p-5 text-center">
-                    <div className="mb-2 rounded-full bg-gradient-to-br from-primary-500/10 to-primary-600/10 p-2.5">
-                      <stat.icon className="h-5 w-5 text-primary-600" />
-                    </div>
-                    <span className="text-xl font-bold text-gray-900">{stat.value}</span>
-                    <span className="mt-0.5 text-xs text-gray-500">{stat.label}</span>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <Badge className="mb-6 border-primary-400/30 bg-primary-500/10 px-4 py-1.5 text-primary-200 backdrop-blur-sm">
+              <Sparkles className="mr-2 h-3.5 w-3.5" />
+              Our Leadership & Teaching Teams
+            </Badge>
+          </FadeInSection>
+          <FadeInSection>
+            <h1 className="mb-6 bg-gradient-to-r from-white via-primary-100 to-primary-200 bg-clip-text text-4xl font-bold leading-tight text-transparent md:text-5xl lg:text-6xl">
+              Meet Our Leadership
+            </h1>
+          </FadeInSection>
+          <FadeInSection>
+            <p className="mx-auto max-w-2xl text-lg leading-relaxed text-primary-200/80">
+              Discover the leadership and teachers guiding students across LSS School and LSS Academy.
+            </p>
           </FadeInSection>
         </div>
       </section>
 
-      {/* Faculty Cards */}
-      <section className="bg-white px-4 py-12">
-        <div className="mx-auto max-w-5xl">
-          <FadeInSection>
-            <div className="mb-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-              {[
-                { src: '/images/teacher-class.jpg', label: 'Classroom Teaching' },
-                { src: '/images/students-discussion.jpg', label: 'Mentorship' },
-                { src: '/images/students-study-group.jpg', label: 'Collaboration' },
-                { src: '/images/graduation-celebration.jpg', label: 'Student Success' },
-              ].map((img) => (
-                <div key={img.label} className="group relative overflow-hidden rounded-2xl">
-                  <img
-                    src={img.src}
-                    alt={img.label}
-                    loading="lazy"
-                    className="h-40 w-full object-cover transition-transform duration-500 group-hover:scale-110 md:h-52"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <span className="absolute bottom-3 left-3 text-xs font-semibold text-white md:text-sm">{img.label}</span>
-                </div>
-              ))}
-            </div>
-          </FadeInSection>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {facultyData.map((member) => (
-              <FadeInSection key={member.id}>
-                <Card className="h-full border border-gray-200 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
-                  <div className="bg-gradient-to-br from-primary-600 to-primary-800 px-6 pb-14 pt-8">
-                    <div className="flex flex-col items-center">
-                      <div className="mb-3 flex h-20 w-20 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-                        <Users className="h-10 w-10 text-white" />
+      {/* School vs Academy */}
+      <section className="bg-white px-4 py-20">
+        <div className="mx-auto max-w-6xl space-y-14">
+          {campuses.map((campus, idx) => {
+            const Icon = campus.icon;
+            return (
+              <FadeInSection key={campus.title}>
+                <Card className="overflow-hidden border border-gray-200 shadow-sm">
+                  <div className={`bg-gradient-to-br ${campus.accent} px-6 py-8 text-white`}>
+                    <div className="flex items-center gap-4">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur-sm">
+                        <Icon className="h-7 w-7 text-white" />
                       </div>
-                      <h3 className="text-center text-lg font-bold text-white">{member.name}</h3>
-                      <p className="mt-0.5 text-center text-sm font-medium text-white/80">{member.role}</p>
+                      <div>
+                        <h2 className="text-2xl font-bold sm:text-3xl">{campus.title}</h2>
+                        <p className="text-white/80 text-sm">{idx === 0 ? 'Playgroup till Pre O-Levels' : 'Cambridge IGCSE / O & A Levels'}</p>
+                      </div>
                     </div>
                   </div>
-                  <CardContent className="relative -mt-8 rounded-t-2xl bg-white pb-5 pt-6">
-                    <div className="mb-4 flex items-start gap-2 px-1">
-                      <Quote className="mt-0.5 h-3.5 w-3.5 shrink-0 rotate-180 text-primary-400/50" />
-                      <p className="text-sm leading-relaxed text-gray-600">{member.bio}</p>
-                    </div>
-                    <div className="grid grid-cols-3 gap-2 rounded-lg bg-gray-50 p-2.5">
-                      {Object.entries(member.stats).map(([key, val]) => (
-                        <div key={key} className="text-center">
-                          <span className="block text-xs font-semibold uppercase tracking-wider text-gray-400">{key}</span>
-                          <span className="block text-sm font-bold text-gray-800">{val}</span>
+                  <CardContent className="space-y-10 p-8">
+                    {campus.sections.map((section) => (
+                      <div key={section.heading}>
+                        <div className="mb-5 flex items-center gap-2">
+                          <Users className="h-5 w-5 text-primary-700" />
+                          <h3 className="text-xl font-bold text-gray-900">{section.heading}</h3>
                         </div>
-                      ))}
-                    </div>
+                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                          {section.members.map((m) => (
+                            <div key={m.name} className="rounded-2xl border border-gray-100 bg-gray-50/50 p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+                              <p className="font-semibold text-gray-900">{m.name}</p>
+                              <p className="mt-0.5 text-sm font-medium text-primary-700">{m.role}</p>
+                              {(m.exp || m.qual) && (
+                                <div className="mt-3 space-y-1 text-xs text-gray-500">
+                                  {m.exp && <p className="flex items-center gap-1.5"><BookOpen className="h-3.5 w-3.5 text-gray-400" /> {m.exp}</p>}
+                                  {m.qual && <p className="flex items-center gap-1.5"><CheckCircle className="h-3.5 w-3.5 text-gray-400" /> {m.qual}</p>}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </CardContent>
                 </Card>
               </FadeInSection>
-            ))}
-          </div>
+            );
+          })}
         </div>
-      </section>
-
-      {/* CTA */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-primary-700 to-primary-900 px-4 py-20 text-center">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
-          <div className="absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-white/5 blur-3xl" />
-        </div>
-        <FadeInSection>
-          <Badge className="mb-6 border-white/20 bg-white/10 px-4 py-1.5 text-white backdrop-blur-sm">
-            <Sparkles className="mr-2 h-4 w-4" />
-            Join Us Today
-          </Badge>
-          <h2 className="mb-4 text-3xl font-bold text-white sm:text-4xl">
-            Ready to Learn from the Best?
-          </h2>
-          <p className="mx-auto mb-8 max-w-xl text-primary-100">
-            Join thousands of students who have transformed their careers through our expert-led programs.
-          </p>
-          <button className="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 text-base font-semibold text-primary-700 shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl">
-            <BookOpen className="h-5 w-5" />
-            Explore Programs
-          </button>
-        </FadeInSection>
       </section>
     </>
   );

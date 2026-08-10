@@ -16,7 +16,7 @@ interface ClassOption {
 interface ChallanItem {
   _id: string
   challanNo: string
-  student: { _id: string; firstName: string; lastName: string; registrationNo: string }
+  student: { _id: string; firstName: string; lastName: string; registrationNo: string; fatherName?: string; class?: { _id: string; name: string } }
   class: { _id: string; name: string }
   month: string
   totalAmount: number
@@ -36,6 +36,7 @@ export default function FeeChallans() {
   const [isLoading, setIsLoading] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [message, setMessage] = useState('')
+  const [messageType, setMessageType] = useState<'error' | 'success'>('error')
 
   useEffect(() => {
     fetchClasses()
@@ -66,6 +67,7 @@ export default function FeeChallans() {
   const handleGenerate = async () => {
     if (!selectedClass || !month) {
       setMessage('Please select a class and month')
+      setMessageType('error')
       return
     }
     setGenerating(true)
@@ -77,13 +79,16 @@ export default function FeeChallans() {
         dueDate: dueDate || undefined,
       })
       if (data.success) {
-        setMessage(`Generated ${data.data.generated || data.data.count || 0} challans successfully!`)
+        setMessage(data.data?.message || `Generated ${data.data.generated || data.data.count || 0} challans successfully!`)
+        setMessageType('success')
         fetchChallans()
       } else {
         setMessage(data.message || 'Failed to generate challans')
+        setMessageType('error')
       }
     } catch (err: any) {
       setMessage(err?.response?.data?.message || 'Failed to generate challans')
+      setMessageType('error')
     } finally {
       setGenerating(false)
     }
@@ -150,7 +155,7 @@ export default function FeeChallans() {
               <td class="label">Father Name</td>
               <td>${challan.student?.fatherName || '-'}</td>
               <td class="label">Class</td>
-              <td>${challan.class?.name || '-'}</td>
+              <td>${challan.student?.class?.name || challan.class?.name || '-'}</td>
             </tr>
             <tr>
               <td class="label">Month</td>
@@ -181,7 +186,7 @@ export default function FeeChallans() {
 
           <div class="footer">This is a computer-generated challan. &copy; ${new Date().getFullYear()} Leadership Study System</div>
         </div>
-        <script>window.print()</script>
+        <script>window.addEventListener('load', () => window.print())</script>
       </body></html>
     `)
     w.document.close()
@@ -252,7 +257,7 @@ export default function FeeChallans() {
           </Button>
         </div>
         {message && (
-          <div className={`mt-3 p-3 rounded-md text-sm ${message.includes('success') ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+          <div className={`mt-3 p-3 rounded-md text-sm ${messageType === 'error' ? 'bg-red-50 text-red-700 border border-red-200' : 'bg-green-50 text-green-700 border border-green-200'}`}>
             {message}
           </div>
         )}
@@ -274,7 +279,7 @@ export default function FeeChallans() {
           {
             key: 'class',
             header: 'Class',
-            render: (row: ChallanItem) => row.class?.name || '-',
+            render: (row: ChallanItem) => row.student?.class?.name || row.class?.name || '-',
           },
           { key: 'month', header: 'Month' },
           {

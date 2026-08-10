@@ -2,7 +2,6 @@ import { Helmet } from 'react-helmet-async'
 import { Link } from 'react-router-dom'
 import { useState, useEffect, FormEvent } from 'react'
 import {
-  Shield,
   Users,
   BookOpen,
   Clock,
@@ -24,6 +23,7 @@ import {
   Quote,
   TrendingUp,
   Globe,
+  School,
   Phone,
   Mail,
   MapPin,
@@ -39,32 +39,27 @@ import { Badge } from '@/components/ui/badge'
 import api from '@/lib/api'
 
 const whyChooseUs = [
-  { icon: BookOpen, title: 'Comprehensive Syllabus Coverage', desc: 'Thorough coverage of Cambridge IGCSE and A Level syllabi with structured lesson plans.', color: 'from-primary-600 to-blue-700' },
-  { icon: Clock, title: 'Regular Attendance Emphasis', desc: 'We maintain strict attendance records to ensure consistent academic progress.', color: 'from-amber-500 to-orange-600' },
-  { icon: Users, title: 'Collaborative Group Classes', desc: 'Small group sessions that encourage peer learning and healthy academic competition.', color: 'from-emerald-500 to-emerald-700' },
-  { icon: MessageSquare, title: 'Monthly Performance Feedback', desc: 'Detailed monthly reports on student progress shared with parents and guardians.', color: 'from-violet-500 to-violet-700' },
-  { icon: Heart, title: 'Parental Engagement', desc: 'Regular parent-teacher meetings to discuss student development and address concerns.', color: 'from-rose-500 to-rose-700' },
-  { icon: UserCheck, title: 'One-on-One Classes', desc: 'Personalized individual sessions for students who need focused attention.', color: 'from-cyan-500 to-blue-600' },
-  { icon: Shield, title: 'Safe Environment', desc: 'A secure and nurturing campus with CCTV monitoring and strict safety protocols.', color: 'from-primary-600 to-primary-800' },
+  { icon: BookOpen, title: 'Comprehensive Education', desc: 'From Playgroup to Grade 8 and Cambridge O & A Levels, we provide a complete educational pathway under one trusted institution.', color: 'from-primary-600 to-blue-700' },
+  { icon: Users, title: 'Expert Teachers', desc: 'Highly qualified and experienced educators dedicated to academic excellence and student success.', color: 'from-amber-500 to-orange-600' },
+  { icon: Target, title: 'Personalised Learning', desc: 'Small class sizes and individual attention ensure every student reaches their full potential.', color: 'from-emerald-500 to-emerald-700' },
+  { icon: Award, title: 'Leadership Development', desc: 'Building confidence, character, creativity, and leadership alongside academic achievement.', color: 'from-violet-500 to-violet-700' },
+  { icon: TrendingUp, title: 'Proven Academic Results', desc: 'A strong track record of preparing students for outstanding examination performance.', color: 'from-rose-500 to-rose-700' },
+  { icon: Handshake, title: 'Parent Partnership', desc: 'Working closely with parents through regular communication and progress updates.', color: 'from-cyan-500 to-blue-600' },
+  { icon: Laptop, title: 'Innovative Learning', desc: 'Interactive teaching, digital resources, and modern classroom practices that inspire lifelong learning.', color: 'from-primary-600 to-primary-800' },
 ]
 
 const services = [
-  { icon: Users, title: 'Face to Face Classes', desc: 'Interactive in-person classes at our F-8/3 campus with experienced faculty.', color: 'from-primary-600 to-blue-700', image: '/images/students-discussion.jpg' },
-  { icon: Laptop, title: 'Online Tuitions', desc: 'Live interactive online sessions accessible from anywhere with flexible scheduling.', color: 'from-violet-500 to-purple-700', image: '/images/student-laptop.jpg' },
-  { icon: BookOpen, title: 'Books & Study Materials', desc: 'Comprehensive curated study resources including notes, past papers, and practice tests.', color: 'from-amber-500 to-orange-600', image: '/images/school-desk.jpg' },
-]
-
-const courses = [
-  { code: '0450', name: 'IGCSE Business Studies', teacher: 'Mr. Muzammil Ameer', level: 'O Level' },
-  { code: '9609', name: 'AS Level Business', teacher: 'Mr. Muzammil Ameer', level: 'AS Level' },
-  { code: '9609', name: 'A Level Business', teacher: 'Mr. Saeed Khan', level: 'A Level' },
-  { code: '7100', name: 'Commerce O Level', teacher: 'Mr. Saeed Khan', level: 'O Level' },
+  { icon: School, title: 'PG Group to 8th Class School', desc: 'A complete schooling pathway from Playgroup to Grade 8, building strong academic foundations with care and creativity.', color: 'from-amber-500 to-orange-600', image: '/images/school-kids.jpg' },
+  { icon: GraduationCap, title: 'Cambridge O and A Level Classes', desc: 'Expert-led Cambridge IGCSE, O & A Level classes preparing students for top universities and global careers.', color: 'from-primary-600 to-blue-700', image: '/images/academy-students.jpg' },
+  { icon: Building2, title: 'School ERP for Schools & Academies', desc: 'A complete school management system for schools, academies, and individuals — admissions, fees, homework, results, and more.', color: 'from-violet-500 to-purple-700', image: '/images/student-laptop.jpg' },
+  { icon: BookOpen, title: 'BTEC Program', desc: 'Professional guidance and support for students pursuing BTEC qualifications, from course selection to completion.', color: 'from-emerald-500 to-emerald-700', image: '/images/students-study-group.jpg' },
+  { icon: Users, title: 'Find a Tutor', desc: 'Connect with qualified, verified tutors across a wide range of subjects and academic levels for personalized learning.', color: 'from-cyan-500 to-blue-600', image: '/images/students-discussion.jpg' },
 ]
 
 const faculty = [
-  { name: 'Mr. Muzammil Ameer', role: 'Chief Executive Officer', gradient: 'from-primary-600 to-blue-800', bio: 'Visionary leader with 10+ years in Cambridge education.' },
+  { name: 'Mr. Muzammil Ameer', role: 'Chief Executive Officer', gradient: 'from-primary-600 to-blue-800', bio: 'Visionary leader with 20+ years in Cambridge education.' },
+  { name: 'Ms. Umber Rubab', role: 'Leadership', gradient: 'from-rose-500 to-rose-700', bio: 'Dedicated leader committed to academic excellence and student development.' },
   { name: 'Mr. Muhammad Ajmal Pervaiz', role: 'Executive Director', gradient: 'from-blue-600 to-blue-800', bio: 'Dedicated to academic excellence and student development.' },
-  { name: 'Ms. Sana Muzammil', role: 'Executive Director', gradient: 'from-emerald-600 to-emerald-800', bio: 'Passionate educator focused on holistic student growth.' },
 ]
 
 const testimonials = [
@@ -72,21 +67,6 @@ const testimonials = [
   { name: 'Saad Ahmed', role: 'A Level Student', quote: 'The comprehensive syllabus coverage and regular mock exams prepared me thoroughly for my Cambridge exams. Highly recommended!', rating: 5 },
   { name: 'Iqra Hassan', role: 'Parent', quote: 'As a parent, I appreciate the regular feedback and the genuine care the faculty shows for each student. My child has improved remarkably.', rating: 5 },
   { name: 'Fatima Khan', role: 'O Level Student', quote: 'The one-on-one attention and supportive teachers helped me achieve A* in Business Studies. Best decision I ever made!', rating: 5 },
-]
-
-const partners = [
-  { name: 'Cambridge Assessment', color: 'bg-red-50 border-red-200', icon: 'bg-red-100 text-red-600' },
-  { name: 'Pearson Edexcel', color: 'bg-blue-50 border-blue-200', icon: 'bg-blue-100 text-blue-600' },
-  { name: 'British Council', color: 'bg-indigo-50 border-indigo-200', icon: 'bg-indigo-100 text-indigo-600' },
-  { name: 'Oxford University Press', color: 'bg-yellow-50 border-yellow-200', icon: 'bg-yellow-100 text-yellow-600' },
-  { name: 'FBISE', color: 'bg-green-50 border-green-200', icon: 'bg-green-100 text-green-600' },
-]
-
-const stats = [
-  { value: '500+', label: 'Students Enrolled', icon: Users, color: 'from-primary-600 to-blue-700' },
-  { value: '98%', label: 'Success Rate', icon: Award, color: 'from-amber-500 to-orange-600' },
-  { value: '15+', label: 'Expert Faculty', icon: GraduationCap, color: 'from-emerald-500 to-emerald-700' },
-  { value: '20+', label: 'Years Excellence', icon: Rocket, color: 'from-violet-500 to-purple-700' },
 ]
 
 const careerPaths = [
@@ -113,24 +93,6 @@ const openPositions = [
   { title: 'AS / A Level Teacher', type: 'ACADEMY' },
   { title: 'Middle School Teacher (Class 6 - Pre O-Level)', type: 'SCHOOL' },
 ]
-
-function AnimatedCounter({ value }: { value: string }) {
-  const [display, setDisplay] = useState('0')
-  const numValue = parseInt(value.replace(/\D/g, ''))
-  const suffix = value.replace(/\d/g, '')
-  useEffect(() => {
-    let start = 0
-    const duration = 2000
-    const step = Math.ceil(numValue / 60)
-    const timer = setInterval(() => {
-      start += step
-      if (start >= numValue) { setDisplay(value); clearInterval(timer) }
-      else setDisplay(start + suffix)
-    }, duration / 60)
-    return () => clearInterval(timer)
-  }, [])
-  return <span>{display}</span>
-}
 
 function FadeInSection({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   const [visible, setVisible] = useState(false)
@@ -236,25 +198,11 @@ export default function HomePage() {
                 </span>
               </h1>
               <p className="text-lg sm:text-xl text-blue-100/80 mb-4 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-fade-in animation-delay-400">
-                Empowering the next generation of business leaders with world-class Cambridge education — where ambition meets achievement.
+                Education at Leadership Study System prepares students not only for examinations but for future opportunities beyond the classroom.
               </p>
               <p className="text-base sm:text-lg text-blue-100/60 mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed animate-fade-in animation-delay-400">
-                From Playgroup to A Levels, we prepare students not just for examinations, but for a future beyond the classroom.
+                At Leadership Study System, we are committed to inspiring and empowering the next generation of leaders through academic excellence and personal growth. With expert educators, innovative teaching approaches, and a supportive learning environment, we equip students with the knowledge, confidence, and critical thinking skills needed to excel in examinations and make a meaningful impact in an ever-changing world.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-fade-in animation-delay-600">
-                <Link to="/register/student/school">
-                  <Button size="lg" className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold text-base px-8 py-6 h-auto rounded-xl shadow-2xl shadow-amber-600/30 group w-full sm:w-auto">
-                    LSS School (Playgroup till Pre O-Level)
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-                <Link to="/register/student/academy">
-                  <Button size="lg" className="bg-white/10 backdrop-blur-md border-2 border-white/40 text-white hover:bg-white/20 hover:border-white/60 font-semibold text-base px-8 py-6 h-auto rounded-xl group w-full sm:w-auto">
-                    LSS Academy (O & A Levels)
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-              </div>
             </div>
 
             {/* Hero showcase card */}
@@ -263,14 +211,14 @@ export default function HomePage() {
               <div className="relative rounded-[2.5rem] overflow-hidden border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl">
                 <div className="grid grid-cols-2 gap-2 p-2">
                   <div className="relative h-40 rounded-[2rem] overflow-hidden">
-                    <img src="/images/school-kids.jpg" alt="LSS School students learning together" className="w-full h-full object-cover transition-transform duration-700 hover:scale-110" />
+                    <img src={`/homepage/${encodeURI('WhatsApp Image 2026-08-01 at 22.15.46.jpeg')}`} alt="LSS School students learning together" className="w-full h-full object-cover transition-transform duration-700 hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
-                    <span className="absolute bottom-3 left-3 text-xs font-semibold text-white bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">School Students</span>
+                    <span className="absolute bottom-3 left-3 text-xs font-semibold text-white bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">LSS School</span>
                   </div>
                   <div className="relative h-40 rounded-[2rem] overflow-hidden">
-                    <img src="/images/academy-students.jpg" alt="LSS Academy students in class" className="w-full h-full object-cover transition-transform duration-700 hover:scale-110" />
+                    <img src={`/homepage/${encodeURI('WhatsApp Image 2026-08-01 at 22.15.49.jpeg')}`} alt="LSS Academy students in class" className="w-full h-full object-cover transition-transform duration-700 hover:scale-110" />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
-                    <span className="absolute bottom-3 left-3 text-xs font-semibold text-white bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">Academy Students</span>
+                    <span className="absolute bottom-3 left-3 text-xs font-semibold text-white bg-black/30 backdrop-blur-sm px-2.5 py-1 rounded-full">LSS Academy</span>
                   </div>
                 </div>
                 <div className="p-8 pt-5">
@@ -307,25 +255,6 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== STATS ===== */}
-      <section className="relative py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {stats.map((stat) => (
-              <div key={stat.label} className="text-center p-6 rounded-2xl bg-gradient-to-b from-gray-50 to-white border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                <div className={`w-12 h-12 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg`}>
-                  <stat.icon className="h-6 w-6 text-white" />
-                </div>
-                <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary-600 to-blue-700 bg-clip-text text-transparent mb-1">
-                  <AnimatedCounter value={stat.value} />
-                </div>
-                <div className="text-sm text-gray-500 font-medium">{stat.label}</div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -454,7 +383,7 @@ export default function HomePage() {
                 <div className="absolute -inset-3 bg-gradient-to-br from-primary-600 to-blue-700 rounded-3xl blur-xl opacity-20" />
                 <div className="relative rounded-3xl overflow-hidden border-4 border-white shadow-2xl shadow-primary-900/20 bg-white">
                   <img
-                    src="/icons/ceopic.png"
+                    src="/icons/pic.jpg.jpeg"
                     alt="Muzammil Ameer - Chief Executive Officer"
                     className="w-full h-[420px] sm:h-[480px] object-cover object-top"
                   />
@@ -467,7 +396,7 @@ export default function HomePage() {
 
               <div className="space-y-6">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 border border-primary-200 text-primary-800 text-sm font-semibold">
-                  <GraduationCap className="h-4 w-4" /> Educationist, Author, Trainer, Cambridge Examiner
+                  <GraduationCap className="h-4 w-4" /> Cambridge Examiner, Educator, Trainer, Author
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">
                   A Visionary Committed to Academic Excellence
@@ -478,16 +407,15 @@ export default function HomePage() {
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-md p-6 sm:p-8 relative">
                   <Quote className="h-8 w-8 text-primary-300 absolute -top-3 left-6 bg-white px-1" />
                   <p className="text-gray-600 leading-relaxed text-[15px]">
-                    At Leadership Study System, I am committed to creating an environment where every student is inspired to achieve academic excellence while developing creativity, resilience, confidence, and strong values. I believe that every learner deserves personalised guidance, encouragement, and opportunities to grow in a supportive and caring atmosphere.
+                    At Leadership Study System, I am committed to creating an environment where every student is inspired to achieve academic excellence while developing creativity, confidence, and strong values. Together with my dedicated team of educators, I strive to ensure that every student feels respected, challenged, and empowered to reach their full potential.
                   </p>
                   <p className="text-gray-600 leading-relaxed text-[15px] mt-4">
-                    Together with our dedicated team of educators, I strive to ensure that every student feels respected, challenged, and empowered to reach their full potential. My vision is to provide an educational experience that goes beyond outstanding examination results by equipping students with the knowledge, critical thinking, leadership, and life skills needed to succeed in higher education, their careers, and an ever-changing world.
+                    My vision is to provide an educational experience that goes beyond outstanding examination results by equipping students with the knowledge, critical thinking, leadership, and life skills needed to succeed in higher education, their careers, and an ever-changing world.
                   </p>
                   <p className="text-gray-600 leading-relaxed text-[15px] mt-4">
-                    Thank you for your trust and partnership. I look forward to working together to nurture future leaders and help every student build a successful and meaningful future.
+                    Thank you for your trust and partnership. I invite you to visit and experience our vibrant Team.
                   </p>
                 </div>
-                <p className="text-gray-700 font-medium italic">I invite you to visit and experience our vibrant team.</p>
               </div>
             </div>
           </FadeInSection>
@@ -505,50 +433,36 @@ export default function HomePage() {
             <SectionHeader
               badge="Why Choose Us"
               icon={Award}
-              title={<>What Makes Us <span className="bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent">Different</span></>}
-              subtitle="Students choose Leadership Study System for a world-class education that combines theory with real-world application. Our expert faculty, modern facilities, and industry-aligned programs equip students to excel in today's dynamic landscape."
+              title={<>Why Families <span className="bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent">Choose LSS</span></>}
+              subtitle="A complete educational pathway under one trusted institution, from Playgroup to Cambridge O & A Levels."
             />
           </FadeInSection>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <FadeInSection className="lg:col-span-5">
-              <div className="relative">
-                <div className="absolute -inset-3 bg-gradient-to-br from-primary-600 to-amber-500 rounded-[2.5rem] blur-xl opacity-20" />
-                <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl shadow-primary-900/20">
-                  <img src="/images/kids-raising-hands.jpg" alt="Students learning at Leadership Study System" className="w-full h-[420px] object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-950/60 to-transparent" />
-                </div>
-                <div className="absolute -bottom-6 -right-3 sm:right-6 w-40 sm:w-48 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-                  <img src="/images/academy-students.jpg" alt="Academy students" className="w-full h-28 object-cover" />
-                </div>
-                <div className="absolute -top-5 left-4 bg-white rounded-2xl shadow-xl px-5 py-3 flex items-center gap-3">
-                  <div className="w-11 h-11 bg-gradient-to-br from-amber-500 to-orange-600 rounded-xl flex items-center justify-center">
-                    <Award className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <p className="text-xl font-bold text-gray-900 leading-none">98%</p>
-                    <p className="text-xs text-gray-500">Success Rate</p>
-                  </div>
-                </div>
-              </div>
-            </FadeInSection>
-            <div className="lg:col-span-7">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {whyChooseUs.map((item, i) => (
-                  <FadeInSection key={item.title}>
-                    <div className="group h-full" style={{ animationDelay: `${i * 80}ms` }}>
-                      <div className="h-full p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl hover:border-primary-100 hover:-translate-y-1 transition-all duration-300">
-                        <div className={`w-12 h-12 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
-                          <item.icon className="h-6 w-6 text-white" />
-                        </div>
-                        <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
-                        <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
-                      </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {whyChooseUs.map((item, i) => (
+              <FadeInSection key={item.title}>
+                <div className="group relative" style={{ animationDelay: `${i * 80}ms` }}>
+                  <div className={`h-1.5 rounded-t-2xl bg-gradient-to-r ${item.color}`} />
+                  <div className="p-6 rounded-b-2xl bg-white border border-t-0 border-gray-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative">
+                    <div className={`w-12 h-12 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+                      <item.icon className="h-6 w-6 text-white" />
                     </div>
-                  </FadeInSection>
-                ))}
-              </div>
-            </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
+                    <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                  </div>
+                </div>
+              </FadeInSection>
+            ))}
           </div>
+          <FadeInSection>
+            <div className="text-center mt-14">
+              <Link to="/register/student">
+                <Button size="lg" className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold px-8 py-6 h-auto text-base rounded-xl shadow-2xl shadow-amber-600/30 group">
+                  Start Your Journey to Success with LSS
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
+          </FadeInSection>
         </div>
       </section>
 
@@ -559,11 +473,11 @@ export default function HomePage() {
             <SectionHeader
               badge="Our Services"
               icon={Star}
-              title={<>Comprehensive <span className="bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent">Learning Solutions</span></>}
-              subtitle="We offer flexible learning modes to suit every student's needs."
+              title={<>Our <span className="bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent">Services</span></>}
+              subtitle="A complete educational ecosystem for schools, academies, and families."
             />
           </FadeInSection>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, i) => (
               <FadeInSection key={service.title}>
                 <div className="group h-full" style={{ animationDelay: `${i * 150}ms` }}>
@@ -594,47 +508,6 @@ export default function HomePage() {
               </Link>
             </div>
           </FadeInSection>
-        </div>
-      </section>
-
-      {/* ===== COURSES ===== */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-primary-950 to-primary-800" />
-        <div className="absolute inset-0 opacity-25">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary-500 rounded-full blur-[128px]" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-500 rounded-full blur-[128px]" />
-          <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-amber-400 rounded-full blur-[110px]" />
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <FadeInSection>
-            <div className="text-center mb-14">
-              <Badge className="mb-4 px-4 py-1.5 bg-white/10 text-white border-white/25 backdrop-blur-sm">
-                <BookOpen className="h-4 w-4 mr-1.5 inline" /> Featured Courses
-              </Badge>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">Cambridge International Courses</h2>
-              <p className="text-blue-100/70 max-w-2xl mx-auto text-lg">Expert-led courses aligned with Cambridge Assessment International Education standards.</p>
-            </div>
-          </FadeInSection>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {courses.map((course, i) => (
-              <FadeInSection key={`${course.code}-${course.level}`}>
-                <div className="group relative" style={{ animationDelay: `${i * 100}ms` }}>
-                  <div className="absolute -inset-0.5 bg-gradient-to-r from-amber-400/40 to-blue-500/40 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="relative p-6 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/10 hover:bg-white/15 hover:-translate-y-1 transition-all">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-3xl font-bold text-amber-300">{course.code}</span>
-                      <Badge className="bg-white/15 text-white border-white/20">{course.level}</Badge>
-                    </div>
-                    <h3 className="font-semibold text-lg text-white mb-3">{course.name}</h3>
-                    <p className="text-blue-200/70 text-sm flex items-center gap-1.5">
-                      <Users className="h-4 w-4" />
-                      {course.teacher}
-                    </p>
-                  </div>
-                </div>
-              </FadeInSection>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -855,7 +728,7 @@ export default function HomePage() {
             <SectionHeader
               badge="Our Leadership"
               icon={Users}
-              title={<>Meet Our Esteemed <span className="bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent">Faculty</span></>}
+              title={<>Meet Our Esteemed <span className="bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent">Leadership</span></>}
               subtitle="Guided by experienced educators committed to academic excellence."
             />
           </FadeInSection>
@@ -974,32 +847,6 @@ export default function HomePage() {
               </FadeInSection>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* ===== PARTNERS ===== */}
-      <section className="relative py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeInSection>
-            <div className="text-center mb-10">
-              <Badge className="mb-4 px-4 py-1.5 bg-gradient-to-r from-primary-600 to-blue-700 text-white border-transparent shadow-lg shadow-primary-700/20">
-                <Building2 className="h-4 w-4 mr-1.5 inline" /> Partners & Affiliations
-              </Badge>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Trusted By Leading Organizations</h2>
-            </div>
-          </FadeInSection>
-          <FadeInSection>
-            <div className="flex flex-wrap justify-center gap-4">
-              {partners.map((partner) => (
-                <div key={partner.name} className={`flex items-center gap-3 px-6 py-4 rounded-xl border ${partner.color} shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all`}>
-                  <div className={`w-10 h-10 ${partner.icon} rounded-lg flex items-center justify-center font-bold text-sm`}>
-                    {partner.name.charAt(0)}
-                  </div>
-                  <span className="font-medium text-gray-700 text-sm">{partner.name}</span>
-                </div>
-              ))}
-            </div>
-          </FadeInSection>
         </div>
       </section>
 

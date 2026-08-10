@@ -8,13 +8,14 @@ import {
   GraduationCap,
   CheckCircle,
   Heart,
-  Shield,
   Star,
   Clock,
   TrendingUp,
   Sparkles,
   ArrowRight,
   Quote,
+  Target,
+  Laptop,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -59,12 +60,13 @@ const stats = [
 ];
 
 const reasons = [
-  { icon: GraduationCap, title: 'Qualified Faculty', description: 'Highly experienced Cambridge-trained teachers with proven track records of student success.' },
-  { icon: BookOpen, title: 'Comprehensive Resources', description: 'Access to extensive study materials, past papers, and practice resources.' },
-  { icon: Clock, title: 'Flexible Learning', description: 'Both in-person and online class options to accommodate diverse learning preferences.' },
-  { icon: TrendingUp, title: 'Proven Results', description: 'Consistent history of outstanding Cambridge examination results year after year.' },
-  { icon: Heart, title: 'Student-Centric Approach', description: 'Personalized attention ensuring each student reaches their full potential.' },
-  { icon: Shield, title: 'Safe Learning Space', description: 'Secure, well-equipped campus designed for focused academic pursuit.' },
+  { icon: GraduationCap, title: 'Comprehensive Education', description: 'From Playgroup to Grade 8 and Cambridge O & A Levels, we provide a complete educational pathway under one trusted institution.' },
+  { icon: Users, title: 'Expert Teachers', description: 'Highly qualified and experienced educators dedicated to academic excellence and student success.' },
+  { icon: Target, title: 'Personalised Learning', description: 'Small class sizes and individual attention ensure every student reaches their full potential.' },
+  { icon: Star, title: 'Leadership Development', description: 'Building confidence, character, creativity, and leadership alongside academic achievement.' },
+  { icon: TrendingUp, title: 'Proven Academic Results', description: 'A strong track record of preparing students for outstanding examination performance.' },
+  { icon: Heart, title: 'Parent Partnership', description: 'Working closely with parents through regular communication and progress updates.' },
+  { icon: Laptop, title: 'Innovative Learning', description: 'Interactive teaching, digital resources, and modern classroom practices that inspire lifelong learning.' },
 ];
 
 export default function AboutPage() {
@@ -347,6 +349,12 @@ export default function AboutPage() {
             </Button>
             <Button asChild size="lg" variant="outline" className="border-white/30 bg-white/10 px-8 py-6 text-base font-semibold text-white backdrop-blur-sm hover:bg-white/20">
               <Link to="/contact">Contact Us</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="border-white/30 bg-white/10 px-8 py-6 text-base font-semibold text-white backdrop-blur-sm hover:bg-white/20">
+              <Link to="/pricing">Get School ERP Services</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="border-white/30 bg-white/10 px-8 py-6 text-base font-semibold text-white backdrop-blur-sm hover:bg-white/20">
+              <Link to="/pricing">Become a Partner</Link>
             </Button>
           </div>
         </FadeInSection>

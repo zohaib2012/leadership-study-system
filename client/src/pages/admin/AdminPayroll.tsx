@@ -205,7 +205,7 @@ export default function AdminPayroll() {
         ${slip.remark ? `<p><strong>Remark:</strong> ${slip.remark}</p>` : ''}
         ${slip.paidAt ? `<p><strong>Paid On:</strong> ${new Date(slip.paidAt).toLocaleDateString('en-PK', { year: 'numeric', month: 'long', day: 'numeric' })}</p>` : ''}
         <div class="footer">This is a computer-generated slip. &copy; ${new Date().getFullYear()} Leadership Study System</div>
-        <script>window.print()</script>
+        <script>window.addEventListener('load', () => window.print())</script>
       </body></html>
     `)
     w.document.close()

@@ -122,7 +122,7 @@ exports.generateChallans = async (req, res) => {
     if (!feeStructures.length) {
       return res.status(400).json({
         success: false,
-        message: 'No active fee structures found for this class',
+        message: 'No active fee structure found for this class. Please add one from the Fee Structure page first.',
       });
     }
 
@@ -145,7 +145,7 @@ exports.generateChallans = async (req, res) => {
     if (!students.length) {
       return res.status(400).json({
         success: false,
-        message: 'No active students found in this class',
+        message: 'No ACTIVE students found in this class. Please activate students from the Students page before generating challans.',
       });
     }
 

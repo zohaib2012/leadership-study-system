@@ -19,6 +19,19 @@ import { Badge } from '@/components/ui/badge';
 
 const services = [
   {
+    icon: School,
+    title: 'PG Group to 8th Class School',
+    description:
+      'A nurturing academic environment for young learners from Playgroup through Pre O-Levels, building strong foundations.',
+    features: [
+      'Holistic early childhood curriculum',
+      'Qualified and caring educators',
+      'Focus on foundational literacy and numeracy',
+      'Extracurricular activities and character development',
+      'Smooth transition to higher grades',
+    ],
+  },
+  {
     icon: GraduationCap,
     title: 'Cambridge IGCSE and A Level Classes',
     description:
@@ -32,8 +45,21 @@ const services = [
     ],
   },
   {
+    icon: Building2,
+    title: 'School ERP for Schools, Academies and Individuals',
+    description:
+      'A complete school management system for schools, academies, and individuals — admissions, fees, homework, timetable, results, and more.',
+    features: [
+      'Student admissions and registration management',
+      'Fee challans, payments and ledger tracking',
+      'Homework, timetable and attendance modules',
+      'Results and report generation',
+      'Teacher and staff management',
+    ],
+  },
+  {
     icon: BookOpen,
-    title: 'BTEC Guidance',
+    title: 'BTEC Program',
     description:
       'Professional guidance and support for students pursuing BTEC qualifications, from course selection to completion.',
     features: [
@@ -45,7 +71,20 @@ const services = [
     ],
   },
   {
-    icon: Building2,
+    icon: UserSearch,
+    title: 'Find a Tutor',
+    description:
+      'Connect with qualified tutors across a wide range of subjects and academic levels for personalized learning.',
+    features: [
+      'Verified and experienced tutors',
+      'Subject matching based on requirements',
+      'Flexible online and in-person sessions',
+      'Progress monitoring and reports',
+      'Competitive and transparent pricing',
+    ],
+  },
+  {
+    icon: FileText,
     title: 'International and Local Universities Placements Guidance',
     description:
       'End-to-end university placement services helping students secure admissions at top institutions worldwide.',
@@ -68,32 +107,6 @@ const services = [
       'Weakness identification and improvement plans',
       'Time management techniques',
       'One-on-one coaching available',
-    ],
-  },
-  {
-    icon: UserSearch,
-    title: 'Find a Tutor',
-    description:
-      'Connect with qualified tutors across a wide range of subjects and academic levels for personalized learning.',
-    features: [
-      'Verified and experienced tutors',
-      'Subject matching based on requirements',
-      'Flexible online and in-person sessions',
-      'Progress monitoring and reports',
-      'Competitive and transparent pricing',
-    ],
-  },
-  {
-    icon: School,
-    title: 'PG till Pre O-Levels School',
-    description:
-      'A nurturing academic environment for young learners from Playgroup through Pre O-Levels, building strong foundations.',
-    features: [
-      'Holistic early childhood curriculum',
-      'Qualified and caring educators',
-      'Focus on foundational literacy and numeracy',
-      'Extracurricular activities and character development',
-      'Smooth transition to higher grades',
     ],
   },
 ];

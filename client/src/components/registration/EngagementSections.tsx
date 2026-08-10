@@ -51,7 +51,7 @@ export function LeadershipTeamSection({ type }: { type: 'SCHOOL' | 'ACADEMY' }) 
           <div key={m.name} className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all overflow-hidden">
             <div className="h-40 bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center">
               {i === 0 ? (
-                <img src="/icons/ceopic.png" alt={m.name} className="w-full h-full object-cover object-top" />
+                <img src="/icons/pic.jpg.jpeg" alt={m.name} className="w-full h-full object-cover object-top" />
               ) : (
                 <Users className="h-12 w-12 text-white/70" />
               )}
@@ -96,14 +96,18 @@ export function StaffFacultySection({ type }: { type: 'SCHOOL' | 'ACADEMY' }) {
         {members.map((m, i) => (
           <div key={m.name} className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all overflow-hidden group">
             <div className="h-44 bg-gradient-to-br from-gray-100 to-primary-50 flex items-center justify-center overflow-hidden">
-              {isAcademy && i < 7 ? (
+              {isAcademy ? (
                 <img
                   src={`/icons/faculty/faculty-${(i % 7) + 1}.jpeg`}
                   alt={m.name}
                   className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
                 />
               ) : (
-                <GraduationCap className="h-12 w-12 text-primary-300" />
+                <img
+                  src={`/icons/gallery/gallery-${(i % 14) + 1}.jpeg`}
+                  alt={m.name}
+                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform"
+                />
               )}
             </div>
             <div className="p-5">
