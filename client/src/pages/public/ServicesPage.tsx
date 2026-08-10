@@ -5,7 +5,6 @@ import {
   GraduationCap,
   BookOpen,
   Building2,
-  FileText,
   UserSearch,
   School,
   CheckCircle,
@@ -81,32 +80,6 @@ const services = [
       'Flexible online and in-person sessions',
       'Progress monitoring and reports',
       'Competitive and transparent pricing',
-    ],
-  },
-  {
-    icon: FileText,
-    title: 'International and Local Universities Placements Guidance',
-    description:
-      'End-to-end university placement services helping students secure admissions at top institutions worldwide.',
-    features: [
-      'University shortlisting based on profile',
-      'Application essay and SOP assistance',
-      'Interview preparation sessions',
-      'Scholarship and financial aid guidance',
-      'Visa application support',
-    ],
-  },
-  {
-    icon: FileText,
-    title: 'University Admission Test Preparations',
-    description:
-      'Targeted preparation programs for university admission tests including SAT, ACT, IELTS, TOEFL, and more.',
-    features: [
-      'Comprehensive test strategy sessions',
-      'Full-length practice tests with analysis',
-      'Weakness identification and improvement plans',
-      'Time management techniques',
-      'One-on-one coaching available',
     ],
   },
 ];
