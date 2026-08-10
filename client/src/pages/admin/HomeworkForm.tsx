@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ArrowLeft, Save, Upload } from 'lucide-react'
+import { ArrowLeft, Save } from 'lucide-react'
 
 interface ClassOption {
   _id: string
@@ -143,15 +143,6 @@ export default function HomeworkForm() {
                 value={form.dueDate}
                 onChange={(e) => setForm((f) => ({ ...f, dueDate: e.target.value }))}
               />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">Attachment</label>
-              <div className="border-2 border-dashed rounded-lg p-6 text-center">
-                <Upload className="mx-auto h-8 w-8 text-muted-foreground mb-2" />
-                <p className="text-sm text-muted-foreground">Drag and drop files here, or click to browse</p>
-                <Input type="file" className="mt-2 max-w-xs mx-auto" disabled />
-              </div>
             </div>
 
             <div className="flex gap-3 pt-2">

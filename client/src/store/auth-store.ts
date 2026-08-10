@@ -89,6 +89,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const token = get().token
     if (token && !get().user) {
       await get().loadUser()
+      if (get().token && !get().user && !get().isLoading) {
+        get().loadUser()
+      }
     } else if (token && get().user) {
       get().loadUser()
     }

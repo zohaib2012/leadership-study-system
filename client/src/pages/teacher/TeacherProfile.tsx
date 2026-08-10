@@ -4,7 +4,7 @@ import { useAuthStore } from '@/store/auth-store'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { User, Mail, Phone, BookOpen, Award, Calendar, Save } from 'lucide-react'
+import { User, BookOpen, Award, Calendar, Save } from 'lucide-react'
 
 export default function TeacherProfile() {
   const { user } = useAuthStore()
@@ -14,10 +14,10 @@ export default function TeacherProfile() {
   const [form, setForm] = useState({ phone: '', address: '' })
 
   useEffect(() => {
-    api.get('/auth/me').then(({ data }) => {
+    api.get('/teachers/me/profile').then(({ data }) => {
       if (data.success) {
         setProfile(data.data)
-        setForm({ phone: data.data.phone || '', address: data.data.address || '' })
+        setForm({ phone: data.data.user?.phone || data.data.phone || '', address: data.data.address || '' })
       }
     }).catch(console.error).finally(() => setLoading(false))
   }, [])
@@ -25,7 +25,8 @@ export default function TeacherProfile() {
   const handleSave = async () => {
     setSaving(true)
     try {
-      await api.put('/auth/profile', form)
+      await api.put('/teachers/me/profile', { phone: form.phone, address: form.address })
+      setProfile((p: any) => ({ ...p, address: form.address, user: { ...p.user, phone: form.phone } }))
       alert('Profile updated successfully')
     } catch { alert('Failed to update profile') }
     finally { setSaving(false) }
@@ -45,11 +46,11 @@ export default function TeacherProfile() {
         <CardContent className="space-y-4">
           <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
             <div className="w-14 h-14 rounded-full bg-primary-100 flex items-center justify-center">
-              <span className="text-xl font-bold text-primary-700">{user?.name?.charAt(0)}</span>
+              <span className="text-xl font-bold text-primary-700">{profile?.user?.name?.charAt(0) || user?.name?.charAt(0)}</span>
             </div>
             <div>
-              <p className="font-semibold text-lg">{user?.name}</p>
-              <p className="text-sm text-muted-foreground">{user?.email} • {user?.role}</p>
+              <p className="font-semibold text-lg">{profile?.user?.name || user?.name}</p>
+              <p className="text-sm text-muted-foreground">{profile?.user?.email || user?.email} • {profile?.user?.role || user?.role}</p>
             </div>
           </div>
 

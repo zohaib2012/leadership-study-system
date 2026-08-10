@@ -90,6 +90,68 @@ exports.getTeacher = async (req, res) => {
   }
 };
 
+exports.getMyProfile = async (req, res) => {
+  try {
+    if (!requireTenant(req)) {
+      return res.status(400).json({ success: false, message: 'Tenant context required' });
+    }
+
+    const teacher = await Teacher.findOne({
+      user: req.user._id,
+      tenant: req.tenant._id,
+    })
+      .populate('user')
+      .populate('assignedClasses.class')
+      .populate('assignedClasses.subject');
+
+    if (!teacher) {
+      return res.status(404).json({ success: false, message: 'Teacher profile not found' });
+    }
+
+    res.json({ success: true, data: teacher });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.updateMyProfile = async (req, res) => {
+  try {
+    if (!requireTenant(req)) {
+      return res.status(400).json({ success: false, message: 'Tenant context required' });
+    }
+
+    const teacher = await Teacher.findOne({
+      user: req.user._id,
+      tenant: req.tenant._id,
+    });
+
+    if (!teacher) {
+      return res.status(404).json({ success: false, message: 'Teacher profile not found' });
+    }
+
+    const { phone, address, photo } = req.body;
+
+    if (address !== undefined) teacher.address = address;
+    if (photo !== undefined) teacher.photo = photo;
+
+    if (phone !== undefined) {
+      const user = await User.findById(teacher.user);
+      if (user) {
+        user.phone = phone;
+        await user.save();
+      }
+    }
+
+    teacher.updatedAt = new Date();
+    await teacher.save();
+
+    const updated = await Teacher.findById(teacher._id).populate('user');
+    res.json({ success: true, data: updated });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 exports.createTeacher = async (req, res) => {
   try {
     if (!requireTenant(req)) {

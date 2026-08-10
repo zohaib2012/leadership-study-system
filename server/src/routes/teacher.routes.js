@@ -17,6 +17,8 @@ router.patch('/salary/bulk-pay', authorize('ADMIN', 'SUB_ADMIN'), teacherControl
 router.post('/salary/generate', authorize('ADMIN', 'SUB_ADMIN'), teacherController.generateSalarySlip);
 router.post('/salary/bulk-generate', authorize('ADMIN', 'SUB_ADMIN'), teacherController.bulkGenerateSlips);
 router.get('/my-classes', authorize('TEACHER'), teacherController.getMyClasses);
+router.get('/me/profile', authorize('TEACHER'), teacherController.getMyProfile);
+router.put('/me/profile', authorize('TEACHER'), teacherController.updateMyProfile);
 router.get('/:id', authorize('ADMIN', 'SUB_ADMIN', 'ACCOUNTANT', 'TEACHER'), teacherController.getTeacher);
 router.put('/:id', authorize('ADMIN', 'SUB_ADMIN'), teacherController.updateTeacher);
 router.delete('/:id', authorize('ADMIN', 'SUB_ADMIN'), teacherController.deleteTeacher);

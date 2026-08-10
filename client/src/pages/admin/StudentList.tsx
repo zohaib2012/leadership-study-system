@@ -118,11 +118,13 @@ export default function StudentList({ defaultType }: { defaultType?: 'SCHOOL' | 
         <h1 className="text-2xl font-bold">
           {defaultType === 'ACADEMY' ? 'Academy Students' : defaultType === 'SCHOOL' ? 'School Students' : 'Students'}
         </h1>
+        {/* Add Student button hidden temporarily
         <Link to="/admin/students/add">
           <Button>
             <Plus className="h-4 w-4 mr-2" /> Add Student
           </Button>
         </Link>
+        */}
       </div>
 
       <div className="flex flex-wrap gap-3 items-center">

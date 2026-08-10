@@ -217,7 +217,7 @@ export default function App() {
               <Route path="/student/attendance" element={<StudentAttendance />} />
               <Route path="/student/fees" element={<StudentFees />} />
               <Route path="/student/homework" element={<StudentHomework />} />
-              <Route path="/student/leaves" element={<StudentLeaves />} />
+              {/* <Route path="/student/leaves" element={<StudentLeaves />} /> hidden temporarily */}
               <Route path="/student/profile" element={<StudentProfile />} />
             </Route>
           </Route>

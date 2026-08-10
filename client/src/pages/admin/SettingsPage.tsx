@@ -181,7 +181,7 @@ export default function SettingsPage() {
             <CardHeader><CardTitle className="text-lg">Role Management</CardTitle></CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Role management is limited to super-admin. Current roles include Admin, Teacher, Student, Parent, Accountant, and Sub-Admin.
+                Role management is according to your needs. Current roles include Admin, Teacher, Student.
               </p>
             </CardContent>
           </Card>

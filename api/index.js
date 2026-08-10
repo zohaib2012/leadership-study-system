@@ -14,21 +14,28 @@ let cached = global._mongooseCache || (global._mongooseCache = { conn: null, pro
 
 async function getDB() {
   if (cached.conn && mongoose.connection.readyState === 1) return cached.conn;
-  cached.conn = null;
-  cached.promise = null;
-  try { await mongoose.disconnect(); } catch (_) {}
-  const uri = process.env.MONGODB_URI;
-  if (!uri) throw new Error('MONGODB_URI environment variable is not set');
-  cached.promise = mongoose.connect(uri, {
-    serverSelectionTimeoutMS: 15000,
-    connectTimeoutMS: 15000,
-    socketTimeoutMS: 60000,
-    maxPoolSize: 5,
-    minPoolSize: 0,
-    bufferCommands: false,
-  });
-  cached.conn = await cached.promise;
-  return cached.conn;
+  if (!cached.promise) {
+    const uri = process.env.MONGODB_URI;
+    if (!uri) throw new Error('MONGODB_URI environment variable is not set');
+    cached.promise = mongoose
+      .connect(uri, {
+        serverSelectionTimeoutMS: 15000,
+        connectTimeoutMS: 15000,
+        socketTimeoutMS: 60000,
+        maxPoolSize: 5,
+        minPoolSize: 0,
+        bufferCommands: false,
+      })
+      .then((conn) => {
+        cached.conn = conn;
+        return conn;
+      })
+      .catch((err) => {
+        cached.promise = null;
+        throw err;
+      });
+  }
+  return cached.promise;
 }
 
 // MongoDB middleware — MUST be registered BEFORE routes

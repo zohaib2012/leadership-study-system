@@ -70,7 +70,7 @@ const studentMenu = [
   { label: 'Attendance', href: '/student/attendance', icon: ClipboardCheck },
   { label: 'Fees', href: '/student/fees', icon: IndianRupee },
   { label: 'Homework', href: '/student/homework', icon: FileText },
-  { label: 'Leave', href: '/student/leaves', icon: Clock },
+  // { label: 'Leave', href: '/student/leaves', icon: Clock }, // hidden temporarily
   { label: 'Profile', href: '/student/profile', icon: Settings },
 ]
 
