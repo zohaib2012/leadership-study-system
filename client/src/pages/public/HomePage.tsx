@@ -57,9 +57,9 @@ const services = [
 ]
 
 const faculty = [
-  { name: 'Mr. Muzammil Ameer', role: 'Chief Executive Officer', gradient: 'from-primary-600 to-blue-800', bio: 'Visionary leader with 20+ years in Cambridge education.' },
-  { name: 'Ms. Umber Rubab', role: 'Leadership', gradient: 'from-rose-500 to-rose-700', bio: 'Dedicated leader committed to academic excellence and student development.' },
-  { name: 'Mr. Muhammad Ajmal Pervaiz', role: 'Executive Director', gradient: 'from-blue-600 to-blue-800', bio: 'Dedicated to academic excellence and student development.' },
+  { name: 'Muzammil Ameer', role: 'CEO and Founder', gradient: 'from-primary-600 to-blue-800', bio: 'Visionary leader with 20+ years in Cambridge education, committed to shaping the next generation of leaders.' },
+  { name: 'Ms Sana Saleem', role: 'Executive Director', gradient: 'from-rose-500 to-rose-700', bio: 'Passionate about holistic student growth and nurturing confident individuals who excel academically.' },
+  { name: 'Ms Umber', role: 'Executive Director', gradient: 'from-blue-600 to-blue-800', bio: 'Dedicated to academic excellence and empowering students to reach their full potential.' },
 ]
 
 const testimonials = [
